@@ -44,6 +44,7 @@ class BaseController extends Controller
     {
         $response = [
             'success' => false,
+            'errors' => $errorMessages,
             'message' => $error,
         ];
 

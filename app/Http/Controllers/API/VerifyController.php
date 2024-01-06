@@ -18,10 +18,10 @@ class VerifyController extends BaseController
     public function activate(Request $request)
     {
         try {
-            $data = $this->service->activate($request->phone, $request->code);
-            return $this->sendResponse($data, 'تم تأكيد الحساب بنجاح');
+            $data = $this->service->activate($request->email, $request->code);
+            return $this->sendResponse($data, 'Email Verified Successfully',200);
         } catch (Exception $exception) {
-            return $this->sendError('خطأ.', $exception->getMessage());
+            return $this->sendError('خطأ.', $exception->getMessage(),400);
         }
     }
 }

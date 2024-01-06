@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use App\Services\AuthService;
-use Auth;
 use Exception;
 
 class LoginController extends BaseController
@@ -20,9 +19,9 @@ class LoginController extends BaseController
     {
         try {
             $data =  $this->service->userLogin($request);
-            return $this->sendResponse($data, 'تم ارسال كود التحقق فى رسالة');
+            return $this->sendResponse($data, 'logged in seccessfully' ,200);
         } catch (Exception $exception) {
-            return $this->sendError('خطأ.', $exception->getMessage());
+            return $this->sendError('خطأ.', $exception->getMessage(),400);
         }
     }
 }

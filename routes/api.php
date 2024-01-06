@@ -22,6 +22,9 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\API'], function () {
     Route::post('login', 'LoginController@login');
     Route::post('register', 'RegisterController@register');
     Route::post('verify', 'VerifyController@activate');
+    Route::post('forgetPassword', 'ForgetPasswordController@forget');
+    Route::post('resend', 'ForgetPasswordController@resend');
+    Route::post('changePassword', 'ForgetPasswordController@changePassword');
 
     Route::get('category/{parent_id?}', 'CategoryController@get');
     Route::get('city/{district_id?}', 'CityController@get');

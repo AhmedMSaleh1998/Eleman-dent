@@ -19,7 +19,7 @@ class ProfileController extends BaseController
     {
         try {
             $data = $this->service->showProfile(getCurrentUser());
-            return $this->sendResponse($data, 'تم عرض البروفايل بنجاح');
+            return $this->sendResponse($data, 'تم عرض البروفايل بنجاح' , 200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
@@ -30,13 +30,15 @@ class ProfileController extends BaseController
         try {
             $user =  $request->validated();
             if ($request->image != null) {
-                $base64Image = explode(";base64,", $request->image);
-                $explodeImage = explode("image/", $base64Image[0]);
-                $imageType = $explodeImage[1];
-                $image_base64 = base64_decode($base64Image[1]);
-                $name  = time() . '.' . $imageType;
+                // $base64Image = explode(";base64,", $request->image);
+                // $explodeImage = explode("image/", $base64Image[0]);
+                // $imageType = $explodeImage[1];
+                // $image_base64 = base64_decode($base64Image[1]);
+                $extension = $request->file('image')->getClientOriginalExtension();
+                // dd($extension);
+                $name  = time() . '.' . $extension;
                 $path = public_path('admin_assets/images/users/' . $name);
-                file_put_contents($path, $image_base64);
+                file_put_contents($path, $name);
                 $user['image'] = $name;
             }
 
@@ -46,7 +48,7 @@ class ProfileController extends BaseController
             } */
 
             $data = $this->service->updateProfile(getCurrentUser(), $user);
-            return $this->sendResponse($data, 'تم تعديل البروفايل بنجاح');
+            return $this->sendResponse($data, 'تم تعديل البروفايل بنجاح' , 200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }

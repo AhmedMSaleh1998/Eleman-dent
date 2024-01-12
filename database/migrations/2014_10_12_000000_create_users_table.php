@@ -20,7 +20,7 @@ return new class extends Migration
                 $table->string('phone');
                 $table->integer('code')->nullable();
                 $table->string('image')->nullable();
-                $table->tinyInteger('status')->default('1');
+                $table->tinyInteger('status')->default('0');
                 $table->rememberToken();
                 $table->timestamps();
         });

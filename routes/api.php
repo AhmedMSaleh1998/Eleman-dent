@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'App\\Http\\Controllers\\API'], function () {
     Route::post('login', 'LoginController@login');
+    Route::post('logout', 'LogoutController@logout');
     Route::post('register', 'RegisterController@register');
     Route::post('verify', 'VerifyController@activate');
     Route::post('forgetPassword', 'ForgetPasswordController@forget');

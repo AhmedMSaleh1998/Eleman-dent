@@ -35,23 +35,32 @@
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <h4 class="header-title m-t-0 m-b-20">تعديل مدن</h4>
+            <h4 class="header-title m-t-0 m-b-20">Edit City</h4>
 
             <table class="table table-bordered table-striped">
                 {{ Form::model($city, ['method' => 'PATCH', 'action' => ['App\Http\Controllers\Admin\CityController@update', $city->id], 'files' => true]) }}
                 <tbody>
                     <tr>
-                        <td>اسم </td>
-                        <td><input type="text" class="form-control" name="name" required value="{{ $city->name }}"></td>
-                        @if ($errors->has('name'))
+                        <td>Name Arabic </td>
+                        <td><input type="text" class="form-control" name="name_ar" required value="{{  $city->translate('ar')->name  }}"></td>
+                        @if ($errors->has('name_ar'))
                         <span class="alert alert-danger">
-                            <strong>{{ $errors->first('name') }}</strong>
+                            <strong>{{ $errors->first('name_ar') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>Name English </td>
+                        <td><input type="text" class="form-control" name="name_en" required value="{{$city->translate('en')->name  }}"></td>
+                        @if ($errors->has('name_en'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('name_en') }}</strong>
                         </span>
                         @endif
                     </tr>
                     <tr>
                         <td style="width:25%"></td>
-                        <td><button type="submit" class="btn btn-default waves-effect waves-light form-control">تعديل</button></td>
+                        <td><button type="submit" class="btn btn-default waves-effect waves-light form-control">Save</button></td>
                     </tr>
                 </tbody>
                 {!! Form::close() !!}

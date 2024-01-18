@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\CategoryRequest;
+use App\Models\Category;
 use App\Services\CategoryService;
 
 class CategoryController extends BaseController
@@ -42,8 +43,13 @@ class CategoryController extends BaseController
      */
     public function store(CategoryRequest $request)
     {
-        $this->service->store($request);
-        return redirect()->back()->with(['success' => 'تم إضافة القسم بنجاح']);
+        try{
+            $this->service->store($request);
+            return redirect()->back()->with(['success' => 'تم إضافة القسم بنجاح']);
+        }catch(\Exception $e){
+            dd($e);
+        }
+        
     }
 
     /**

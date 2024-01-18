@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
@@ -27,8 +27,8 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\API'], function () {
     Route::post('resend', 'ForgetPasswordController@resend');
     Route::post('changePassword', 'ForgetPasswordController@changePassword');
 
-    Route::get('category/{parent_id?}', 'CategoryController@get');
-    Route::get('city/{district_id?}', 'CityController@get');
+    Route::get('categories', 'CategoryController@list');
+    Route::get('cities', 'CityController@get');
     Route::get('color', 'ColorController');
     Route::get('size', 'SizeController');
     Route::get('model', 'ModelController');

@@ -21,9 +21,9 @@
         @elseif(Session::has('danger'))
         <div class="alert alert-danger">{{ Session::get('danger') }}</div>
         @endif
-        <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
-        <a style="color: #fff;" href="{{ route('admin.city.index') }}">/ مدن / </a>
-        <a style="color: #36404a;"> إضافة </a>
+        <a style="color: #fff;" href="{{ route('admin.home') }}">Home</a>
+        <a style="color: #fff;" href="{{ route('admin.city.index') }}">/ Cities / </a>
+        <a style="color: #36404a;"> Add </a>
 
         <ul>
             @foreach ($errors->all() as $error)
@@ -35,24 +35,34 @@
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <h4 class="header-title m-t-0 m-b-20">اضافه مدينة</h4>
+            <h4 class="header-title m-t-0 m-b-20">Add City</h4>
 
             <table class="table table-bordered table-striped">
                 {{Form::open(['method'=>'POST','action' => ['App\Http\Controllers\Admin\CityController@store'], 'files' => true])}}
                 @csrf
                 <tbody>
                     <tr>
-                        <td>اسم</td>
-                        <td><input type="text" class="form-control" name="name" required value="{{ old('name') }}"></td>
-                        @if ($errors->has('name'))
+                        <td>Name Arabic</td>
+                        <td><input type="text" class="form-control" name="name_ar" required value="{{ old('name_ar') }}"></td>
+                        @if ($errors->has('name_ar'))
                         <span class="alert alert-danger">
-                            <strong>{{ $errors->first('name') }}</strong>
+                            <strong>{{ $errors->first('name_ar') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+
+                    <tr>
+                        <td>Name English</td>
+                        <td><input type="text" class="form-control" name="name_en" required value="{{ old('name_en') }}"></td>
+                        @if ($errors->has('name_en'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('name_en') }}</strong>
                         </span>
                         @endif
                     </tr>
                     <tr>
                         <td style="width:25%"></td>
-                        <td><button type="submit" class="btn btn-default waves-effect waves-light form-control">حفظ</button></td>
+                        <td><button type="submit" class="btn btn-default waves-effect waves-light form-control">Save</button></td>
                     </tr>
                 </tbody>
                 {{-- </form> --}}

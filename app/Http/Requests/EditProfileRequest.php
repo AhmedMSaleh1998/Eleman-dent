@@ -24,7 +24,8 @@ class EditProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'phone' => 'required',
             'image' => 'nullable',
         ];

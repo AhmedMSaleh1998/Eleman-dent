@@ -20,7 +20,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
         Route::resource('category', 'CategoryController');
         Route::resource('product', 'ProductController');
         Route::resource('color', 'ColorController');
-        Route::resource('district', 'DistrictController');
+        Route::resource('city', 'CityController');
         Route::resource('setting', 'SettingController');
         Route::resource('paymentmethod', 'PaymentMethodController');
         Route::resource('coupon', 'CouponController');

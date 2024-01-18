@@ -16,7 +16,7 @@
             @elseif(Session::has('danger'))
             <div class="alert alert-danger">{{ Session::get('danger') }}</div>
             @endif
-            <h4 class="page-title">الأقسام</h4>
+            <h4 class="page-title">Categories</h4>
         </div>
 
     </div>
@@ -30,7 +30,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.category.create') }}" class="btn btn-default waves-effect">اضافه قسم  +</a>
+                        <a href="{{ route('admin.category.create') }}" class="btn btn-default waves-effect">Add Category  +</a>
                     </div>
                 </div>
             </div>
@@ -40,12 +40,11 @@
 
                     <thead>
                         <tr>
-                            <th data-field="الصورة" data-align="center">الصورة</th>
-                            <th data-field="اسم عربي" data-align="center">اسم عربي</th>
-                            <th data-field="اسم انجليزي" data-align="center">اسم انجليزي</th>
-                            <th data-field="الترتيب" data-align="center">الترتيب</th>
-                            <th data-field="الحالة" data-align="center">الحالة</th>
-                            <th data-field="التحكم" data-align="center">التحكم</th>
+                            <th data-field="Image" data-align="center">Image</th>
+                            <th data-field="Name Arabic" data-align="center">Name Arabic</th>
+                            <th data-field="Name English" data-align="center">Name English</th>
+                            <th data-field="Status" data-align="center">Status</th>
+                            <th data-field="Control" data-align="center">Control</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,15 +52,14 @@
                         @foreach($categories as $category)
                         <tr>
                             <td><img src="{{asset('admin_assets/images/categories/'.$category->image)}}" class="img-responsive" width="100px" height="100px"></td>
-                            <td>{{$category->name_ar}}</td>
-                            <td>{{$category->name_en}}</td>
-                            <td>{{$category->order}}</td>
-                            <td>{{$category->status === 1 ? 'مفعل' : 'غير مفعل'}}</td>
+                            <td>{{$category->translate('ar')->name}}</td>
+                            <td>{{$category->translate('en')->name}}</td>
+                            <td>{{$category->status === 1 ? 'Shown' : 'Hidden'}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus',[$category->status,'categories',$category->id]) }}" class="btn btn-{{$category->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="الحالة"> {{$category->status == 1 ? 'إبطال' : 'تفعيل'}}</a>
-                                <a href="{{ route('admin.category.edit',$category->id) }}" class="btn btn-success waves-effect" title="تعديل">تعديل</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$category->id}}delete" title="حذف">حذف </button>
+                                <a href="{{ route('admin.changeStatus',[$category->status,'categories',$category->id]) }}" class="btn btn-{{$category->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="Status"> {{$category->status == 1 ? 'Hide' : 'Show'}}</a>
+                                <a href="{{ route('admin.category.edit',$category->id) }}" class="btn btn-success waves-effect" title="Edit">Edit</a>
+                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$category->id}}delete" title="Delete">Delete </button>
                             </td>
                         </tr>
 
@@ -73,13 +71,13 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="icon error animateErrorIcon" style="display: block;"><span class="x-mark animateXMark"><span class="line left"></span><span class="line right"></span></span></div>
-                                        <h4 style="text-align:center;">تأكيد الحذف</h4>
+                                        <h4 style="text-align:center;">Confirm Delete</h4>
                                     </div>
                                     <div class="modal-footer" style="text-align:center">
                                         <form action="{{ route('admin.category.destroy',$category->id) }}" method="POST">
                                             {{csrf_field()}}
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <button class="btn btn-danger" type="submit" dir="ltr">حذف</button>
+                                            <button class="btn btn-danger" type="submit" dir="ltr">Delete</button>
                                         </form>
                                     </div>
                                 </div><!-- /.modal-content -->

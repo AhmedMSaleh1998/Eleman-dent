@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\BaseController;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Services\CategoryService;
 use Auth;
@@ -15,11 +17,11 @@ class CategoryController extends BaseController
         parent::__construct($service);
     }
 
-    public function get($parent_id = null)
+    public function list()
     {
         try {
-            $data = $this->service->getApi($parent_id);
-            return $this->sendResponse($data, 'تم عرض الاقسام بنجاح');
+            $data = $this->service->get();
+            return $this->sendResponse(CategoryResource::collection($data), 'تم عرض الاقسام بنجاح' , 200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }

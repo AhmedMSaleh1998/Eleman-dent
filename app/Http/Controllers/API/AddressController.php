@@ -19,8 +19,8 @@ class AddressController extends BaseController
     public function get()
     {
         try {
-            $data = $this->service->getِApi();
-            return $this->sendResponse($data, 'تم عرض العناوين بنجاح');
+            $data = $this->service->getUserAddresses(getCurrentUser());
+            return $this->sendResponse($data, 'تم عرض العناوين بنجاح' ,200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
@@ -30,7 +30,7 @@ class AddressController extends BaseController
     {
         try {
             $data = $this->service->store($request->all() + ['user_id' => getCurrentUser()]);
-            return $this->sendResponse($data, 'تم !ضافة عنوان بنجاح');
+            return $this->sendResponse($data, 'تم !ضافة عنوان بنجاح' , 200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }

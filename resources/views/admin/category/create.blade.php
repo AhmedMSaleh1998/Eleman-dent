@@ -21,9 +21,9 @@
         @elseif(Session::has('danger'))
         <div class="alert alert-danger">{{ Session::get('danger') }}</div>
         @endif
-        <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
-        <a style="color: #fff;" href="{{ route('admin.category.index') }}">/ قسم / </a>
-        <a style="color: #36404a;"> إضافة </a>
+        <a style="color: #fff;" href="{{ route('admin.home') }}">Home</a>
+        <a style="color: #fff;" href="{{ route('admin.category.index') }}">/ Category / </a>
+        <a style="color: #36404a;"> Add </a>
 
         <ul>
             @foreach ($errors->all() as $error)
@@ -35,7 +35,7 @@
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <h4 class="header-title m-t-0 m-b-20">اضافه قسم</h4>
+            <h4 class="header-title m-t-0 m-b-20">Category Add</h4>
 
             <table class="table table-bordered table-striped">
                 {{Form::open(['method'=>'POST','action' => ['App\Http\Controllers\Admin\CategoryController@store'], 'files' => true])}}
@@ -43,7 +43,7 @@
                 <tbody>
 
                     <tr>
-                        <td>الصورة</td>
+                        <td>image</td>
                         <td>
                             <input type="file" class="filestyle" data-placeholder="No file" data-iconname="fa fa-cloud-upload" name="image" required>
                             @if ($errors->has('image'))
@@ -55,8 +55,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>اسم عربي</td>
-                        <td><input type="text" class="form-control" name="name_ar" required value="{{ old('name_ar') }}"></td>
+                        <td>Name Ar</td>
+                        <td><input type="text" class="form-control" name="name_ar" required></td>
                         @if ($errors->has('name_ar'))
                         <span class="alert alert-danger">
                             <strong>{{ $errors->first('name_ar') }}</strong>
@@ -64,8 +64,8 @@
                         @endif
                     </tr>
                     <tr>
-                        <td>اسم انجليزي</td>
-                        <td><input type="text" class="form-control" name="name_en" required value="{{ old('name_en') }}"></td>
+                        <td>Name En</td>
+                        <td><input type="text" class="form-control" name="name_en" required></td>
                         @if ($errors->has('name_en'))
                         <span class="alert alert-danger">
                             <strong>{{ $errors->first('name_en') }}</strong>
@@ -73,11 +73,110 @@
                         @endif
                     </tr>
                     <tr>
-                        <td>ترتيب الظهور</td>
-                        <td><input type="number" class="form-control" name="order" required value="{{ old('order') }}"></td>
-                        @if ($errors->has('order'))
+                        <td>Title Ar</td>
+                        <td><input type="text" class="form-control" name="title_ar" required></td>
+                        @if ($errors->has('title_ar'))
                         <span class="alert alert-danger">
-                            <strong>{{ $errors->first('order') }}</strong>
+                            <strong>{{ $errors->first('title_ar') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>Title En</td>
+                        <td><input type="text" class="form-control" name="title_en" required></td>
+                        @if ($errors->has('title_en'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('title_en') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>Alt Ar</td>
+                        <td><input type="text" class="form-control" name="alt_ar" required></td>
+                        @if ($errors->has('alt_ar'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('alt_ar') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>Alt En</td>
+                        <td><input type="text" class="form-control" name="alt_en" required></td>
+                        @if ($errors->has('alt_en'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('alt_en') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>Description Ar</td>
+                        <td><input type="text" class="form-control" name="description_ar" required></td>
+                        @if ($errors->has('description_ar'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('description_ar') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>Description Ar</td>
+                        <td><input type="text" class="form-control" name="description_en" required></td>
+                        @if ($errors->has('description_en'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('description_en') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>Description Meta Ar</td>
+                        <td><input type="text" class="form-control" name="description_meta_ar" required></td>
+                        @if ($errors->has('description_meta_ar'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('description_meta_ar') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>Description Meta En</td>
+                        <td><input type="text" class="form-control" name="description_meta_en" required></td>
+                        @if ($errors->has('description_meta_en'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('description_meta_en') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>keywords Ar</td>
+                        <td><input type="text" class="form-control" name="keywords_ar" required></td>
+                        @if ($errors->has('keywords_ar'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('keywords_ar') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>keywords En</td>
+                        <td><input type="text" class="form-control" name="keywords_en" required></td>
+                        @if ($errors->has('keywords_en'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('keywords_en') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>keywords_meta_ar</td>
+                        <td><input type="text" class="form-control" name="keywords_meta_ar" required></td>
+                        @if ($errors->has('keywords_meta_ar'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('keywords_meta_ar') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>keywords_meta_en</td>
+                        <td><input type="text" class="form-control" name="keywords_meta_en" required></td>
+                        @if ($errors->has('keywords_meta_en'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('keywords_meta_en') }}</strong>
                         </span>
                         @endif
                     </tr>

@@ -61,7 +61,7 @@
                     <a href="{{ route('admin.home') }}" class="logo" dir="rtl">
                         <i class="icon-c-logo"></i>
                         <span>
-                            لوحة تحكم Lutas
+                            Eleman Dashboard
                         </span>
                     </a>
 
@@ -173,7 +173,7 @@
 
             <footer class="footer text-right">
 
-                <a href="http://otextech.net/" target="_blank"> Otex </a> &copy; 2023 All rights reserved.
+                <a href="https://www.linkedin.com/in/ahmed-saleh-50b36b225/" target="_blank"> Ahmed Saleh Web Developer</a> &copy; <?php echo now()->year; ?> All rights reserved.
 
             </footer>
 
@@ -197,25 +197,25 @@
 
                     <ul>
 
-                        <li><a href="{{ route('admin.home') }}" class="waves-effect"><i class="ti-home"></i> <span>الرئيسية </span></a></li>
-                        <li><a href="{{ route('admin.category.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الأقسام </span></a></li>
-                        <li><a href="{{ route('admin.district.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> المناطق </span></a></li>
-                        <li><a href="{{ route('admin.color.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الألوان </span></a></li>
-                        <li><a href="{{ route('admin.type.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الأنواع </span></a></li>
-                        <li><a href="{{ route('admin.product.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> المنتجات </span></a></li>
-                        <li><a href="{{ route('admin.order.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الأوردرات </span></a></li>
-                        <li><a href="{{ route('admin.user.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> المستخدمين </span></a></li>
-                        <li><a href="{{ route('admin.slider.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الاسليدر </span></a></li>
-                        <li><a href="{{ route('admin.about.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> من نحن </span></a></li>
-                        <li><a href="{{ route('admin.setting.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الإعدادت </span></a></li>
-                        <li><a href="{{ route('admin.coupon.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الكوبونات </span></a></li>
-                        <li><a href="{{ route('admin.paymentmethod.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> طرق الدفع </span></a></li>
-                        <li><a href="{{ route('admin.delivertime.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> أوقات التوصيل </span></a></li>
-                        <li><a href="{{ route('admin.smsreminder.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> تذكيرات الرسائل </span></a></li>
-                        <li><a href="{{ route('admin.contact.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> طلبات تواصل </span></a></li>
+                        <li><a href="{{ route('admin.home') }}" class="waves-effect"><i class="ti-home"></i> <span>Home </span></a></li>
+                        <li><a href="{{ route('admin.category.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Categories </span></a></li>
+                        <li><a href="{{ route('admin.city.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Cities </span></a></li>
+                        <!-- <li><a href="{{ route('admin.color.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الألوان </span></a></li> -->
+                        <!-- <li><a href="{{ route('admin.type.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الأنواع </span></a></li> -->
+                        <li><a href="{{ route('admin.product.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Products </span></a></li>
+                        <li><a href="{{ route('admin.order.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Orders </span></a></li>
+                        <li><a href="{{ route('admin.user.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Users </span></a></li>
+                        <li><a href="{{ route('admin.slider.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Slider </span></a></li>
+                        <!-- <li><a href="{{ route('admin.about.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> من نحن </span></a></li> -->
+                        <li><a href="{{ route('admin.setting.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Setting </span></a></li>
+                        <!-- <li><a href="{{ route('admin.coupon.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الكوبونات </span></a></li> -->
+                        <li><a href="{{ route('admin.paymentmethod.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Payment Method </span></a></li>
+                        <!-- <li><a href="{{ route('admin.delivertime.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> أوقات التوصيل </span></a></li> -->
+                        <!-- <li><a href="{{ route('admin.smsreminder.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> تذكيرات الرسائل </span></a></li> -->
+                        <li><a href="{{ route('admin.contact.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Contacts </span></a></li>
                         <li class="has_sub">
                             <a href="javascript:void(0);" class="waves-effect"><i class=" dripicons-view-list"></i>
-                                <span> المسئوليين و الادوار </span> <span class="menu-arrow"></span></a>
+                                <span> Admins and roles </span> <span class="menu-arrow"></span></a>
                             <ul class="list-unstyled">
                                 <li><a href="{{ route('admin.category.index') }}" class="waves-effect"><span> الادوار </span></a></li>
                                 <li><a href="{{ route('admin.category.index') }}" class="waves-effect"> <span>المسئوليين </span></a></li>

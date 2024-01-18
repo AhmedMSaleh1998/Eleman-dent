@@ -3,41 +3,28 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
-class Product extends Model
+use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
+use Astrotomic\Translatable\Translatable;
+class Product extends Model 
 {
-
+    use Translatable;
     protected $table = 'products';
     public $timestamps = true;
-    protected $fillable = array('name_ar', 'name_en', 'category_id', 'description_ar', 'description_en', 'image', 'sku', 'status', 'popular');
+    protected $fillable = array('price', 'image', 'quantity', 'status');
+
+    public function brand()
+    {
+        return $this->belongsTo('App\Models\Brand');
+    }
 
     public function category()
     {
         return $this->belongsTo('App\Models\Category');
     }
 
-    public function images()
+    public function productImage()
     {
         return $this->hasMany('App\Models\ProductImage');
     }
 
-    public function sizes()
-    {
-        return $this->hasMany('App\Models\Productsize');
-    }
-
-    public function colors()
-    {
-        return $this->belongsToMany(Color::class);
-    }
-
-    public function types()
-    {
-        return $this->belongsToMany(type::class);
-    }
-
-    public function related()
-    {
-        return $this->belongsToMany(Product::class, 'related_products', 'product_id', 'related_id');
-    }
 }

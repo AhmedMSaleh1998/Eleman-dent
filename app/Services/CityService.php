@@ -14,10 +14,9 @@ class CityService extends BaseService
 
   private $districtRepository;
 
-  public function __construct(CityRepository $repository, DistrictRepository $districtRepository, Request $request)
+  public function __construct(CityRepository $repository, Request $request)
   {
     parent::__construct($repository, $request);
-    $this->districtRepository  = $districtRepository;
     $this->with = [
       'districts'
     ];

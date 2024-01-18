@@ -24,14 +24,12 @@ class AddressRequest extends FormRequest
     public function rules()
     {
         return [
-            'district_id' => 'required|exists:districts,id',
+            'city_id' => 'required|exists:cities,id',
             'street' => 'required',
             'building' => 'required',
             'floor' => 'required',
             'apartment' => 'required',
             'phone' => 'nullable',
-            'long' => 'nullable',
-            'lat' => 'nullable',
             'user_id' => 'required',
         ];
     }

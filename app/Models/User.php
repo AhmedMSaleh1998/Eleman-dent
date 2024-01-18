@@ -18,12 +18,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+	'first_name', 
+	'last_name',
         'email',
         'password',
         'phone',
+	'city_id',
         'status',
         'code',
+	'image',
         'api_token',
     ];
 
@@ -47,23 +50,23 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function city()
+    {
+        return $this->belongsTo('App\Models\City');
+    }
+
     public function orders()
     {
-        return $this->hasMany('App\Models\Order');
+        return $this->hasMany('App\Models\User');
     }
 
-    public function addresses()
-    {
-        return $this->hasMany('App\Models\Address');
-    }
-
-    public function cartItems()
+    public function cartitems()
     {
         return $this->hasMany('App\Models\CartItem');
     }
 
-    public function coupons()
+    public function addresses()
     {
-        return $this->hasMany('App\Models\CouponUser');
+        return $this->hasMany('App\Models\UserAddress');
     }
 }

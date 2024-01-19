@@ -10,7 +10,8 @@ class Product extends Model
     use Translatable;
     protected $table = 'products';
     public $timestamps = true;
-    protected $fillable = array('price', 'image', 'quantity', 'status');
+    protected $fillable = array('price', 'image', 'quantity', 'status','category_id','brand_id');
+    public $translatedAttributes = ['name','alt', 'keywords', 'keywords_meta', 'title', 'description', 'description_meta'];
 
     public function brand()
     {

@@ -198,6 +198,7 @@
                     <ul>
 
                         <li><a href="{{ route('admin.home') }}" class="waves-effect"><i class="ti-home"></i> <span>Home </span></a></li>
+                        <li><a href="{{ route('admin.brand.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Brands </span></a></li>
                         <li><a href="{{ route('admin.category.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Categories </span></a></li>
                         <li><a href="{{ route('admin.city.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Cities </span></a></li>
                         <!-- <li><a href="{{ route('admin.color.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الألوان </span></a></li> -->

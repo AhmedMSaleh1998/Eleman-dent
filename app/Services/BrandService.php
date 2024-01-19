@@ -3,15 +3,14 @@
 
 namespace App\Services;
 
-use App\Http\Resources\CategoryResource;
-use App\Models\Category;
-use App\Repositories\CategoryRepository;
+use App\Models\Brand;
+use App\Repositories\BrandRepository;
 use Illuminate\Http\Request;
 
-class CategoryService extends BaseService
+class BrandService extends BaseService
 {
 
-    public function __construct(CategoryRepository $repository, Request $request)
+    public function __construct(BrandRepository $repository, Request $request)
     {
         parent::__construct($repository, $request);
     }
@@ -19,8 +18,8 @@ class CategoryService extends BaseService
     public function store($request)
     {
         $input = $request->validated();
-        $input['image'] = uploadImage($input['image'], 'categories');
-        Category::create([
+        $input['image'] = uploadImage($input['image'], 'brands');
+        Brand::create([
             'image' => $input['image'],
             'en' => [
                 'name' => $input['name_en'],
@@ -47,12 +46,12 @@ class CategoryService extends BaseService
 
     public function update($request, $id)
     {
-        $category = $this->show($id);
+        $brand = $this->show($id);
 
         if ($request->hasFile('image')) {
-            $image = uploadImage($request['image'], 'categories', 'categories', $id);
+            $image = uploadImage($request['image'], 'brands', 'brand', $id);
         }
-        $category->update([
+        $brand->update([
             'image' => $image,
             'en' => [
                 'name' => $request['name_en'],

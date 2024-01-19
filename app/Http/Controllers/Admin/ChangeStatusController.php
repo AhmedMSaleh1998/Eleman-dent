@@ -12,6 +12,6 @@ class ChangeStatusController extends Controller
     {
         $status == 0 ? $status = 1 : $status = 0;
         DB::table($db)->where('id', $id)->update(['status' => $status]);
-        return redirect()->back()->with(['success' => 'تم تعديل الحالة بنجاح ']);
+        return redirect()->back()->with(['success' => 'Status changed successfully']);
     }
 }

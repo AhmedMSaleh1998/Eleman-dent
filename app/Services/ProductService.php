@@ -14,24 +14,22 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\RelatedProductsResource;
+use App\Models\Product;
+use App\Repositories\BrandRepository;
 use App\Repositories\FavouriteRepository;
 use Symfony\Component\Mime\Part\Multipart\RelatedPart;
 
 class ProductService extends BaseService
 {
     private $categoryRepository;
-    private $ProductSizeRepository;
-    private $colorRepository;
-    private $typeRepository;
-    private $sizeRepository;
+    private $brandRepository;
 
-    public function __construct(ProductRepository $repository, CategoryRepository $categoryRepository, ProductSizeRepository $ProductSizeRepository, ColorRepository $colorRepository, TypeRepository $typeRepository, Request $request)
+    public function __construct(ProductRepository $repository, CategoryRepository $categoryRepository, BrandRepository $brandRepository, Request $request)
     {
         parent::__construct($repository, $request);
         $this->categoryRepository       = $categoryRepository;
-        $this->ProductSizeRepository    = $ProductSizeRepository;
-        $this->colorRepository          = $colorRepository;
-        $this->typeRepository          = $typeRepository;
+        $this->brandRepository    = $brandRepository;
+
 
         /* $this->with = [
             'productImages',
@@ -68,10 +66,10 @@ class ProductService extends BaseService
                 $data = $data->where('model_id', $input['filter']['model_id']);
             }
 
-            if (isset($input['filter']['size_id'])) {
-                $products = $this->ProductSizeRepository->where('size_id', $input['filter']['size_id'])->pluck('product_id');
-                $data = $data->whereIn('id', $products);
-            }
+            // if (isset($input['filter']['size_id'])) {
+            //     $products = $this->ProductSizeRepository->where('size_id', $input['filter']['size_id'])->pluck('product_id');
+            //     $data = $data->whereIn('id', $products);
+            // }
 
             if (isset($input['filter']['min_price']) && isset($input['filter']['max_price'])) {
 
@@ -86,9 +84,7 @@ class ProductService extends BaseService
     {
         return [
             'categories' => $this->categoryRepository->getActiveItems(),
-            'colors'     => $this->colorRepository->getActiveItems(),
-            'types'      => $this->typeRepository->getActiveItems(),
-            'related'    => $this->repository->getActiveItems(),
+            'brands'     => $this->brandRepository->getActiveItems(),
         ];
     }
 
@@ -98,16 +94,33 @@ class ProductService extends BaseService
 
         $record['image'] = uploadImage($record['image'], 'products');
 
-        $product = $this->repository->create($record);
-        if ($request->has('color_id')) {
-            $product->colors()->attach($record['color_id']);
-        }
-        if ($request->has('type_id')) {
-            $product->types()->attach($record['type_id']);
-        }
-        if ($request->has('related_id')) {
-            $product->related()->attach($record['related_id']);
-        }
+        $product = Product::create([
+            'image' => $record['image'],
+            'price' => $record['price'],
+            'quantity' => $record['quantity'],
+            'brand_id' => $record['brand_id'] ?? null,
+            'category_id' => $record['category_id'],
+            'en' => [
+                'name' => $record['name_en'],
+                'title' => $record['title_en'],
+                'alt' => $record['alt_en'],
+                'description' => $record['description_en'],
+                'description_meta' => $record['description_meta_en'],
+                'keywords_meta' => $record['keywords_meta_en'],
+                'keywords' => $record['keywords_en'],
+
+            ],
+            'ar' => [
+                'name' => $record['name_ar'],
+                'title' => $record['title_ar'],
+                'alt' => $record['alt_ar'],
+                'description' => $record['description_ar'],
+                'description_meta' => $record['description_meta_ar'],
+                'keywords_meta' => $record['keywords_meta_ar'],
+                'keywords' => $record['keywords_ar'],
+            ],
+        ]);
+
         return $record;
     }
 
@@ -115,21 +128,36 @@ class ProductService extends BaseService
     {
         $product = $this->show($id);
 
-        $record = $request->validated();
-        //dd($record);
-        unset($record['color_id']);
-        unset($record['type_id']);
-        unset($record['related_id']);
-
         if ($request->hasFile('image')) {
-            $record['image'] = uploadImage($request['image'], 'products', 'products', $id);
+            $image = uploadImage($request['image'], 'products', 'products', $id);
         }
 
-        $product = parent::update($id, $record);
+        $product->update([
+            'image' => $image,
+            'price' => $request['price'],
+            'quantity' => $request['quantity'],
+            'brand_id' => $request['brand_id'],
+            'category_id' => $request['category_id'],
+            'en' => [
+                'name' => $request['name_en'],
+                'title' => $request['title_en'],
+                'alt' => $request['alt_en'],
+                'description' => $request['description_en'],
+                'description_meta' => $request['description_meta_en'],
+                'keywords_meta' => $request['keywords_meta_en'],
+                'keywords' => $request['keywords_en'],
 
-        $product->colors()->sync($request->color_id);
-        $product->types()->sync($request->type_id);
-        $product->related()->sync($request->related_id);
+            ],
+            'ar' => [
+                'name' => $request['name_ar'],
+                'title' => $request['title_ar'],
+                'alt' => $request['alt_ar'],
+                'description' => $request['description_ar'],
+                'description_meta' => $request['description_meta_ar'],
+                'keywords_meta' => $request['keywords_meta_ar'],
+                'keywords' => $request['keywords_ar'],
+            ],
+        ]);
         return $product;
     }
 
@@ -143,10 +171,10 @@ class ProductService extends BaseService
         $related = $this->repository->get()->where('category_id', $category_id);
     }
 
-    public function productRate($request)
-    {
-        return $this->productRateRepository->create($request);
-    }
+    // public function productRate($request)
+    // {
+    //     return $this->productRateRepository->create($request);
+    // }
 
     public function relatedProducts($product_id)
     {
@@ -176,11 +204,11 @@ class ProductService extends BaseService
     {
         $data = [];
 
-        $data['color'] = $this->colorRepository->get();
-        $data['material'] = $this->MaterialRepository->get();
-        $data['model'] = $this->modelRepository->get();
-        $data['sole'] = $this->soleRepository->get();
-        $data['size'] = $this->sizeRepository->get();
+        // $data['color'] = $this->colorRepository->get();
+        // $data['material'] = $this->MaterialRepository->get();
+        // $data['model'] = $this->modelRepository->get();
+        // $data['sole'] = $this->soleRepository->get();
+        // $data['size'] = $this->sizeRepository->get();
         $data['price']['min'] = $this->repository->min('discount_price');
         $data['price']['max'] = $this->repository->max('discount_price');
 

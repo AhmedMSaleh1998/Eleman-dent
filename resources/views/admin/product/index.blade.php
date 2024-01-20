@@ -80,7 +80,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="icon error animateErrorIcon" style="display: block;"><span class="x-mark animateXMark"><span class="line left"></span><span class="line right"></span></span></div>
-                                        <h4 style="text-align:center;">Confirm </h4>
+                                        <h4 style="text-align:center;">Confirm to  delete this product </h4>
                                     </div>
                                     <div class="modal-footer" style="text-align:center">
                                         <form action="{{ route('admin.product.destroy',$product->id) }}" method="POST">

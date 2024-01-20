@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\Slider;
+use App\Models\Banner;
 use Illuminate\Container\Container as App;
 //use Your Model
 
-class SliderRepository extends BaseRepository
+class BannerRepository extends BaseRepository
 {
     /**
      * @return string
@@ -14,6 +14,6 @@ class SliderRepository extends BaseRepository
      */
     public function model()
     {
-        return Slider::class;
+        return Banner::class;
     }
 }

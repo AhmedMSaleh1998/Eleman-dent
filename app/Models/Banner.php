@@ -11,5 +11,6 @@ class Banner extends Model
     protected $table = 'banners';
     public $timestamps = true;
     protected $fillable = array('image', 'url', 'status');
+    public $translatedAttributes = ['alt'];
 
 }

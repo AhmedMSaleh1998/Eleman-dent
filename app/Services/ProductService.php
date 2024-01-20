@@ -133,7 +133,7 @@ class ProductService extends BaseService
         }
 
         $product->update([
-            'image' => $image,
+            'image' => $image ?? $product->image,
             'price' => $request['price'],
             'quantity' => $request['quantity'],
             'brand_id' => $request['brand_id'],

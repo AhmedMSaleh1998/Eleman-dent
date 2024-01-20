@@ -53,7 +53,7 @@ class CategoryService extends BaseService
             $image = uploadImage($request['image'], 'categories', 'categories', $id);
         }
         $category->update([
-            'image' => $image,
+            'image' => $image ?? $category->image,
             'en' => [
                 'name' => $request['name_en'],
                 'title' => $request['title_en'],

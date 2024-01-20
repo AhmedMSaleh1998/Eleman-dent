@@ -8,15 +8,16 @@
 @section('content')
 
 <!-- Page-Title -->
+@if (Session::has('success'))
+            <div class="alert alert-success text-center">{{ Session::get('success') }}</div>
+            @elseif(Session::has('danger'))
+            <div class="alert alert-danger text-center">{{ Session::get('danger') }}</div>
+            @endif
 <div class="row">
     <div class="col-sm-12">
         <div class="main-title-00">
-            @if (Session::has('success'))
-            <div class="alert alert-success">{{ Session::get('success') }}</div>
-            @elseif(Session::has('danger'))
-            <div class="alert alert-danger">{{ Session::get('danger') }}</div>
-            @endif
-            <h4 class="page-title">Products</h4>
+            
+            <h4 class="page-title">Brands</h4>
         </div>
 
     </div>
@@ -30,7 +31,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.product.create') }}" class="btn btn-default waves-effect">+ Add Product</a>
+                        <a href="{{ route('admin.brand.create') }}" class="btn btn-default waves-effect">Add brand  +</a>
                     </div>
                 </div>
             </div>
@@ -40,39 +41,30 @@
 
                     <thead>
                         <tr>
-                            <th data-field="Id" data-align="center">Id</th>
                             <th data-field="Image" data-align="center">Image</th>
-                            <th data-field="Product Name" data-align="center"> Product Name</th>
-                            <th data-field="Category" data-align="center">Category</th>
-                            <th data-field="Price" data-align="center">Price</th>
-                            <th data-field="Quantity" data-align="center">Quantity</th>
+                            <th data-field="Name Arabic" data-align="center">Name Arabic</th>
+                            <th data-field="Name English" data-align="center">Name English</th>
                             <th data-field="Status" data-align="center">Status</th>
                             <th data-field="Control" data-align="center">Control</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if(isset($products))
-                        @foreach($products as $product)
+                        @if(isset($brands))
+                        @foreach($brands as $brand)
                         <tr>
-                            <td>{{$product->id}}</td>
-                            <td><img src="{{asset('admin_assets/images/products/'.$product->image)}}" class="img-responsive" width="100px" height="100px"></td>
-                            <td>{{$product->translate('ar')->name}}</td>
-                            <td>{{ $product->category->translate('ar')->name }}</td>
-                            <td>{{$product->price}}</td>
-                            <td>{{$product->quantity}}</td>
-                            <td>{{$product->status === 1 ? 'Active' : 'Inactive'}}</td>
+                            <td><img src="{{asset('admin_assets/images/brands/'.$brand->image)}}" class="img-responsive" width="100px" height="100px"></td>
+                            <td>{{$brand->translate('ar')->name}}</td>
+                            <td>{{$brand->translate('en')->name}}</td>
+                            <td>{{$brand->status === 1 ? 'Shown' : 'Hidden'}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus',[$product->status,'products',$product->id]) }}" class="btn btn-{{$product->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="Status"> {{$product->status == 1 ? 'Hide' : 'Show'}}</a>
-                                <a href="{{ route('admin.product.edit',$product->id) }}" class="btn btn-success waves-effect" title="Edit">Edit</a>
-                                <a href="{{ route('admin.product.show',$product->id) }}" class="btn btn-inverse waves-effect" title="Show">Show</a>
-                                <a href="{{ route('admin.productimage.index',$product->id) }}" class="btn btn-dark waves-effect" title="Product Images">Images </a>
-                                {{-- <a href="{{ route('admin.productsize.index',$product->id) }}" class="btn btn-primary waves-effect" title="مقاسات المنتج">مقاسات المنتج</a> --}}
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$product->id}}delete" title="Delete">Delete </button>
+                                <a href="{{ route('admin.changeStatus',[$brand->status,'brand',$brand->id]) }}" class="btn btn-{{$brand->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="Status"> {{$brand->status == 1 ? 'Hide' : 'Show'}}</a>
+                                <a href="{{ route('admin.brand.edit',$brand->id) }}" class="btn btn-success waves-effect" title="Edit">Edit</a>
+                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$brand->id}}delete" title="Delete">Delete </button>
                             </td>
                         </tr>
 
-                        <div id="{{$product->id}}delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
+                        <div id="{{$brand->id}}delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
                             <div class="modal-dialog" style="width:55%;">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -80,10 +72,10 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="icon error animateErrorIcon" style="display: block;"><span class="x-mark animateXMark"><span class="line left"></span><span class="line right"></span></span></div>
-                                        <h4 style="text-align:center;">Confirm </h4>
+                                        <h4 style="text-align:center;">Confirm delete this brand</h4>
                                     </div>
                                     <div class="modal-footer" style="text-align:center">
-                                        <form action="{{ route('admin.product.destroy',$product->id) }}" method="POST">
+                                        <form action="{{ route('admin.brand.destroy',$brand->id) }}" method="POST">
                                             {{csrf_field()}}
                                             <input name="_method" type="hidden" value="DELETE">
                                             <button class="btn btn-danger" type="submit" dir="ltr">Delete</button>
@@ -92,7 +84,6 @@
                                 </div><!-- /.modal-content -->
                             </div><!-- /.modal-dialog -->
                         </div><!-- /.modal -->
-
                         @endforeach
                         @endif
                     </tbody>

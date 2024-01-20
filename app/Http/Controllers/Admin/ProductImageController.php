@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\ProductImageRequest;
+use App\Http\Requests\UpdateProductImageRequest;
 use App\Services\ProductImageService;
 
 class ProductImageController extends BaseController
@@ -44,7 +45,7 @@ class ProductImageController extends BaseController
         /* $productImage = $request->validated();
         $productImage['image'] = uploadImage($productImage['image'], 'products'); */
         $this->service->store($request);
-        return redirect()->back();
+        return redirect()->back()->with(['success' => 'Product Image added successfully']);
     }
 
     /**
@@ -78,12 +79,12 @@ class ProductImageController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductImageRequest $request, $id)
+    public function update(UpdateProductImageRequest $request, $id)
     {
         /* $product = $request->validated();
         $product['image'] = uploadImage($product['image'], 'products', 'product_images', $id); */
         $this->service->update($request, $id);
-        return redirect()->back();
+        return redirect()->back()->with(['success' => 'Product Image updated successfully']);
     }
 
     /**
@@ -95,6 +96,6 @@ class ProductImageController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect()->back();
+        return redirect()->back()->with(['success' => 'Product Image deleted successfully']);
     }
 }

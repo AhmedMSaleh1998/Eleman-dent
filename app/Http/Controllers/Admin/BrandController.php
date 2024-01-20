@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Requests\CategoryRequest;
-use App\Models\Category;
-use App\Services\CategoryService;
+use App\Http\Requests\BrandRequest;
+use App\Services\BrandService;
 
-class CategoryController extends BaseController
+class BrandController extends BaseController
 {
-    public function __construct(CategoryService $service)
+    public function __construct(BrandService $service)
     {
         parent::__construct($service);
     }
@@ -21,8 +20,8 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $categories = $this->service->get();
-        return view('admin.category.index', compact('categories'));
+        $brands = $this->service->get();
+        return view('admin.brand.index', compact('brands'));
     }
 
     /**
@@ -32,7 +31,7 @@ class CategoryController extends BaseController
      */
     public function create()
     {
-        return view('admin.category.create');
+        return view('admin.brand.create');
     }
 
     /**
@@ -41,11 +40,11 @@ class CategoryController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryRequest $request)
+    public function store(BrandRequest $request)
     {
         try{
             $this->service->store($request);
-            return redirect()->back()->with(['success' => 'Category added successfully']);
+            return redirect()->back()->with(['success' => 'Brand added successfully']);
         }catch(\Exception $e){
             dd($e);
         }
@@ -60,8 +59,8 @@ class CategoryController extends BaseController
      */
     public function edit($id)
     {
-        $category = $this->service->show($id);
-        return view('admin.category.edit', compact('category'));
+        $brand = $this->service->show($id);
+        return view('admin.brand.edit', compact('brand'));
     }
 
     /**
@@ -71,11 +70,11 @@ class CategoryController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $request, $id)
+    public function update(BrandRequest $request, $id)
     {
 
         $this->service->update($request, $id);
-        return redirect()->back()->with(['success' => 'Category updated successfully ']);
+        return redirect()->back()->with(['success' => 'Brand updated successfully ']);
     }
 
     /**
@@ -87,6 +86,6 @@ class CategoryController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.category.index'))->with(['success' => ' Category deleted successfully']);
+        return redirect(route('admin.brand.index'))->with(['success' => 'Brand deleted successfully']);
     }
 }

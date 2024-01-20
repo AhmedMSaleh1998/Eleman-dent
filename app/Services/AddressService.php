@@ -23,8 +23,7 @@ class AddressService extends BaseService
 
     public function getUserAddresses($user_id)
     {
-        $data = $this->repository->where('user_id', $user_id)->where('status','1')->get();
-        dd($data);
+        $data = $this->repository->where('user_id', $user_id)->get();
         return $data;
     }
 

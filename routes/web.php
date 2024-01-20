@@ -96,3 +96,6 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
 });
 
 Auth::routes();
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('admin.home');

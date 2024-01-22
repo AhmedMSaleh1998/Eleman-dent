@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
     Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
-        Route::resource('slider', 'SliderController');
+        Route::resource('banner', 'BannerController');
         Route::resource('brand', 'BrandController');
         Route::resource('category', 'CategoryController');
         Route::resource('product', 'ProductController');

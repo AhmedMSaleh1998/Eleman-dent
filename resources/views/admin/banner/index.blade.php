@@ -9,15 +9,16 @@
 @section('content')
 
     <!-- Page-Title -->
+    @if (Session::has('success'))
+        <div class="alert alert-success text-center">{{ Session::get('success') }}</div>
+    @elseif(Session::has('danger'))
+        <div class="alert alert-danger text-center">{{ Session::get('danger') }}</div>
+    @endif
     <div class="row">
         <div class="col-sm-12">
             <div class="main-title-00">
-                @if (Session::has('success'))
-                    <div class="alert alert-success">{{ Session::get('success') }}</div>
-                @elseif(Session::has('danger'))
-                    <div class="alert alert-danger">{{ Session::get('danger') }}</div>
-                @endif
-                <h4 class="page-title">السلايدر</h4>
+
+                <h4 class="page-title">Banners</h4>
             </div>
 
         </div>
@@ -31,7 +32,7 @@
                     <div class="col-sm-12">
                         <div class=" main-btn-00">
                             <!-- Responsive modal -->
-                            <a href="{{ route('admin.slider.create') }}" class="btn btn-default waves-effect">اضافه اسليدر
+                            <a href="{{ route('admin.banner.create') }}" class="btn btn-default waves-effect"> Add Banner
                                 +</a>
                         </div>
                     </div>
@@ -44,29 +45,36 @@
 
                         <thead>
                             <tr>
-                                <th data-field="الصورة" data-align="center">الصورة</th>
-                                <th data-field="الحالة" data-align="center">الحالة</th>
-                                <th data-field="التحكم" data-align="center">التحكم</th>
+                                <th data-field="Image" data-align="center">Image</th>
+                                <th data-field="alt_ar" data-align="center">Alt Ar</th>
+                                <th data-field="alt_en" data-align="center">Alt En</th>
+                                <th data-field="Url" data-align="center">Url</th>
+                                <th data-field="Status" data-align="center">Status</th>
+                                <th data-field="Control" data-align="center">Control</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (isset($sliders))
-                                @foreach ($sliders as $slider)
+                            @if (isset($banners))
+                                @foreach ($banners as $banner)
                                     <tr>
-                                        <td><img src="{{ asset('admin_assets/images/sliders/' . $slider->image) }}"
+                                        <td><img src="{{ asset('admin_assets/images/banners/' . $banner->image) }}"
                                                 class="img-responsive" width="100px" height="100px"></td>
-                                        <td>{{ $slider->status === 1 ? 'مفعل' : 'غير مفعل' }}</td>
-
+                                        <td>{{ $banner->translate('ar')->alt }}</td>
+                                        <td>{{ $banner->translate('ar')->alt }}</td>
+                                        <td>{{ $banner->url }}</td>
+                                        <td>{{ $banner->status === 1 ? 'Active' : ' Inactive' }}</td>
                                         <td class="actions">
-                                            <a href="{{ route('admin.changeStatus',[$slider->status,'sliders',$slider->id]) }}" class="btn btn-{{$slider->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="الحالة"> {{$slider->status == 1 ? 'إبطال' : 'تفعيل'}}</a>
-                                            <a href="{{ route('admin.slider.edit', $slider->id) }}"
-                                                class="btn btn-success waves-effect" title="تعديل">تعديل</a>
+                                            <a href="{{ route('admin.changeStatus', [$banner->status, 'banners', $banner->id]) }}"
+                                                class="btn btn-{{ $banner->status == 1 ? 'secondary' : 'dark' }} waves-effect"
+                                                title="ststus"> {{ $banner->status == 1 ? 'Hide' : 'Show' }}</a>
+                                            <a href="{{ route('admin.banner.edit', $banner->id) }}"
+                                                class="btn btn-success waves-effect" title="Edit">Edit</a>
                                             <button type="button" class="btn btn-danger waves-effect" data-toggle="modal"
-                                                data-target="#{{ $slider->id }}delete" title="حذف">حذف </button>
+                                                data-target="#{{ $banner->id }}delete" title="Delete">Delete </button>
                                         </td>
                                     </tr>
 
-                                    <div id="{{ $slider->id }}delete" class="modal fade" tabindex="-1" role="dialog"
+                                    <div id="{{ $banner->id }}delete" class="modal fade" tabindex="-1" role="dialog"
                                         aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
                                         <div class="modal-dialog" style="width:55%;">
                                             <div class="modal-content">
@@ -78,16 +86,16 @@
                                                     <div class="icon error animateErrorIcon" style="display: block;"><span
                                                             class="x-mark animateXMark"><span class="line left"></span><span
                                                                 class="line right"></span></span></div>
-                                                    <h4 style="text-align:center;">تأكيد الحذف</h4>
+                                                    <h4 style="text-align:center;"> Confirm to delete this banner</h4>
                                                 </div>
                                                 <div class="modal-footer" style="text-align:center">
                                                     <form
-                                                        action="{{ action('App\Http\Controllers\Admin\SliderController@destroy', $slider['id']) }}"
+                                                        action="{{ action('App\Http\Controllers\Admin\BannerController@destroy', $banner['id']) }}"
                                                         method="post">
                                                         {{ csrf_field() }}
                                                         <input name="_method" type="hidden" value="DELETE">
                                                         <button class="btn btn-danger" type="submit"
-                                                            dir="ltr">حذف</button>
+                                                            dir="ltr">Delete</button>
                                                     </form>
                                                 </div>
                                             </div><!-- /.modal-content -->

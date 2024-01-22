@@ -16,16 +16,17 @@
 
 @section('content')
     <!-- Page-Title -->
+    @if (Session::has('success'))
+        <div class="alert alert-success text-center">{{ Session::get('success') }}</div>
+    @elseif(Session::has('danger'))
+        <div class="alert alert-danger text-center">{{ Session::get('danger') }}</div>
+    @endif
     <div class="row">
         <div class="main-title-00">
-            @if (Session::has('success'))
-                <div class="alert alert-success">{{ Session::get('success') }}</div>
-            @elseif(Session::has('danger'))
-                <div class="alert alert-danger">{{ Session::get('danger') }}</div>
-            @endif
-            <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
-            <a style="color: #fff;" href="{{ route('admin.slider.index') }}">/ السلايدر / </a>
-            <a style="color: #36404a;"> إضافة </a>
+
+            <a style="color: #fff;" href="{{ route('admin.home') }}">Home</a>
+            <a style="color: #fff;" href="{{ route('admin.banner.index') }}">/ Banners / </a>
+            <a style="color: #36404a;"> Add </a>
 
             <ul>
                 @foreach ($errors->all() as $error)
@@ -37,14 +38,14 @@
     <div class="row">
         <div class="col-12">
             <div class="card-box">
-                <h4 class="header-title m-t-0 m-b-20">اضافه اسليدر</h4>
-                {{ Form::open(['method' => 'POST', 'action' => ['App\Http\Controllers\Admin\SliderController@store'], 'files' => true]) }}
+                <h4 class="header-title m-t-0 m-b-20"> Add Banner</h4>
+                {{ Form::open(['method' => 'POST', 'action' => ['App\Http\Controllers\Admin\BannerController@store'], 'files' => true]) }}
 
                 <table class="table table-bordered table-striped">
                     <tbody>
 
                         <tr>
-                            <td>الصورة</td>
+                            <td>Image</td>
                             <td>
                                 <input type="file" class="filestyle" data-placeholder="No file"
                                     data-iconname="fa fa-cloud-upload" name="image" required>
@@ -57,49 +58,36 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>اسم عربي</td>
-                            <td><input type="text" class="form-control" name="name_ar" required></td>
-                            @if ($errors->has('name_ar'))
-                            <span class="alert alert-danger">
-                                <strong>{{ $errors->first('name_ar') }}</strong>
-                            </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>اسم انجليزى</td>
-                            <td><input type="text" class="form-control" name="name_en" required></td>
-                            @if ($errors->has('name_en'))
-                            <span class="alert alert-danger">
-                                <strong>{{ $errors->first('name_en') }}</strong>
-                            </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>الوصف عربي</td>
-                            <td>
-                                <textarea id="textarea" maxlength="100" class="form-control" name="description_ar"> {{ old('description_ar') }}</textarea>
-                            </td>
-                            @if ($errors->has('description_ar'))
+                            <td> Alt Ar</td>
+                            <td><input type="text" class="form-control" name="alt_ar" required></td>
+                            @if ($errors->has('alt_ar'))
                                 <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('description_ar') }}</strong>
+                                    <strong>{{ $errors->first('alt_ar') }}</strong>
                                 </span>
                             @endif
                         </tr>
                         <tr>
-                            <td>الوصف انجليزى</td>
-                            <td>
-                                <textarea id="textarea" maxlength="100" class="form-control" name="description_en"> {{ old('description_en') }}</textarea>
-                            </td>
-                            @if ($errors->has('description_en'))
+                            <td>Alt En </td>
+                            <td><input type="text" class="form-control" name="alt_en" required></td>
+                            @if ($errors->has('alt_en'))
                                 <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('description_en') }}</strong>
+                                    <strong>{{ $errors->first('alt_en') }}</strong>
+                                </span>
+                            @endif
+                        </tr>
+                        <tr>
+                            <td> Url </td>
+                            <td><input type="text" class="form-control" name="url" required></td>
+                            @if ($errors->has('url'))
+                                <span class="alert alert-danger">
+                                    <strong>{{ $errors->first('url') }}</strong>
                                 </span>
                             @endif
                         </tr>
                         <tr>
                             <td style="width:25%"></td>
                             <td><button type="submit"
-                                    class="btn btn-default waves-effect waves-light form-control">حفظ</button></td>
+                                    class="btn btn-default waves-effect waves-light form-control">Save</button></td>
                         </tr>
                     </tbody>
                 </table>

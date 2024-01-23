@@ -83,6 +83,16 @@ class CreateForeignKeys extends Migration {
 						->onDelete('cascade')
 						->onUpdate('cascade');
 		});
+		Schema::table('achievement_translations', function(Blueprint $table) {
+			$table->foreign('achievement_id')->references('id')->on('achievements')
+						->onDelete('restrict')
+						->onUpdate('restrict');
+		});
+		Schema::table('event_translations', function(Blueprint $table) {
+			$table->foreign('event_id')->references('id')->on('events')
+						->onDelete('restrict')
+						->onUpdate('restrict');
+		});
 	}
 
 	public function down()
@@ -131,6 +141,12 @@ class CreateForeignKeys extends Migration {
 		});
 		Schema::table('product_images', function(Blueprint $table) {
 			$table->dropForeign('product_images_product_id_foreign');
+		});
+		Schema::table('achievement_translations', function(Blueprint $table) {
+			$table->dropForeign('achievement_translations_achievement_id_foreign');
+		});
+		Schema::table('event_translations', function(Blueprint $table) {
+			$table->dropForeign('event_translations_event_id_foreign');
 		});
 	}
 }

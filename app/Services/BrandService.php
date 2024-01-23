@@ -52,7 +52,7 @@ class BrandService extends BaseService
             $image = uploadImage($request['image'], 'brands', 'brand', $id);
         }
         $brand->update([
-            'image' => $image,
+            'image' => $image ?? $brand->image,
             'en' => [
                 'name' => $request['name_en'],
                 'title' => $request['title_en'],

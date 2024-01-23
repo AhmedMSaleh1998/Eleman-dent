@@ -197,7 +197,7 @@
 
                     <tr>
                         <td style="width:25%"></td>
-                        <td><button type="submit" class="btn btn-default waves-effect waves-light form-control">تعديل</button></td>
+                        <td><button type="submit" class="btn btn-default waves-effect waves-light form-control">Save</button></td>
                     </tr>
                 </tbody>
                 {!! Form::close() !!}

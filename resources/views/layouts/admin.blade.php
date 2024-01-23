@@ -201,6 +201,8 @@
                         <li><a href="{{ route('admin.brand.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Brands </span></a></li>
                         <li><a href="{{ route('admin.category.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Categories </span></a></li>
                         <li><a href="{{ route('admin.city.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Cities </span></a></li>
+                        <li><a href="{{ route('admin.event.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Events </span></a></li>
+                       
                         <!-- <li><a href="{{ route('admin.color.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الألوان </span></a></li> -->
                         <!-- <li><a href="{{ route('admin.type.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الأنواع </span></a></li> -->
                         <li><a href="{{ route('admin.product.index') }}" class="waves-effect"><i class="icon icon-boxes-stacked-regular"></i> <span> Products </span></a></li>

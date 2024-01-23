@@ -17,7 +17,8 @@ class UserResource extends JsonResource
         $original = [
             'id' => $this->id,
             'email' => $this->email,
-            'name' => $this->name,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
             'phone' => $this->phone,
             'code' => $this->code,
             'status' => $this->status,
@@ -25,16 +26,7 @@ class UserResource extends JsonResource
             //'cart_count' => $this->baskets->count() == null ? 0 : $this->baskets->count(),
         ];
         return array_merge($original, [
-            'token' => $this->token,
-        ]);/*
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'phone' => $this->phone,
-            'code' => $this->code,
-            'status' => $this->status,
-            'image' => asset('admin_assets/images/users/' . $this->image),
-            'cart_count' => $this->baskets->count(),
-        ]; */
+            'token' => $this->api_token,
+        ]);
     }
 }

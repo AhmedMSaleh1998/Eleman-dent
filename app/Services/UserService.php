@@ -51,18 +51,9 @@ class UserService extends BaseService
         return $record;
     }
 
-    /* public function deleteUser($id)
+     public function deleteUser()
     {
-        $user = $this->repository->find($id);
-        $user->destroy();
-        // $record = parent::destroy($id);
-        // return true;
-        
-        ->only(
-            'name',
-            'phone',
-            'image',
-        ));
-        
-    } */
+        $user = $this->repository->find(getCurrentUser());
+        $user->delete();
+    } 
 }

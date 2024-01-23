@@ -29,36 +29,24 @@ class ProfileController extends BaseController
     {
         try {
             $user =  $request->validated();
-            if ($request->image != null) {
-                // $base64Image = explode(";base64,", $request->image);
-                // $explodeImage = explode("image/", $base64Image[0]);
-                // $imageType = $explodeImage[1];
-                // $image_base64 = base64_decode($base64Image[1]);
-                $extension = $request->file('image')->getClientOriginalExtension();
-                // dd($extension);
-                $name  = time() . '.' . $extension;
-                $path = public_path('admin_assets/images/users/' . $name);
-                file_put_contents($path, $name);
-                $user['image'] = $name;
-            }
 
-            /* if ($request->hasFile('image')) {
+            if ($request->hasFile('image')) {
                 
                 $user['image'] = uploadImage($user['image'], 'users', 'users', getCurrentUser());
-            } */
+            }
 
             $data = $this->service->updateProfile(getCurrentUser(), $user);
-            return $this->sendResponse($data, 'تم تعديل البروفايل بنجاح' , 200);
+            return $this->sendResponse($data, 'Profile Updated Successfully' , 200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
     }
 
-    public function delete($id)
+    public function delete()
     {
         try {
-            $data = $this->service->deleteUser($id);
-            return $this->sendResponse('تم حذف البروفايل بنجاح');
+            $data = $this->service->deleteUser();
+            return $this->sendResponse($data,'Profile deleted Successfully' , 200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }

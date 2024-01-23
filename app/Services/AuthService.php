@@ -27,11 +27,11 @@ class AuthService extends BaseService
      */
     public function userLogin(Request $request)
     {
+        
         $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
+        if (Auth::guard('api')->attempt($credentials)) {
             // Authentication passed
-            $user = Auth::user();
+            $user = Auth::guard('api')->user();
             if($user->status == 0)
             {
                 throw new Exception('Account is not verified , please verify it then login');

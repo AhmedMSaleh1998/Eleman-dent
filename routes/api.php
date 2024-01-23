@@ -43,6 +43,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\API'], function () {
 
         Route::get('user/profile', 'ProfileController@show');
         Route::post('user/update_profile', 'ProfileController@update');
+        Route::post('user/destroy', 'ProfileController@delete');
 
         Route::get('user/addresses', 'AddressController@get');
         Route::post('user/address/store', 'AddressController@store');

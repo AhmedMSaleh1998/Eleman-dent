@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
-    Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
+Route::group(['namespace' => 'App\Http\Controllers\Admin' , 'middleware' => 'auth:web'], function () {
+    Route::group(['as' => 'admin.'], function () {
         Route::resource('banner', 'BannerController');
         Route::resource('brand', 'BrandController');
         Route::resource('category', 'CategoryController');
@@ -86,16 +86,18 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
          * Change Order Status
          */
         Route::get('order/status/{order_id}/{status}', 'OrderController@updateStatus')->name('order.status');
+        Route::get('home', 'HomeController@index')->name('home');
+
         /**
          * End
          **/
     });
 
-    Route::get('/index', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('admin.home');
+    // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+   
 });
 
 Auth::routes();
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('admin.home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('admin.home');

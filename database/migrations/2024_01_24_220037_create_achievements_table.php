@@ -10,6 +10,7 @@ class CreateAchievementsTable extends Migration {
 		Schema::create('achievements', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
+			$table->bigInteger('value');
 		});
 	}
 

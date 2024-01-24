@@ -42,7 +42,7 @@ class CityController extends BaseController
      */
     public function store(CityRequest $request)
     {
-        $this->service->store($request->validated());
+        $this->service->store($request);
         return redirect()->back()->with(['success' => 'City Added Successfully']);
     }
 
@@ -55,7 +55,7 @@ class CityController extends BaseController
     public function edit($id)
     {
         $city = $this->service->show($id);
-        return view('admin.city.edit', compact('city', 'id'));
+        return view('admin.city.edit', compact('city'));
     }
 
     /**
@@ -67,7 +67,7 @@ class CityController extends BaseController
      */
     public function update(CityRequest $request, $id)
     {
-        $city = $this->service->update($id, $request->validated());
+        $city = $this->service->update($request, $id);
         return redirect()->back()->with(['success' => 'City Edited Successfully']);
     }
 

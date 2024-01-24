@@ -36,7 +36,6 @@
     <div class="col-12">
         <div class="card-box">
             <h4 class="header-title m-t-0 m-b-20">Edit City</h4>
-
             <table class="table table-bordered table-striped">
                 {{ Form::model($city, ['method' => 'PATCH', 'action' => ['App\Http\Controllers\Admin\CityController@update', $city->id], 'files' => true]) }}
                 <tbody>
@@ -55,6 +54,15 @@
                         @if ($errors->has('name_en'))
                         <span class="alert alert-danger">
                             <strong>{{ $errors->first('name_en') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>Shipping Fees </td>
+                        <td><input type="number" class="form-control" name="shipping_fess" required value="{{$city->shipping_fess  }}"></td>
+                        @if ($errors->has('shipping_fess'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('shipping_fess') }}</strong>
                         </span>
                         @endif
                     </tr>

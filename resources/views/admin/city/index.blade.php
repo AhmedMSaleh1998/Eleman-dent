@@ -42,6 +42,7 @@
                         <tr>
                             <th data-field="Name Ar" data-align="center">Name Ar</th>
                             <th data-field="Name En" data-align="center">Name En</th>
+                            <th data-field="Shipping fees" data-align="center">Shipping fees</th>
                             <th data-field="Status" data-align="center">Status</th>
                             <th data-field="Control" data-align="center">Control</th>
                         </tr>
@@ -50,7 +51,9 @@
                         @if(isset($cities))
                         @foreach($cities as $city)
                         <tr>
-                            <td>{{$city->name}}</td>
+                            <td>{{$city->translate('ar')->name}}</td>
+                            <td>{{$city->translate('en')->name}}</td>
+                            <td>{{$city->shipping_fess}}</td>
                             <td>{{$city->status === 1 ? 'Shown' : 'hidden'}}</td>
 
                             <td class="actions">

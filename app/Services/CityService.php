@@ -5,8 +5,8 @@ namespace App\Services;
 
 use App\Http\Resources\CityResource;
 use App\Http\Resources\DistrictResource;
+use App\Models\City;
 use App\Repositories\CityRepository;
-use App\Repositories\DistrictRepository;
 use Illuminate\Http\Request;
 
 class CityService extends BaseService
@@ -17,19 +17,35 @@ class CityService extends BaseService
   public function __construct(CityRepository $repository, Request $request)
   {
     parent::__construct($repository, $request);
-    $this->with = [
-      'districts'
-    ];
+    
   }
-
-  public function getApi($city_id)
-  {
-    if ($city_id) {
-      $data = $this->districtRepository->where('city_id', $city_id)->where('status', '1')->get();
-      return DistrictResource::collection($data);
-    } else {
-      $data = $this->repository->where('status', '1')->get();
-      return CityResource::collection($data);
+  
+  public function store($request)
+    {
+        $input = $request->validated();
+        City::create([
+            'shipping_fess' => $input['shipping_fess'],
+            'en' => [
+                'name' => $input['name_en'],
+            ],
+            'ar' => [
+                'name' => $input['name_ar'],
+            ],
+        ]);
     }
-  }
+
+    public function update($request, $id)
+    {
+        $city = $this->show($id);
+        
+        $city->update([
+          'shipping_fess' => $request['shipping_fess'],
+            'en' => [
+                'name' => $request['name_en'],
+            ],
+            'ar' => [
+                'name' => $request['name_ar'],
+            ],
+        ]);
+    }
 }

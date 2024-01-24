@@ -26,6 +26,7 @@ class CityRequest extends FormRequest
         return [
             'name_ar' => 'required',
             'name_en' => 'required',
+            'shipping_fees' => 'min:0',
         ];
     }
 }

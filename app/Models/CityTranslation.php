@@ -7,9 +7,8 @@ use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
 class CityTranslation extends Model 
 {
-    use Translatable;
+   
     protected $table = 'cities_translations';
     public $timestamps = true;
     protected $fillable = array('city_id', 'name', 'locale');
-
 }

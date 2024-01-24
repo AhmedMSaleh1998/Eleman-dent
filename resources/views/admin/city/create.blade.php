@@ -43,7 +43,7 @@
                 <tbody>
                     <tr>
                         <td>Name Arabic</td>
-                        <td><input type="text" class="form-control" name="name_ar" required value="{{ old('name_ar') }}"></td>
+                        <td><input type="text" class="form-control" name="name_ar" required></td>
                         @if ($errors->has('name_ar'))
                         <span class="alert alert-danger">
                             <strong>{{ $errors->first('name_ar') }}</strong>
@@ -53,10 +53,20 @@
 
                     <tr>
                         <td>Name English</td>
-                        <td><input type="text" class="form-control" name="name_en" required value="{{ old('name_en') }}"></td>
+                        <td><input type="text" class="form-control" name="name_en" required></td>
                         @if ($errors->has('name_en'))
                         <span class="alert alert-danger">
                             <strong>{{ $errors->first('name_en') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+
+                    <tr>
+                        <td>Shipping fees</td>
+                        <td><input type="number" class="form-control" name="shipping_fess" value="0"></td>
+                        @if ($errors->has('shipping_fess'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('shipping_fess') }}</strong>
                         </span>
                         @endif
                     </tr>

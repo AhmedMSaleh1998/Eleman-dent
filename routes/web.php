@@ -21,6 +21,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin' , 'middleware' => 'aut
         Route::resource('category', 'CategoryController');
         Route::resource('product', 'ProductController');
         Route::resource('event', 'EventController');
+        Route::resource('achievement', 'AchievementController');
+
         Route::resource('color', 'ColorController');
         Route::resource('city', 'CityController');
         Route::resource('setting', 'SettingController');

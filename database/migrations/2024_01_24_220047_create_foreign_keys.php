@@ -85,13 +85,13 @@ class CreateForeignKeys extends Migration {
 		});
 		Schema::table('achievement_translations', function(Blueprint $table) {
 			$table->foreign('achievement_id')->references('id')->on('achievements')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('event_translations', function(Blueprint $table) {
 			$table->foreign('event_id')->references('id')->on('events')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 	}
 

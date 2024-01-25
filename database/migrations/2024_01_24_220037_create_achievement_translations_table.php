@@ -12,7 +12,6 @@ class CreateAchievementTranslationsTable extends Migration {
 			$table->timestamps();
 			$table->string('locale');
 			$table->string('name');
-			$table->string('value');
 			$table->integer('achievement_id')->unsigned();
 		});
 	}

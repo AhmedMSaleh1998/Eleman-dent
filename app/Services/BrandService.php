@@ -17,7 +17,7 @@ class BrandService extends BaseService
 
     public function store($request)
     {
-        $input = $request->validated();
+        $input = $request->all();
         $input['image'] = uploadImage($input['image'], 'brands');
         Brand::create([
             'image' => $input['image'],

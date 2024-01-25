@@ -9,6 +9,6 @@ class AchievementTranslation extends Model
 
     protected $table = 'achievement_translations';
     public $timestamps = true;
-    protected $fillable = array('locale', 'name', 'value', 'achievement_id');
+    protected $fillable = array('locale', 'name', 'achievement_id');
 
 }

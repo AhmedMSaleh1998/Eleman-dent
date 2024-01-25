@@ -69,7 +69,7 @@ class AchievementController extends BaseController
      */
     public function update(AchievementRequest $request, $id)
     {
-        $achievement = $this->service->update($id, $request);
+        $achievement = $this->service->update($request,$id);
         return redirect()->back()->with(['success' => 'Achievement Edited Successfully']);
     }
 

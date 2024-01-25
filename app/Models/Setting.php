@@ -11,5 +11,6 @@ class Setting extends Model
     protected $table = 'settings';
     public $timestamps = true;
     protected $fillable = array('email', 'phone', 'whatsapp', 'facebook', 'instagram', 'youtube', 'twitter', 'free_shipping');
+    public $translatedAttributes = ['address','about_us', 'keywords', 'privacy', 'terms'];
 
 }

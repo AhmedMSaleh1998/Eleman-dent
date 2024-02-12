@@ -28,6 +28,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\API'], function () {
     Route::post('changePassword', 'ForgetPasswordController@changePassword');
 
     Route::get('categories', 'CategoryController@list');
+    Route::get('category/show/{id}', 'CategoryController@show');
     Route::get('cities', 'CityController@get');
     Route::get('color', 'ColorController');
     Route::get('size', 'SizeController');

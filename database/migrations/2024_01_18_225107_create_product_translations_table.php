@@ -15,10 +15,10 @@ class CreateProductTranslationsTable extends Migration {
 			$table->string('name')->nullable();
 			$table->string('title')->nullable();
 			$table->string('alt')->nullable();
-			$table->string('description')->nullable();
-			$table->string('description_meta')->nullable();
-			$table->string('keywords')->nullable();
-			$table->string('keywords_meta')->nullable();
+			$table->string('description')->nullable()->length(2500);;
+			$table->string('description_meta')->nullable()->length(2500);;
+			$table->string('keywords')->nullable()->length(2500);;
+			$table->string('keywords_meta')->nullable()->length(2500);;
 		});
 	}
 

@@ -6,6 +6,12 @@ namespace App\Services;
 
 // use App\Http\Resources\CategoryResource;
 
+use App\Http\Resources\ListAchievmentResource;
+use App\Http\Resources\ListBannerResource;
+use App\Http\Resources\ListBrandResource;
+use App\Http\Resources\ListCategoryResource;
+use App\Http\Resources\ListEventResource;
+use App\Http\Resources\ListProductResource;
 use App\Models\Achievement;
 use App\Models\Banner;
 use App\Models\Brand;
@@ -38,12 +44,13 @@ class HomeService extends BaseService
     public function index()
     {
         $data = [];
-        $data['banners'] = Banner::all();
-        $data['categories'] = Category::all();
-        $data['top_products'] = Product::take(10);
-        $data['achievements'] = Achievement::all();
-        $data['brands'] = Brand::all();
-        $data['events'] = Event::all();
+        $data['banners'] = ListBannerResource::collection(Banner::take(4)->get());
+       
+        $data['categories'] = ListCategoryResource::collection(Category::take(12)->get());
+        $data['top_products'] = ListProductResource::collection(Product::take(10)->get());
+        $data['achievements'] = ListAchievmentResource::collection(Achievement::all());
+        $data['brands'] = ListBrandResource::collection(Brand::take(6)->get());
+        $data['events'] = ListEventResource::collection(Event::take(6)->get());
         // $data['categories'] = CategoryResource::collection($this->categoryRepository->getActiveItems());
         // $pagination  = $this->repository->getProductBasedOnCategory($category_id);
         // $pagination->items(RestaurantResource::collection($pagination));

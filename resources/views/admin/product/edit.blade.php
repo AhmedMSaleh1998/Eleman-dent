@@ -254,9 +254,10 @@
                             <td> select Brand</td>
                             <td>
                                 <select name="brand_id" id="brand" class="form-control">
+                                    <option value="" > ..select brand.. </option>
                                     @foreach ($data['brands'] as $brand)
                                         <option value="{{ $brand->id }}"
-                                            {{ $brand->id == $product->$brand->id ? 'selected' : '' }}>
+                                            {{ $brand->id == $product->brand_id ? 'selected' : '' }}>
                                             {{ $brand->translate('ar')->name }}
                                         </option>
                                     @endforeach

@@ -22,9 +22,10 @@ class CityService extends BaseService
   
   public function store($request)
     {
-        $input = $request->validated();
+        $input = $request->all();
+        // dd( $request->all() );
         City::create([
-            'shipping_fess' => $input['shipping_fess'],
+            'shipping_fess' => $input['shipping_fess'] ?? null,
             'en' => [
                 'name' => $input['name_en'],
             ],
@@ -39,7 +40,7 @@ class CityService extends BaseService
         $city = $this->show($id);
         
         $city->update([
-          'shipping_fess' => $request['shipping_fess'],
+          'shipping_fess' => $request['shipping_fess'] ?? null,
             'en' => [
                 'name' => $request['name_en'],
             ],

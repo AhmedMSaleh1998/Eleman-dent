@@ -38,7 +38,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\API'], function () {
 
     Route::get('setting', 'SettingController@index');
     Route::get('about_us', 'AboutController@index');
-
+    Route::get('home', 'HomeController@index');
     Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('user/profile', 'ProfileController@show');

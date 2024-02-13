@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\ProductRateRequest;
+use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
 use Auth;
@@ -21,7 +22,7 @@ class ProductController extends BaseController
     {
         try {
             $data = $this->service->getAllProducts($request);
-            return $this->sendResponse($data, 'تم عرض المنتجات بنجاح');
+            return $this->sendResponse($data, 'تم عرض المنتجات بنجاح' , 200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
@@ -31,7 +32,7 @@ class ProductController extends BaseController
     {
         try {
             $data = $this->service->show($id);
-            return $this->sendResponse($data, 'تم عرض المنتج بنجاح');
+            return $this->sendResponse(new ProductResource($data), 'تم عرض المنتج بنجاح' ,200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }

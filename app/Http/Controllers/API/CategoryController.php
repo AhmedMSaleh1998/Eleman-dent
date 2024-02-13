@@ -32,8 +32,8 @@ class CategoryController extends BaseController
     {
         try {
             // $with = ['products'];
-            // $data = $this->service->show($id ,$with);
-            $data = Category::with('products')->where('id' , $id)->get();
+            $data = $this->service->show($id);
+            // $data = Category::with('products')->where('id' , $id)->get();
 
             // dd($data);
             // $data = Category::first();

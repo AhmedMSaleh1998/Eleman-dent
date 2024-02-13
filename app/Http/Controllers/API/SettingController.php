@@ -20,7 +20,7 @@ class SettingController extends BaseController
     {
         try {
             $data = $this->service->first();
-            return $this->sendResponse($data, 'تم عرض الاعدادات بنجاح');
+            return $this->sendResponse($data, 'تم عرض الاعدادات بنجاح',200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }

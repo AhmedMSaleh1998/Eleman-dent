@@ -28,4 +28,10 @@ class Product extends Model
         return $this->hasMany('App\Models\ProductImage');
     }
 
+    public function all_images()
+    {
+        $images[] = $this->productImage->pluck('image')->prepend($this->image);
+        return $images;
+    }
+
 }

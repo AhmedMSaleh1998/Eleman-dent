@@ -24,24 +24,13 @@ class ProductResource extends JsonResource
             'is_discount' => $this->is_discount,
             'discount_price' => $this->discount_price ?? 0,
             'category' => new CategoryResource($this->category),
-            'material' => new ProductMaterialResource($this->material),
-            'color' => new ProductColorResource($this->color),
-            'model' => new ProductModelResource($this->shoe_model),
-            'sole' => new ProductSoleResource($this->sole),
-            'sizes' => ProductSizesResource::collection($this->sizes),
             //'images' => ProductImagesResource::collection($this->all_images()),
-            'rates' => ProductRatesResource::collection($this->rates),
-            'rate_count' => $this->whenLoaded('rates', function () {
-                return $this->rates->count();
-            }),
-            'rate_avg' => $this->whenLoaded('rates', function () {
-                return $this->rates->avg('rate');
-            }),
-            'related' => RelatedProductsResource::collection($this->related()),
-            'is_favourite' => $this->is_favourite(),
+            // 'related' => RelatedProductsResource::collection($this->related()),
+            // 'is_favourite' => $this->is_favourite(),
             'status' => $this->status,
             'path' => asset('admin_assets/images/products/'),
-            'all_images' => $this->all_images(),
+            'images' => $this->all_images(),
+            // 'all_images' => $this->all_images(),
         ];
     }
 }

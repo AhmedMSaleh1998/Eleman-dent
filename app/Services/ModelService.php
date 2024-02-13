@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class ModelService extends BaseService
 {
 
-    public function __construct(ShoeModelRepository $repository, Request $request)
+    public function __construct(ModelRepository $repository, Request $request)
     {
         parent::__construct($repository, $request);
     }

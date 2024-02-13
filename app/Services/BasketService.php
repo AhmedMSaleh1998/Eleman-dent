@@ -24,7 +24,7 @@ class BasketService extends BaseService
 
     public function getApi()
     {
-        $data = $this->repository->get($this->with)->where('user_id', getCurrentUser())->where('order_id', null);
+        $data = $this->repository->get()->where('user_id', getCurrentUser())->where('order_id', null);
         return BasketResource::collection($data);
     }
 
@@ -40,7 +40,7 @@ class BasketService extends BaseService
 
     public function store($data)
     {
-        $record = $this->repository->where('user_id', $data['user_id'])->where('product_size_id', $data['product_size_id'])->where('color_id', $data['color_id'])->where('order_id', null)->first();
+        $record = $this->repository->where('user_id', $data['user_id'])->where('product_id', $data['product_id'])->where('order_id', null)->first();
 
         if ($record) {
             $record->quantity += $data['quantity'];

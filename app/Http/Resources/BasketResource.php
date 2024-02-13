@@ -21,9 +21,7 @@ class BasketResource extends JsonResource
             'price' => $this->price,
             'quantity' => $this->quantity,
             'total' => $this->price * $this->quantity,
-            'product' => new ProductResource($this->product_size->product),
-            'size' => new SizeResource($this->product_size->size),
-            'color' => new ProductColorResource($this->color),
+            'product' => new ProductResource($this->product),
             'user'    => new UserResource($this->user),
             
         ];

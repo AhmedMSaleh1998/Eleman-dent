@@ -24,7 +24,7 @@ class ContactUsController extends BaseController
     {
         try {
             $data = $this->service->store($request->validated());
-            return $this->sendResponse($data, 'تم التواصل  بنجاح');
+            return $this->sendResponse($data, 'تم التواصل  بنجاح',200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }

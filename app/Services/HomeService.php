@@ -44,19 +44,12 @@ class HomeService extends BaseService
     public function index()
     {
         $data = [];
-        $data['banners'] = ListBannerResource::collection(Banner::take(4)->get());
-       
-        $data['categories'] = ListCategoryResource::collection(Category::take(12)->get());
-        $data['top_products'] = ListProductResource::collection(Product::take(10)->get());
-        $data['achievements'] = ListAchievmentResource::collection(Achievement::all());
-        $data['brands'] = ListBrandResource::collection(Brand::take(6)->get());
-        $data['events'] = ListEventResource::collection(Event::take(6)->get());
-        // $data['categories'] = CategoryResource::collection($this->categoryRepository->getActiveItems());
-        // $pagination  = $this->repository->getProductBasedOnCategory($category_id);
-        // $pagination->items(RestaurantResource::collection($pagination));
-        // $data['restaurants'] =  $pagination;
-        // $offerProducts = $this->getOfferProducts();
-        // $data['offers'] = OfferProductResource::collection($offerProducts);
+        $data['banners'] = ListBannerResource::collection(Banner::all());
+        $data['categories'] = ListCategoryResource::collection(Category::all());
+        $data['top_products'] = ListProductResource::collection(Product::all());
+        $data['achievements'] = ListAchievmentResource::collection(Achievement::take('6')->get());
+        $data['brands'] = ListBrandResource::collection(Brand::all());
+        $data['events'] = ListEventResource::collection(Event::take(3)->get());
         return $data;
     }
 

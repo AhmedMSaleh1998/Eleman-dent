@@ -41,6 +41,7 @@
 
                     <thead>
                         <tr>
+                            <th data-field="Image" data-align="center">Image</th>
                             <th data-field="Name Arabic" data-align="center">Name Arabic</th>
                             <th data-field="Name English" data-align="center">Name English</th>
                             <th data-field="Value" data-align="center">Value</th>
@@ -51,6 +52,8 @@
                         @if(isset($achievements))
                         @foreach($achievements as $achievement)
                         <tr>
+                        <td><img src="{{ asset('admin_assets/images/achievements/' . $achievement->image) }}"
+                                                class="img-responsive" width="100px" height="100px"></td>
                             <td>{{$achievement->translate('ar')->name}}</td>
                             <td>{{$achievement->translate('en')->name}}</td>
                             <td>{{$achievement->value}}</td>

@@ -19,6 +19,7 @@ class SettingService extends BaseService
     {
         Setting::create(
             [
+                'location' => $request['location'],
                 'phone' => $request['phone'],
                 'email' => $request['email'],
                 'whatsapp' => $request['whatsapp'],
@@ -53,6 +54,7 @@ class SettingService extends BaseService
 
         $setting ->update(
             [
+                'location' => $request['location'],
                 'phone' => $request['phone'],
                 'email' => $request['email'],
                 'whatsapp' => $request['whatsapp'],

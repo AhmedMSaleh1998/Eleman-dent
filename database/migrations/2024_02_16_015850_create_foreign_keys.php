@@ -83,15 +83,20 @@ class CreateForeignKeys extends Migration {
 						->onDelete('cascade')
 						->onUpdate('cascade');
 		});
-		Schema::table('achievement_translations', function(Blueprint $table) {
-			$table->foreign('achievement_id')->references('id')->on('achievements')
+		Schema::table('setting_transaltions', function(Blueprint $table) {
+			$table->foreign('setting_id')->references('id')->on('settings')
 						->onDelete('cascade')
 						->onUpdate('cascade');
 		});
+		Schema::table('achievement_translations', function(Blueprint $table) {
+			$table->foreign('achievement_id')->references('id')->on('achievements')
+						->onDelete('restrict')
+						->onUpdate('restrict');
+		});
 		Schema::table('event_translations', function(Blueprint $table) {
 			$table->foreign('event_id')->references('id')->on('events')
-						->onDelete('cascade')
-						->onUpdate('cascade');
+						->onDelete('restrict')
+						->onUpdate('restrict');
 		});
 	}
 
@@ -141,6 +146,9 @@ class CreateForeignKeys extends Migration {
 		});
 		Schema::table('product_images', function(Blueprint $table) {
 			$table->dropForeign('product_images_product_id_foreign');
+		});
+		Schema::table('setting_transaltions', function(Blueprint $table) {
+			$table->dropForeign('setting_transaltions_setting_id_foreign');
 		});
 		Schema::table('achievement_translations', function(Blueprint $table) {
 			$table->dropForeign('achievement_translations_achievement_id_foreign');

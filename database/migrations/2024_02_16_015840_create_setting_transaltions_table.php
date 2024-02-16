@@ -9,8 +9,8 @@ class CreateSettingTransaltionsTable extends Migration {
 	{
 		Schema::create('setting_transaltions', function(Blueprint $table) {
 			$table->increments('id');
-			$table->timestamps();
 			$table->integer('setting_id')->unsigned();
+			$table->timestamps();
 			$table->string('locale')->nullable();
 			$table->string('logo_alt')->nullable();
 			$table->string('about_us')->nullable();

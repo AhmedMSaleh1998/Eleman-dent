@@ -18,7 +18,8 @@ class ListAchievmentResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'value' => $this->value
+            'value' => $this->value,
+            'image' => asset('admin_assets/images/achievements/' . $this->image),
         ];
     }
 }

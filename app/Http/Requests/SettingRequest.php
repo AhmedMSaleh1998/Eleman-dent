@@ -24,6 +24,7 @@ class SettingRequest extends FormRequest
     public function rules()
     {
         return [
+            'location' => 'required',
             'phone' => 'required',
             'email' => 'required|email',
             'address_ar' => 'nullable|string',

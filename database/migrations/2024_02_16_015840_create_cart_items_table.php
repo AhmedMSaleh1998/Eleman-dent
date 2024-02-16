@@ -14,7 +14,7 @@ class CreateCartItemsTable extends Migration {
 			$table->float('price');
 			$table->integer('quantity');
 			$table->integer('user_id')->unsigned();
-			$table->integer('order_id')->unsigned();
+			$table->integer('order_id')->unsigned()->nullable();
 		});
 	}
 

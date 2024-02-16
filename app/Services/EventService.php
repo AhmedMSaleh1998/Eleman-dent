@@ -6,13 +6,45 @@ namespace App\Services;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Repositories\EventRepository;
+use Illuminate\Support\Facades\DB;
 
 class EventService extends BaseService
 {
     public function __construct(EventRepository $repository, Request $request)
     {
         parent::__construct($repository, $request);
-       
+    }
+
+    public function index()
+    {
+        $eventsByYear = Event::selectRaw('YEAR(date) as year')
+            // ->select('date', 'name', 'description') 
+            ->orderBy('year', 'desc')
+            ->get()
+            ->groupBy('year');
+        // $eventsByYear = Event::selectRaw('YEAR(date) as year')
+        // ->select(
+        //     'events.id',
+        //     'events.image', // Include all non-aggregated columns here
+        //     'events.date',
+        //     'event_translations.name as event_name_translation'
+        // )
+        // ->leftJoin('event_translations', 'events.id', '=', 'event_translations.event_id')
+        // // ->groupBy( 'events.image', 'events.date','event_name_translation') // Include all non-aggregated columns here
+        // ->orderBy('events.date', 'desc')
+        // ->get();
+
+        // $eventsByYear = Event::select(
+        //     DB::raw('YEAR(events.event_date) as year'),
+        //     'events.*',
+        //     'event_translations.name as event_name_translation'
+        // )
+        //     ->leftJoin('event_translations', 'events.id', '=', 'event_translations.event_id')
+        //     ->groupBy('year', 'events.id')
+        //     ->orderBy('year', 'desc')
+        //     ->get();
+
+        return $eventsByYear;
     }
 
     public function store($request)
@@ -61,6 +93,4 @@ class EventService extends BaseService
             ],
         ]);
     }
-
-    
 }

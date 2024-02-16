@@ -72,6 +72,10 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\API','middleware'=>['api',
         Route::get('product_favourite/{product_id}', 'ProductController@isFavourite');
 
         Route::post('contact_us', 'ContactUsController@store');
+        Route::get('events', 'EventController@index');
+
+
     });
     Route::get('product_search/{filter}', 'ProductController@search');
+
 });

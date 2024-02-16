@@ -23,7 +23,8 @@ class UserResource extends JsonResource
             'code' => $this->code,
             'status' => $this->status,
             'image' => $this->image == null ? null : asset('admin_assets/images/users/' . $this->image),
-            //'cart_count' => $this->baskets->count() == null ? 0 : $this->baskets->count(),
+            'city' => new CityResource($this->city),
+            //'cart_count' => $this->baskets->count() == null ? 0 : $this->baskets->count(),''
         ];
         return array_merge($original, [
             'token' => $this->api_token,

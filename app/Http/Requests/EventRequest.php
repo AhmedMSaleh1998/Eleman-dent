@@ -31,7 +31,7 @@ class EventRequest extends FormRequest
             'description_en'  => 'required',
             'location_ar'          => 'required|string',
             'location_en'          => 'required|string',
-            'date'             => 'required|date|after:today',
+            'date'             => 'required|date',
 
         ];
     }

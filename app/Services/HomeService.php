@@ -6,6 +6,7 @@ namespace App\Services;
 
 // use App\Http\Resources\CategoryResource;
 
+use App\Http\Resources\CustomerReviewResource;
 use App\Http\Resources\ListAchievmentResource;
 use App\Http\Resources\ListBannerResource;
 use App\Http\Resources\ListBrandResource;
@@ -16,6 +17,7 @@ use App\Models\Achievement;
 use App\Models\Banner;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\CustomerReview;
 use App\Models\Event;
 use App\Models\Product;
 // use App\Repository\CategoryRepository;
@@ -50,6 +52,7 @@ class HomeService extends BaseService
         $data['achievements'] = ListAchievmentResource::collection(Achievement::take('6')->get());
         $data['brands'] = ListBrandResource::collection(Brand::all());
         $data['events'] = ListEventResource::collection(Event::take(3)->get());
+        $data['reviews'] = CustomerReviewResource::collection(CustomerReview::all());
         return $data;
     }
 

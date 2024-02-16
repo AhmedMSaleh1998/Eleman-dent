@@ -40,6 +40,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin' , 'middleware' => 'aut
         Route::resource('type', 'TypeController');
         Route::resource('producttype', 'ProductTypeController');
         Route::resource('delivertime', 'DeliverTimeController');
+        Route::resource('review', 'CustomerReviewController');
         /**
          * Global Status Change
          */

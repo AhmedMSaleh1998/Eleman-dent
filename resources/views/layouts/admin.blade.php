@@ -210,7 +210,7 @@
                         <li><a href="{{ route('admin.user.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Users </span></a></li>
                         <li><a href="{{ route('admin.banner.index') }}" class="waves-effect"><i class="fa fa-image"></i> <span> Banners </span></a></li>
                         <li><a href="{{ route('admin.achievement.index') }}" class="waves-effect"><i class="fa fa-image"></i> <span> Achievements </span></a></li>
-                        <!-- <li><a href="{{ route('admin.about.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> من نحن </span></a></li> -->
+                        <li><a href="{{ route('admin.review.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span>Review</span></a></li>
                         <li><a href="{{ route('admin.setting.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Setting </span></a></li>
                         <!-- <li><a href="{{ route('admin.coupon.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الكوبونات </span></a></li> -->
                         <li><a href="{{ route('admin.paymentmethod.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Payment Method </span></a></li>

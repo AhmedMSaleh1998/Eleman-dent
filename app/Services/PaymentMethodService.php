@@ -19,14 +19,31 @@ class PaymentMethodService extends BaseService
 
     public function store($request)
     {
-        $input = $request->validated();
+        $record = $request->validated();
         Payment::create([
             'en' => [
-                'name' => $input['name_en'],
+                'name' => $record['name_en'],
             ],
             'ar' => [
-                'name' => $input['name_ar'],
+                'name' => $record['name_ar'],
             ],
         ]);
+
+        return $record;
+    }
+
+    public function update($request, $id)
+    {
+        $payment = $this->show($id);
+
+        $payment->update([
+            'en' => [
+                'name' => $request['name_en'],
+            ],
+            'ar' => [
+                'name' => $request['name_ar'],
+            ],
+        ]);
+        return $payment;
     }
 }

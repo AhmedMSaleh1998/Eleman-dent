@@ -41,6 +41,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\API','middleware'=>['api',
     Route::get('about_us', 'AboutController@index');
     Route::get('home', 'HomeController@index');
     Route::get('events', 'EventController@index');
+    Route::get('payment_methods', 'PaymentMethodController@index');
     Route::get('event/{id}', 'EventController@show');
     Route::get('events/{year}', 'EventController@getYearEvents');
     Route::post('contact_us', 'ContactUsController@store');

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\PaymentMethodRequest;
-use App\Models\Payment;
 use App\Services\PaymentMethodService;
 use Illuminate\Http\Request;
 
@@ -23,7 +22,7 @@ class PaymentMethodController extends BaseController
      */
     public function index()
     {
-        $payment_methods = Payment::all();
+        $payment_methods = $this->service->getAll();
         return view('admin.payment_method.index', compact('payment_methods'));
     }
 
@@ -57,7 +56,7 @@ class PaymentMethodController extends BaseController
      */
     public function edit($id)
     {
-        $paymentmethod = Payment::find($id);
+        $paymentmethod = $this->service->show($id);
         return view('admin.payment_method.edit', compact('paymentmethod', 'id'));
     }
 
@@ -70,9 +69,7 @@ class PaymentMethodController extends BaseController
      */
     public function update(PaymentMethodRequest $request, $id)
     {
-        // $paymentmethod = $this->service->update($id, $request->validated());
-        $oldPayment = Payment::find($id);
-        $paymentmethod = $oldPayment->update($request->validated());
+        $category = $this->service->update($request->validated() , $id);
         return redirect()->back()->with(['success' => 'تم تعديل طريقة الدفع بنجاح']);
     }
 
@@ -84,8 +81,7 @@ class PaymentMethodController extends BaseController
      */
     public function destroy($id)
     {
-        $oldPayment = Payment::find($id);
-        $oldPayment->delete($id);
+        $this->service->destroy($id);
         return redirect(route('admin.payment.index'))->with(['success' => 'تم حذف طريقة الدفع بنجاح']);
     }
 }

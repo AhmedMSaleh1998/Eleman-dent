@@ -22,11 +22,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin' , 'middleware' => 'aut
         Route::resource('product', 'ProductController');
         Route::resource('event', 'EventController');
         Route::resource('achievement', 'AchievementController');
-
         Route::resource('color', 'ColorController');
         Route::resource('city', 'CityController');
         Route::resource('setting', 'SettingController');
-        Route::resource('paymentmethod', 'PaymentMethodController');
+        Route::resource('payment', 'PaymentMethodController');
         Route::resource('coupon', 'CouponController');
         Route::resource('contact', 'ContactController');
         Route::resource('about', 'AboutController');

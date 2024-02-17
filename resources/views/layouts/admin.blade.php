@@ -203,7 +203,7 @@
                         <li><a href="{{ route('admin.city.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Cities </span></a></li>
                         <li><a href="{{ route('admin.event.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Events </span></a></li>
                        
-                        <!-- <li><a href="{{ route('admin.color.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الألوان </span></a></li> -->
+                        <li><a href="{{ route('admin.about.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> About Us </span></a></li>
                         <!-- <li><a href="{{ route('admin.type.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الأنواع </span></a></li> -->
                         <li><a href="{{ route('admin.product.index') }}" class="waves-effect"><i class="icon icon-boxes-stacked-regular"></i> <span> Products </span></a></li>
                         <li><a href="{{ route('admin.order.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Orders </span></a></li>
@@ -213,7 +213,7 @@
                         <li><a href="{{ route('admin.review.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span>Review</span></a></li>
                         <li><a href="{{ route('admin.setting.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Setting </span></a></li>
                         <!-- <li><a href="{{ route('admin.coupon.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الكوبونات </span></a></li> -->
-                        <li><a href="{{ route('admin.paymentmethod.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Payment Method </span></a></li>
+                        <li><a href="{{ route('admin.payment.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Payment Method </span></a></li>
                         <!-- <li><a href="{{ route('admin.delivertime.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> أوقات التوصيل </span></a></li> -->
                         <!-- <li><a href="{{ route('admin.smsreminder.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> تذكيرات الرسائل </span></a></li> -->
                         <li><a href="{{ route('admin.contact.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Contacts </span></a></li>

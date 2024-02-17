@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\EventResource;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Repositories\EventRepository;
@@ -17,34 +18,23 @@ class EventService extends BaseService
 
     public function index()
     {
-        $eventsByYear = Event::selectRaw('YEAR(date) as year')
-            // ->select('date', 'name', 'description') 
-            ->orderBy('year', 'desc')
-            ->get()
-            ->groupBy('year');
-        // $eventsByYear = Event::selectRaw('YEAR(date) as year')
-        // ->select(
-        //     'events.id',
-        //     'events.image', // Include all non-aggregated columns here
-        //     'events.date',
-        //     'event_translations.name as event_name_translation'
-        // )
-        // ->leftJoin('event_translations', 'events.id', '=', 'event_translations.event_id')
-        // // ->groupBy( 'events.image', 'events.date','event_name_translation') // Include all non-aggregated columns here
-        // ->orderBy('events.date', 'desc')
-        // ->get();
+        $eventsByYear = Event::selectRaw('YEAR(events.date) as year, events.*, event_translations.name, event_translations.location, event_translations.description')
+        ->join('event_translations', 'events.id', '=', 'event_translations.event_id')
+        ->get()
+        ->groupBy('year');
 
-        // $eventsByYear = Event::select(
-        //     DB::raw('YEAR(events.event_date) as year'),
-        //     'events.*',
-        //     'event_translations.name as event_name_translation'
-        // )
-        //     ->leftJoin('event_translations', 'events.id', '=', 'event_translations.event_id')
-        //     ->groupBy('year', 'events.id')
-        //     ->orderBy('year', 'desc')
-        //     ->get();
+        $limitedEventsByYear = $eventsByYear->map(function ($events) {
+        return $events->take(3); // Select only the first 3 events for each year
+    });
 
-        return $eventsByYear;
+    return $limitedEventsByYear;
+    }
+
+    public function getEventsPerYear($year)
+    {
+        $events = Event::whereYear('date', $year)->get();
+
+        return $events;
     }
 
     public function store($request)

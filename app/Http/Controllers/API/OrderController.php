@@ -19,7 +19,7 @@ class OrderController extends BaseController
     {
         try {
             $data = $this->service->order($request);
-            return $this->sendResponse($data, 'تم الطلب بنجاح');
+            return $this->sendResponse($data, 'تم الطلب بنجاح',200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
@@ -30,7 +30,7 @@ class OrderController extends BaseController
 
         try {
             $data = $this->service->my_orders();
-            return $this->sendResponse($data, 'تم عرض الطلبات بنجاح');
+            return $this->sendResponse($data, 'تم عرض الطلبات بنجاح',200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
@@ -40,7 +40,7 @@ class OrderController extends BaseController
     {
         try {
             $data = $this->service->orderDetails($id);
-            return $this->sendResponse($data, 'تم عرض تفاصيل الطلب بنجاح');
+            return $this->sendResponse($data, 'تم عرض تفاصيل الطلب بنجاح',200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }

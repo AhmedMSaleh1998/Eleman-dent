@@ -20,9 +20,9 @@ class ListProductResource extends JsonResource
             'name' => $this->name,
             'image' => asset('admin_assets/images/products/' . $this->image), 
             'price' => $this->price ?? 0,
-            // 'is_discount' => $this->is_discount,
-            // 'discount_price' => $this->discount_price ?? 0,
+            'is_cart' => 0,
             // 'is_favourite' => $this->is_favourite(),
+            'is_favourite' =>0,
         ];
     }
 }

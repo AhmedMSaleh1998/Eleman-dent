@@ -18,6 +18,6 @@ class PaymentMethodRepository extends BaseRepository
      */
     public function model()
     {
-        return PaymentMethod::class;
+        return Payment::class;
     }
 }

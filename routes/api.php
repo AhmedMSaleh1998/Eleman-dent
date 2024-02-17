@@ -40,6 +40,10 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\API','middleware'=>['api',
     Route::get('setting', 'SettingController@index');
     Route::get('about_us', 'AboutController@index');
     Route::get('home', 'HomeController@index');
+    Route::get('events', 'EventController@index');
+    Route::get('event/{id}', 'EventController@show');
+    Route::get('events/{year}', 'EventController@getYearEvents');
+    Route::post('contact_us', 'ContactUsController@store');
     Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('user/profile', 'ProfileController@show');
@@ -54,7 +58,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\API','middleware'=>['api',
 
         Route::get('user/favourites', 'FavouriteController@get');
         Route::post('user/favourites/store', 'FavouriteController@store');
-        Route::get('user/favourites/destroy/{product_id}', 'FavouriteController@destroy');
+        Route::get('user/favourites/destroy', 'FavouriteController@destroy');
 
         Route::post('basket/store', 'BasketController@store');
         Route::get('basket/show', 'BasketController@getAll');
@@ -70,11 +74,6 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\API','middleware'=>['api',
 
         Route::post('product_rate', 'ProductController@rate');
         Route::get('product_favourite/{product_id}', 'ProductController@isFavourite');
-
-        Route::post('contact_us', 'ContactUsController@store');
-        Route::get('events', 'EventController@index');
-
-
     });
     Route::get('product_search/{filter}', 'ProductController@search');
 

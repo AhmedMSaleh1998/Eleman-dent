@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\BasketResource;
+use App\Models\Product;
 use App\Repositories\CartItemRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -46,6 +47,8 @@ class BasketService extends BaseService
             $record->quantity += $data['quantity'];
             $record->update();
         } else {
+            $product = Product::find($data['product_id']);
+            $data['price'] = $product->price;
             $record = $this->repository->create($data);
         }
 

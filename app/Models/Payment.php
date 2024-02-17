@@ -10,5 +10,6 @@ class Payment extends Model
     use Translatable;
     protected $table = 'payments';
     public $timestamps = true;
-
+    public $translatedAttributes = ['name'];
+    protected $fillable = array('name');
 }

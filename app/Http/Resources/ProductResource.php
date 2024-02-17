@@ -21,16 +21,12 @@ class ProductResource extends JsonResource
             'description' => $this->description ?? '',
             'image' => asset('admin_assets/images/products/' . $this->image), 
             'price' => $this->price ?? 0,
-            'is_discount' => $this->is_discount,
-            'discount_price' => $this->discount_price ?? 0,
-            'category' => new CategoryResource($this->category),
-            //'images' => ProductImagesResource::collection($this->all_images()),
-            // 'related' => RelatedProductsResource::collection($this->related()),
-            // 'is_favourite' => $this->is_favourite(),
+            'is_favourite' => 0,
+            'in_cart' => 0,
             'status' => $this->status,
             'path' => asset('admin_assets/images/products/'),
             'images' => $this->all_images(),
-            // 'all_images' => $this->all_images(),
+            'category' => new CategoryResource($this->category),
         ];
     }
 }

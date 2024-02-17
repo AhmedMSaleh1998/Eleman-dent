@@ -11,4 +11,8 @@ class UserAddress extends Model
     public $timestamps = true;
     protected $fillable = array('street', 'building', 'floor', 'apartment', 'user_id' , 'city_id');
 
+    public function city()
+    {
+        return $this->belongsTo('App\Models\City');
+    }
 }

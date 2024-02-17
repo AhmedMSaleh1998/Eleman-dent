@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\BaseController;
 use App\Services\HomeService;
 use Exception;
+
 class HomeController extends BaseController
 {
     public function __construct(HomeService $service)

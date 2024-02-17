@@ -29,17 +29,17 @@ class FavouriteController extends BaseController
     {
         try {
             $data = $this->service->store($request->all() + ['user_id' => getCurrentUser()]);
-            return $this->sendResponse($data, 'Product added to your favourites successfully.',200);
+            return $this->sendResponse($data, 'Applied Successfully',200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
     }
 
-    public function destroy($product_id)
+    public function destroy()
     {
         try {
-            $this->service->destroy($product_id);
-            return $this->sendResponse([], 'تم حذف المنتج من المفضلة بنجاح');
+            $this->service->destroyAll();
+            return $this->sendResponse([], 'تم حذف المنتج من المفضلة بنجاح',200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }

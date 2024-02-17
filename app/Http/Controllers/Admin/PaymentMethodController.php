@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\PaymentMethodRequest;
+use App\Models\Payment;
 use App\Services\PaymentMethodService;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,7 @@ class PaymentMethodController extends BaseController
      */
     public function index()
     {
-        $payment_methods = $this->service->getAll();
+        $payment_methods = Payment::all();
         return view('admin.payment_method.index', compact('payment_methods'));
     }
 
@@ -44,7 +45,7 @@ class PaymentMethodController extends BaseController
      */
     public function store(PaymentMethodRequest $request)
     {
-        $this->service->store($request->validated());
+        $this->service->store($request);
         return redirect()->back()->with(['success' => 'تم إضافة طريقة الدفع بنجاح']);
     }
 
@@ -56,7 +57,7 @@ class PaymentMethodController extends BaseController
      */
     public function edit($id)
     {
-        $paymentmethod = $this->service->show($id);
+        $paymentmethod = Payment::find($id);
         return view('admin.payment_method.edit', compact('paymentmethod', 'id'));
     }
 
@@ -69,7 +70,9 @@ class PaymentMethodController extends BaseController
      */
     public function update(PaymentMethodRequest $request, $id)
     {
-        $category = $this->service->update($id, $request->validated());
+        // $paymentmethod = $this->service->update($id, $request->validated());
+        $oldPayment = Payment::find($id);
+        $paymentmethod = $oldPayment->update($request->validated());
         return redirect()->back()->with(['success' => 'تم تعديل طريقة الدفع بنجاح']);
     }
 
@@ -81,7 +84,8 @@ class PaymentMethodController extends BaseController
      */
     public function destroy($id)
     {
-        $this->service->destroy($id);
-        return redirect(route('admin.payment_method.index'))->with(['success' => 'تم حذف طريقة الدفع بنجاح']);
+        $oldPayment = Payment::find($id);
+        $oldPayment->delete($id);
+        return redirect(route('admin.payment.index'))->with(['success' => 'تم حذف طريقة الدفع بنجاح']);
     }
 }

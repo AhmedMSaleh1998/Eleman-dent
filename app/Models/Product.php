@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
+use Illuminate\Support\Facades\DB;
 class Product extends Model 
 {
     use Translatable;
@@ -32,6 +33,18 @@ class Product extends Model
     {
         $images[] = $this->productImage->pluck('image')->prepend($this->image);
         return $images;
+    }
+
+    public function is_favourite()
+    {
+        if (getCurrentUser()) {
+            return  DB::table('favourite_products')->where([
+                ['product_id', '=', $this->id],
+                ['user_id', '=', getCurrentUser()]
+            ])->exists() ? 1 : 0;
+        } else {
+            return 0;
+        }
     }
 
 }

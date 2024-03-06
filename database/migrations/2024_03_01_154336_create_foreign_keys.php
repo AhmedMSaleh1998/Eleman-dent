@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 
 class CreateForeignKeys extends Migration {
 
@@ -98,15 +99,10 @@ class CreateForeignKeys extends Migration {
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
-		Schema::table('favourite_products', function(Blueprint $table) {
-			$table->foreign('user_id')->references('id')->on('users')
-						->onDelete('cascade')
-						->onUpdate('cascade');
-		});
-		Schema::table('favourite_products', function(Blueprint $table) {
-			$table->foreign('product_id')->references('id')->on('products')
-						->onDelete('cascade')
-						->onUpdate('cascade');
+		Schema::table('event_images', function(Blueprint $table) {
+			$table->foreign('event_id')->references('id')->on('events')
+						->onDelete('restrict')
+						->onUpdate('restrict');
 		});
 	}
 
@@ -165,6 +161,9 @@ class CreateForeignKeys extends Migration {
 		});
 		Schema::table('event_translations', function(Blueprint $table) {
 			$table->dropForeign('event_translations_event_id_foreign');
+		});
+		Schema::table('event_images', function(Blueprint $table) {
+			$table->dropForeign('event_images_event_id_foreign');
 		});
 	}
 }

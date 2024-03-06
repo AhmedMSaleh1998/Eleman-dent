@@ -21,7 +21,7 @@ class AddressController extends BaseController
     {
         try {
             $data = $this->service->getUserAddresses(getCurrentUser());
-            return $this->sendResponse($data, 'تم عرض العناوين بنجاح' ,200);
+            return $this->sendResponse(AddressResource::collection($data), 'تم عرض العناوين بنجاح' ,200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }

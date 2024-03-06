@@ -21,7 +21,7 @@ class ProductResource extends JsonResource
             'description' => $this->description ?? '',
             'image' => asset('admin_assets/images/products/' . $this->image), 
             'price' => $this->price ?? 0,
-            'is_favourite' => 0,
+            'is_favourite' => $this->is_favourite(),
             'in_cart' => 0,
             'status' => $this->status,
             'path' => asset('admin_assets/images/products/'),

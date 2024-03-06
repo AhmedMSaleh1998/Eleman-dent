@@ -24,7 +24,7 @@ class AchievementRequest extends FormRequest
     public function rules()
     {
         return [
-            'image' => 'required|image',
+            'image' => 'nullable|image',
             'name_ar' => 'required',
             'name_en' => 'required',
             'value' => 'required',

@@ -67,7 +67,6 @@
                                 <a href="{{ route('admin.product.edit',$product->id) }}" class="btn btn-success waves-effect" title="Edit">Edit</a>
                                 <a href="{{ route('admin.product.show',$product->id) }}" class="btn btn-inverse waves-effect" title="Show">Show</a>
                                 <a href="{{ route('admin.productimage.index',$product->id) }}" class="btn btn-dark waves-effect" title="Product Images">Images </a>
-                                {{-- <a href="{{ route('admin.productsize.index',$product->id) }}" class="btn btn-primary waves-effect" title="مقاسات المنتج">مقاسات المنتج</a> --}}
                                 <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$product->id}}delete" title="Delete">Delete </button>
                             </td>
                         </tr>

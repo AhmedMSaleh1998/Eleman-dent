@@ -56,4 +56,16 @@ class UserService extends BaseService
         $user = $this->repository->find(getCurrentUser());
         $user->delete();
     } 
+
+    public function changePassword($request)
+    {
+        $user = $this->repository->where('email', $request['email'])->first();
+        if($user){
+            $user->password = bcrypt($request['password']);
+            $user->save();
+        }else{
+            throw new \Exception('Wrong Email');
+        }
+        
+    }
 }

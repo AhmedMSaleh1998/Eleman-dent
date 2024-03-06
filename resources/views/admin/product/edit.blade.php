@@ -145,28 +145,32 @@
                             @endif
                         </tr>
                         <tr>
-                            <td>Description Ar </td>
-                            <td>
-                                <textarea id="textarea" maxlength="100" class="form-control" name="description_ar">{{ old('description_ar') ? old('description_ar') : $product->translate('ar')->description }}</textarea>
-                            </td>
+                        <td>Description Ar</td>
+                        <td>
+                            <textarea name="description_ar" class="form-control" id="content2"><?php if(isset($product->description)){echo $product->description;} ?></textarea>
                             @if ($errors->has('description_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('description_ar') }}</strong>
-                                </span>
+                            <span class=" alert alert-danger">
+                                <strong>{{ $errors->first('description_ar') }}</strong>
+                            </span>
                             @endif
-                        </tr>
-
-                        <tr>
+                        </td>
+                    </tr>
+                    <tr>
                             <td> Description En</td>
                             <td>
-                                <textarea id="textarea" maxlength="100" class="form-control" name="description_en">{{ old('description_en') ? old('description_en') : $product->translate('en')->description }}</textarea>
-                            </td>
+                            <textarea name="description_en" class="form-control" id="content2"><?php if(isset($product->description)){echo $product->description;} ?></textarea>
+                            @if ($errors->has('description_en'))
+                            <span class=" alert alert-danger">
+                                <strong>{{ $errors->first('description_en') }}</strong>
+                            </span>
+                            @endif
+                        </td>
                             @if ($errors->has('description_en'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('description_en') }}</strong>
                                 </span>
                             @endif
-                        </tr>
+                    </tr>
                         <tr>
                             <td> Description Meta Arabic </td>
                             <td><input type="text" class="form-control" name="description_meta_ar" required

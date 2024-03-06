@@ -67,7 +67,7 @@ class BannerController extends BaseController
      */
     public function update(BannerRequest $request, $id)
     {
-        $this->service->update($id, $request);
+        $this->service->update($request,$id);
         return redirect()->back()->with(['success' => 'Banner updated successfully ']);
     }
 

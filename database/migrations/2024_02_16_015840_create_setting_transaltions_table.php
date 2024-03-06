@@ -14,7 +14,8 @@ class CreateSettingTransaltionsTable extends Migration {
 			$table->string('locale')->nullable();
 			$table->string('logo_alt')->nullable();
 			$table->string('about_us')->nullable();
-			$table->string('address')->nullable();
+			$table->string('address_one')->nullable();
+			$table->string('address_two')->nullable();
 			$table->string('keywords')->nullable();
 			$table->string('privacy')->nullable();
 			$table->string('terms');

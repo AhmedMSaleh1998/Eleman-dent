@@ -57,6 +57,16 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin' , 'middleware' => 'aut
         Route::get('productimage/{product_id}/edit', 'ProductImageController@edit')->name('productimage.edit');
         Route::put('productimage/{product_id}/update', 'ProductImageController@update')->name('productimage.update');
         Route::delete('productimage/{image_id}/delete', 'ProductImageController@destroy')->name('productimage.destroy');
+
+        /**
+         * Event Images Routes
+         */
+        Route::get('product/{product_id}/eventimage', 'EventImageController@index')->name('eventimage.index');
+        Route::get('product/{product_id}/eventimage/create', 'EventImageController@create')->name('eventimage.create');
+        Route::post('eventimage/store', 'EventImageController@store')->name('eventimage.store');
+        Route::get('eventimage/{product_id}/edit', 'EventImageController@edit')->name('eventimage.edit');
+        Route::put('eventimage/{product_id}/update', 'EventImageController@update')->name('eventimage.update');
+        Route::delete('eventimage/{image_id}/delete', 'EventImageController@destroy')->name('eventimage.destroy');
         /**
          * END
          */

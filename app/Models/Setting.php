@@ -10,7 +10,7 @@ class Setting extends Model
     use Translatable;
     protected $table = 'settings';
     public $timestamps = true;
-    protected $fillable = array('location','email', 'phone', 'whatsapp', 'facebook', 'instagram', 'youtube', 'twitter', 'free_shipping');
-    public $translatedAttributes = ['address','about_us', 'keywords', 'privacy', 'terms'];
+    protected $fillable = array('location_one','location_two','src_one','src_two','email', 'phone_one' , 'phone_two', 'whatsapp', 'facebook', 'instagram', 'youtube', 'twitter', 'free_shipping');
+    public $translatedAttributes = ['address_one','address_two','about_us', 'keywords', 'privacy', 'terms'];
 
 }

@@ -11,7 +11,18 @@ class Event extends Model
 
     protected $table = 'events';
     public $timestamps = true;
-    public $translatedAttributes = ['name',  'description', 'location'];
-    protected $fillable = array('image', 'date','status');
+    public $translatedAttributes = ['name',  'description'];
+    protected $fillable = array('image', 'date','status','location_one' , 'location_two' , 'src_one' , 'src_two');
+
+    public function eventImage()
+    {
+        return $this->hasMany('App\Models\EventImage');
+    }
+
+    public function all_images()
+    {
+        $images[] = $this->eventImage->pluck('image')->prepend($this->image);
+        return $images;
+    }
 
 }

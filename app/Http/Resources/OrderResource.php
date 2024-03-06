@@ -16,14 +16,11 @@ class OrderResource extends JsonResource
     {
         return [
             'id'         => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'payment'    => new PaymentResource($this->payment_method),
+            'payment'    => new PaymentResource($this->payment),
             'address'    => new AddressResource($this->address),
             'user'       => new UserResource($this->user),
             'total' => $this->total,
             'shipping' => $this->shipping,
-            'cart_items' => BasketResource::collection($this->cart_items),
             'status'     => $this->status,
         ];
     }

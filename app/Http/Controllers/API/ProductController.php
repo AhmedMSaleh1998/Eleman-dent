@@ -72,7 +72,7 @@ class ProductController extends BaseController
     {
         try {
             $data = $this->service->search($filter);
-            return $this->sendResponse($data, 'تم عرض نتيجة البحث');
+            return $this->sendResponse($data, 'تم عرض نتيجة البحث' , 200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }

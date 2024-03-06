@@ -24,6 +24,8 @@ class EventResource extends JsonResource
             'name' => $this->name,
             'location' => $this->location,
             'description' => $this->description,
+            'path' => asset('admin_assets/images/events/'),
+            'images' => $this->all_images(),
         ];
     }
 }

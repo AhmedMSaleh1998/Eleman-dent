@@ -24,11 +24,17 @@ class SettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'location' => 'required',
-            'phone' => 'required',
+            'location_one' => 'required',
+            'location_two' => 'required',
+            'src_one' => 'required',
+            'src_two' => 'required',
+            'phone_one' => 'required',
+            'phone_two' => 'nullable',
             'email' => 'required|email',
-            'address_ar' => 'nullable|string',
-            'address_en' => 'nullable|string',
+            'address_one_ar' => 'nullable|string',
+            'address_one_en' => 'nullable|string',
+            'address_two_ar' => 'nullable|string',
+            'address_two_en' => 'nullable|string',
             'facebook' => 'nullable|url',
             'twitter' => 'nullable|url',
             'instagram' => 'nullable|url',

@@ -20,28 +20,124 @@
                 {{ Form::model($setting, ['method' => 'Post', 'action' => ['App\Http\Controllers\Admin\SettingController@store'], 'files' => true]) }}
                 <tbody>
                     <tr>
-                        <td> Location</td>
+                        <td> Location One</td>
                         <td>
-                            <input type="text" name="location" class="form-control" value="{{ isset($setting) ? $setting->location : old('location') }}">
-                            @if ($errors->has('location'))
+                            <input type="text" name="location_one" class="form-control" value="{{ isset($setting) ? $setting->location_one : old('location_one') }}">
+                            @if ($errors->has('location_one'))
                             <span class="alert alert-danger">
-                                <strong>{{ $errors->first('location') }}</strong>
+                                <strong>{{ $errors->first('location_one') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Location Two</td>
+                        <td>
+                            <input type="text" name="location_two" class="form-control" value="{{ isset($setting) ? $setting->location_two : old('location_two') }}">
+                            @if ($errors->has('location_two'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('location_two') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Src One</td>
+                        <td>
+                            <input type="text" name="src_one" class="form-control" value="{{ isset($setting) ? $setting->src_one : old('src_one') }}">
+                            @if ($errors->has('src_one'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('src_one') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Src Two</td>
+                        <td>
+                            <input type="text" name="src_two" class="form-control" value="{{ isset($setting) ? $setting->src_two : old('src_two') }}">
+                            @if ($errors->has('src_two'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('src_two') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Address One AR </td>
+                        <td>
+                            <input type="text" name="address_one_ar" class="form-control" value="{{ isset($setting) ? $setting->translate('ar')->address_one : old('address_one_ar') }}">
+
+                            @if ($errors->has('address_one_ar'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('address_one_ar') }}</strong>
                             </span>
                             @endif
                         </td>
                     </tr>
 
                     <tr>
-                        <td> Phone Number</td>
+                        <td> Address One En </td>
                         <td>
-                            <input type="text" name="phone" class="form-control" value="{{ isset($setting) ? $setting->phone : old('phone') }}">
-                            @if ($errors->has('phone'))
+                            <input type="text" name="address_one_en" class="form-control" value="{{ isset($setting) ? $setting->translate('en')->address_one : old('address_one_en') }}">
+
+                            @if ($errors->has('address_one_en'))
                             <span class="alert alert-danger">
-                                <strong>{{ $errors->first('phone') }}</strong>
+                                <strong>{{ $errors->first('address_one_en') }}</strong>
                             </span>
                             @endif
                         </td>
                     </tr>
+
+                    <tr>
+                        <td> Address Two AR </td>
+                        <td>
+                            <input type="text" name="address_two_ar" class="form-control" value="{{ isset($setting) ? $setting->translate('ar')->address_two : old('address_two_ar') }}">
+
+                            @if ($errors->has('address_two_ar'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('address_two_ar') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td> Address Two En </td>
+                        <td>
+                            <input type="text" name="address_two_en" class="form-control" value="{{ isset($setting) ? $setting->translate('en')->address_two : old('address_two_en') }}">
+
+                            @if ($errors->has('address_two_en'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('address_two_en') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td> Phone Number One</td>
+                        <td>
+                            <input type="text" name="phone_one" class="form-control" value="{{ isset($setting) ? $setting->phone_one : old('phone_one') }}">
+                            @if ($errors->has('phone_one'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('phone_one') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td> Phone Number Two</td>
+                        <td>
+                            <input type="text" name="phone_two" class="form-control" value="{{ isset($setting) ? $setting->phone_two : old('phone_two') }}">
+                            @if ($errors->has('phone_two'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('phone_two') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr
 
                     <tr>
                         <td> Email</td>
@@ -70,7 +166,7 @@
                     </tr>
 
                     <tr>
-                        <td>Twitter</td>
+                        <td>Linkedin</td>
                         <td><input type="text" class="form-control" name="twitter" value="{{ isset($setting) ? $setting->twitter : old('twitter') }}">
 
                         </td>
@@ -113,31 +209,6 @@
                             <strong>{{ $errors->first('youtube') }}</strong>
                         </div>
                         @endif
-                    </tr>
-                    <tr>
-                        <td> Address AR </td>
-                        <td>
-                            <input type="text" name="address_ar" class="form-control" value="{{ isset($setting) ? $setting->translate('ar')->address : old('address_ar') }}">
-
-                            @if ($errors->has('address_ar'))
-                            <span class="alert alert-danger">
-                                <strong>{{ $errors->first('address_ar') }}</strong>
-                            </span>
-                            @endif
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td> Address En </td>
-                        <td>
-                            <input type="text" name="address_en" class="form-control" value="{{ isset($setting) ? $setting->translate('en')->address : old('address_en') }}">
-
-                            @if ($errors->has('address_en'))
-                            <span class="alert alert-danger">
-                                <strong>{{ $errors->first('address_en') }}</strong>
-                            </span>
-                            @endif
-                        </td>
                     </tr>
                     <tr>
                         <td> Keywords Ar </td>
@@ -240,23 +311,120 @@
                 {{ Form::model($setting, ['method' => 'PATCH', 'action' => ['App\Http\Controllers\Admin\SettingController@update', $setting->id], 'files' => true]) }}
                 <tbody>
                     <tr>
-                        <td> Location</td>
+                        <td> Location One</td>
                         <td>
-                            <input type="text" name="location" class="form-control" value="{{ isset($setting) ? $setting->location : old('location') }}">
-                            @if ($errors->has('location'))
+                            <input type="text" name="location_one" class="form-control" value="{{ isset($setting) ? $setting->location_one : old('location_one') }}">
+                            @if ($errors->has('location_one'))
                             <span class="alert alert-danger">
-                                <strong>{{ $errors->first('location') }}</strong>
+                                <strong>{{ $errors->first('location_one') }}</strong>
                             </span>
                             @endif
                         </td>
                     </tr>
                     <tr>
-                        <td> Phone Number</td>
+                        <td> Location Two</td>
                         <td>
-                            <input type="text" name="phone" class="form-control" value="{{ isset($setting) ? $setting->phone : old('phone') }}">
-                            @if ($errors->has('phone'))
+                            <input type="text" name="location_two" class="form-control" value="{{ isset($setting) ? $setting->location_two : old('location_two') }}">
+                            @if ($errors->has('location_two'))
                             <span class="alert alert-danger">
-                                <strong>{{ $errors->first('phone') }}</strong>
+                                <strong>{{ $errors->first('location_two') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Src One</td>
+                        <td>
+                            <input type="text" name="src_one" class="form-control" value="{{ isset($setting) ? $setting->src_one : old('src_one') }}">
+                            @if ($errors->has('src_one'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('src_one') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Src Two</td>
+                        <td>
+                            <input type="text" name="src_two" class="form-control" value="{{ isset($setting) ? $setting->src_two : old('src_two') }}">
+                            @if ($errors->has('src_two'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('src_two') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Address One AR </td>
+                        <td>
+                            <input type="text" name="address_one_ar" class="form-control" value="{{ isset($setting) ? $setting->translate('ar')->address_one : old('address_one_ar') }}">
+
+                            @if ($errors->has('address_one_ar'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('address_one_ar') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td> Address One En </td>
+                        <td>
+                            <input type="text" name="address_one_en" class="form-control" value="{{ isset($setting) ? $setting->translate('en')->address_one : old('address_one_en') }}">
+
+                            @if ($errors->has('address_one_en'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('address_one_en') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td> Address Two AR </td>
+                        <td>
+                            <input type="text" name="address_two_ar" class="form-control" value="{{ isset($setting) ? $setting->translate('ar')->address_two : old('address_two_ar') }}">
+
+                            @if ($errors->has('address_two_ar'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('address_two_ar') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td> Address Two En </td>
+                        <td>
+                            <input type="text" name="address_two_en" class="form-control" value="{{ isset($setting) ? $setting->translate('en')->address_two : old('address_two_en') }}">
+
+                            @if ($errors->has('address_two_en'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('address_two_en') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td> Phone Number One</td>
+                        <td>
+                            <input type="text" name="phone_one" class="form-control" value="{{ isset($setting) ? $setting->phone_one : old('phone_one') }}">
+                            @if ($errors->has('phone_one'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('phone_one') }}</strong>
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td> Phone Number Two</td>
+                        <td>
+                            <input type="text" name="phone_two" class="form-control" value="{{ isset($setting) ? $setting->phone_two : old('phone_two') }}">
+                            @if ($errors->has('phone_two'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('phone_two') }}</strong>
                             </span>
                             @endif
                         </td>
@@ -289,7 +457,7 @@
                     </tr>
 
                     <tr>
-                        <td>Twitter</td>
+                        <td>Linkedin</td>
                         <td><input type="text" class="form-control" name="twitter" value="{{ isset($setting) ? $setting->twitter : old('twitter') }}">
 
                         </td>
@@ -334,31 +502,6 @@
                         @endif
                     </tr>
                     <tr>
-                        <td> Address AR </td>
-                        <td>
-                            <input type="text" name="address_ar" class="form-control" value="{{ isset($setting) ? $setting->translate('ar')->address : old('address_ar') }}">
-
-                            @if ($errors->has('address_ar'))
-                            <span class="alert alert-danger">
-                                <strong>{{ $errors->first('address_ar') }}</strong>
-                            </span>
-                            @endif
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td> Address En </td>
-                        <td>
-                            <input type="text" name="address_en" class="form-control" value="{{ isset($setting) ? $setting->translate('en')->address : old('address_en') }}">
-
-                            @if ($errors->has('address_en'))
-                            <span class="alert alert-danger">
-                                <strong>{{ $errors->first('address_en') }}</strong>
-                            </span>
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
                         <td> Keywords Ar </td>
                         <td>
                             <input type="text" name="keywords_ar" class="form-control" value="{{ isset($setting) ? $setting->translate('ar')->keywords : old('keywords_ar') }}">
@@ -385,7 +528,7 @@
                     <tr>
                         <td> AboutUs Ar </td>
                         <td>
-                            <textarea id="textarea" maxlength="100" class="form-control" name="about_us_ar">{{ $setting ? $setting->translate('ar')->about_us : old('about_us_ar') }}</textarea>
+                            <textarea id="textarea" maxlength="1000" class="form-control" name="about_us_ar">{{ $setting ? $setting->translate('ar')->about_us : old('about_us_ar') }}</textarea>
                             @if ($errors->has('about_us_ar'))
                             <span class="alert alert-danger">
                                 <strong>{{ $errors->first('about_us_ar') }}</strong>
@@ -396,7 +539,7 @@
                     <tr>
                         <td> AboutUs En</td>
                         <td>
-                            <textarea id="textarea" maxlength="100" class="form-control" name="about_us_en">{{ $setting ? $setting->translate('en')->about_us : old('about_us_en') }}</textarea>
+                            <textarea id="textarea" maxlength="1000" class="form-control" name="about_us_en">{{ $setting ? $setting->translate('en')->about_us : old('about_us_en') }}</textarea>
                             @if ($errors->has('about_us'))
                             <span class="alert alert-danger">
                                 <strong>{{ $errors->first('about_us') }}</strong>

@@ -61,6 +61,7 @@
                                 <a href="{{ route('admin.changeStatus',[$event->status,'events',$event->id]) }}" class="btn btn-{{$event->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="Status"> {{$event->status == 1 ? 'Hide' : 'Show'}}</a>
                                 <a href="{{ route('admin.event.edit',$event->id) }}" class="btn btn-success waves-effect" title="Edit">Edit</a>
                                 <a href="{{ route('admin.event.show',$event->id) }}" class="btn btn-inverse waves-effect" title="Show">Show</a>
+                                <a href="{{ route('admin.eventimage.index',$event->id) }}" class="btn btn-dark waves-effect" title="Event Images">Images </a>
                                 <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$event->id}}delete" title="Delete">Delete </button>
                             </td>
                         </tr>

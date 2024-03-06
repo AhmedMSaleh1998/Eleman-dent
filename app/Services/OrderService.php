@@ -47,7 +47,7 @@ class OrderService extends BaseService
 
         $order = $this->repository->create(
             [
-                'payment_id'    => $request->payment_medthod_id,
+                'payment_id'    => $request->payment_id,
                 'address_id'    => $request->address_id,
                 'user_id'       => getCurrentUser(),
                 'total'         => $total,

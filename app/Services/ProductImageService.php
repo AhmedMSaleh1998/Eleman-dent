@@ -3,7 +3,6 @@
 
 namespace App\Services;
 
-use App\Http\Resources\ProductSoleResource;
 use App\Repositories\ProductImageRepository;
 use Illuminate\Http\Request;
 

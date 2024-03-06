@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class CartItem extends Model 
 {
@@ -24,5 +25,14 @@ class CartItem extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User');
+    }
+    
+    public function total()
+    {
+        $total = CartItem::where('user_id', get_current_user())
+        ->whereNull('order_id')
+        ->sum(DB::raw('price * quantity'));
+
+        return $total;
     }
 }

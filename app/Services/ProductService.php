@@ -42,44 +42,30 @@ class ProductService extends BaseService
     public function getAllProducts($request)
     {
         if (empty($request)) {
-            $data = $this->repository->where('status', '1')->paginate(8);
+            $data = $this->repository->where('status', '1');
         } else {
 
             $input = $request->all();
 
             $data = $this->repository->query();
-
+            
             if (isset($input['filter']['category_id'])) {
-                $subCategories = $this->categoryRepository->where('parent_id', $input['filter']['category_id'])->pluck('id');
-                $data = $data->whereIn('category_id', $subCategories);
+                $data = $data->where('category_id', $input['filter']['category_id']);
             }
 
-            if (isset($input['filter']['sub_category_id'])) {
-                $data = $data->where('category_id', $input['filter']['sub_category_id']);
+            if (isset($input['filter']['brand_id'])) {
+                $data = $data->where('brand_id', $input['filter']['brand_id']);
             }
-
-            if (isset($input['filter']['color_id'])) {
-                $data = $data->where('color_id', $input['filter']['color_id']);
-            }
-
-            if (isset($input['filter']['model_id'])) {
-                $data = $data->where('model_id', $input['filter']['model_id']);
-            }
-
-            // if (isset($input['filter']['size_id'])) {
-            //     $products = $this->ProductSizeRepository->where('size_id', $input['filter']['size_id'])->pluck('product_id');
-            //     $data = $data->whereIn('id', $products);
-            // }
 
             if (isset($input['filter']['min_price']) && isset($input['filter']['max_price'])) {
 
-                $data = $data->whereBetween('discount_price', array($input['filter']['min_price'], $input['filter']['max_price']));
+                $data = $data->whereBetween('price', array($input['filter']['min_price'], $input['filter']['max_price']));
             }
-            $data = $data->where('status', '1')->paginate(8);
+            $data = $data->where('status', '1')->paginate(12);
         }
-        return ProductResource::collection($data);
-        //return $data;
+        return ProductResource::collection($data)->response()->getData();
     }
+    
     public function getFormData()
     {
         return [
@@ -196,8 +182,22 @@ class ProductService extends BaseService
 
     public function search($filter)
     {
-        $record = $this->repository->where('name', 'like', '%' . $filter . '%')->orWhere('description', 'like', '%' . $filter . '%')->get();
-        return ProductResource::collection($record);
+        $products = Product::where('status', 1)
+            ->when($filter, function ($query) use ($filter) {
+                return $query->where(function ($query) use ($filter) {
+                    $query->whereHas('translations', function ($query) use ($filter) {
+                        $query->where(function ($subQuery) use ($filter) {
+                            $subQuery->where('name', 'like', '%' . $filter . '%')
+                                ->orWhere('keywords', 'like', '%' . $filter . '%')
+                                ->orWhere('description', 'like', '%' . $filter . '%')
+                                ->orWhere('title', 'like', '%' . $filter . '%');
+                        });
+                    });
+                });
+            })
+            ->get();
+    
+        return ProductResource::collection($products);
     }
 
     public function allLookups()

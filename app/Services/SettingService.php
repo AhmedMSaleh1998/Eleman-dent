@@ -19,8 +19,12 @@ class SettingService extends BaseService
     {
         Setting::create(
             [
-                'location' => $request['location'],
-                'phone' => $request['phone'],
+                'location_one' => $request['location_one'],
+                'location_two' => $request['location_two'],
+                'src_one' => $request['src_one'],
+                'src_two' => $request['src_two'],
+                'phone_one' => $request['phone_one'],
+                'phone_two' => $request['phone_two'],
                 'email' => $request['email'],
                 'whatsapp' => $request['whatsapp'],
                 'facebook' => $request['facebook'],
@@ -29,7 +33,8 @@ class SettingService extends BaseService
                 'youtube' => $request['youtube'],
 
                 'en' => [
-                    'address' => $request['address_en'],
+                    'address_one' => $request['address_one_en'],
+                    'address_two' => $request['address_two_en'],
                     'keywords' => $request['keywords_en'],
                     'privacy' => $request['privacy_en'],
                     'terms' => $request['terms_en'],
@@ -37,7 +42,8 @@ class SettingService extends BaseService
 
                 ],
                 'ar' => [
-                    'address' => $request['address_ar'],
+                    'address_one' => $request['address_one_ar'],
+                    'address_two' => $request['address_two_ar'],
                     'keywords' => $request['keywords_ar'],
                     'privacy' => $request['privacy_ar'],
                     'terms' => $request['terms_ar'],
@@ -54,8 +60,12 @@ class SettingService extends BaseService
 
         $setting ->update(
             [
-                'location' => $request['location'],
-                'phone' => $request['phone'],
+                'location_one' => $request['location_one'],
+                'location_two' => $request['location_two'],
+                'src_one' => $request['src_one'],
+                'src_two' => $request['src_two'],
+                'phone_one' => $request['phone_one'],
+                'phone_two' => $request['phone_two'],
                 'email' => $request['email'],
                 'whatsapp' => $request['whatsapp'],
                 'facebook' => $request['facebook'],
@@ -64,7 +74,8 @@ class SettingService extends BaseService
                 'youtube' => $request['youtube'],
 
                 'en' => [
-                    'address' => $request['address_en'],
+                    'address_one' => $request['address_one_en'],
+                    'address_two' => $request['address_two_en'],
                     'keywords' => $request['keywords_en'],
                     'privacy' => $request['privacy_en'],
                     'terms' => $request['terms_en'],
@@ -72,7 +83,8 @@ class SettingService extends BaseService
 
                 ],
                 'ar' => [
-                    'address' => $request['address_ar'],
+                    'address_one' => $request['address_one_ar'],
+                    'address_two' => $request['address_two_ar'],
                     'keywords' => $request['keywords_ar'],
                     'privacy' => $request['privacy_ar'],
                     'terms' => $request['terms_ar'],

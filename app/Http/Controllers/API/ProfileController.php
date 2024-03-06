@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\BaseController;
+use App\Http\Requests\ChangeForgetPassword;
 use App\Services\UserService;
 use Exception;
 use Illuminate\Http\Request;
@@ -47,6 +48,16 @@ class ProfileController extends BaseController
         try {
             $data = $this->service->deleteUser();
             return $this->sendResponse($data,'Profile deleted Successfully' , 200);
+        } catch (Exception $exception) {
+            return $this->sendError('خطأ.', $exception->getMessage());
+        }
+    }
+
+    public function changePassword(ChangeForgetPassword $request)
+    {
+        try {
+            $data = $this->service->changePassword($request);
+            return $this->sendResponse($data,'Password changed Successfully' , 200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }

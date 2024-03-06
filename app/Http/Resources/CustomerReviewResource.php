@@ -15,7 +15,7 @@ class CustomerReviewResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'name' => $this->id,
+            'name' => $this->name,
             'job' => 'Doctor',
             'review' => $this->review,
             'image' => asset('admin_assets/images/reviews/' . $this->image),

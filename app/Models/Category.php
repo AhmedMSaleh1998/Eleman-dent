@@ -14,9 +14,14 @@ class Category extends Model
     public $timestamps = true;
     protected $fillable = array('image', 'status');
 
-    public function products()
+    public function category_products()
     {
         return $this->hasMany('App\Models\Product');
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
     }
 
 }

@@ -41,9 +41,16 @@
                         <td>{{ $product->translate('en')->name }}</td>
                     </tr>
                     <tr>
-                        <td>Category</td>
-                        <td>{{ $product->category->translate('ar')->name}}</td>
-                    </tr>
+    <td>Categories</td>
+    <td>
+        @foreach ($product->categories as $category)
+            {{ $category->translate('ar')->name }}
+            @if (!$loop->last)
+                , <!-- Add comma if it's not the last category -->
+            @endif
+        @endforeach
+    </td>
+</tr>
                     <tr>
                         <td> Title Ar</td>
                         <td>{{ $product->translate('ar')->title }}</td>

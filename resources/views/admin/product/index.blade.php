@@ -43,7 +43,6 @@
                             <th data-field="Id" data-align="center">Id</th>
                             <th data-field="Image" data-align="center">Image</th>
                             <th data-field="Product Name" data-align="center"> Product Name</th>
-                            <th data-field="Category" data-align="center">Category</th>
                             <th data-field="Price" data-align="center">Price</th>
                             <th data-field="Quantity" data-align="center">Quantity</th>
                             <th data-field="Status" data-align="center">Status</th>
@@ -57,7 +56,6 @@
                             <td>{{$product->id}}</td>
                             <td><img src="{{asset('admin_assets/images/products/'.$product->image)}}" class="img-responsive" width="100px" height="100px"></td>
                             <td>{{$product->translate('ar')->name}}</td>
-                            <td>{{ $product->category->translate('ar')->name }}</td>
                             <td>{{$product->price}}</td>
                             <td>{{$product->quantity}}</td>
                             <td>{{$product->status === 1 ? 'Active' : 'Inactive'}}</td>

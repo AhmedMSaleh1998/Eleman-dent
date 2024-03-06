@@ -85,7 +85,6 @@ class ProductService extends BaseService
             'price' => $record['price'],
             'quantity' => $record['quantity'],
             'brand_id' => $record['brand_id'] ?? null,
-            'category_id' => $record['category_id'],
             'en' => [
                 'name' => $record['name_en'],
                 'title' => $record['title_en'],
@@ -106,7 +105,7 @@ class ProductService extends BaseService
                 'keywords' => $record['keywords_ar'],
             ],
         ]);
-
+        $product->categories()->attach($record['category_id']);
         return $record;
     }
 
@@ -123,7 +122,6 @@ class ProductService extends BaseService
             'price' => $request['price'],
             'quantity' => $request['quantity'],
             'brand_id' => $request['brand_id'],
-            'category_id' => $request['category_id'],
             'en' => [
                 'name' => $request['name_en'],
                 'title' => $request['title_en'],
@@ -144,6 +142,8 @@ class ProductService extends BaseService
                 'keywords' => $request['keywords_ar'],
             ],
         ]);
+        $product->categories()->sync($request['category_id']);
+
         return $product;
     }
 

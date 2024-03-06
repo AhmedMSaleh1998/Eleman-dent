@@ -39,7 +39,7 @@ class ProductRequest extends FormRequest
             'description_meta_en'  => 'required|max:2500',
             'alt_en'          => 'required|string|min:2|max:191',
             'alt_ar'          => 'required|string|min:2|max:191',
-            'category_id'       => 'required|integer',
+            'category_id'       => 'required|array',
             'brand_id'          => 'nullable|integer',
             'quantity'          => 'required|integer',
             'price'             => 'required',

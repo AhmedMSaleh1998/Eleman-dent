@@ -214,12 +214,11 @@
                             @endif
                         </tr>
                         <tr>
-                            <td> select Category</td>
+                        <td>Select Categories</td>
                             <td>
-                                <select name="category_id" id="category" class="form-control">
+                                <select name="category_id[]" id="category" class="form-control" multiple>
                                     @foreach ($data['categories'] as $category)
-                                        <option value="{{ $category->id }}">{{ $category->translate('ar')->name }}
-                                        </option>
+                                        <option value="{{ $category->id }}">{{ $category->translate('ar')->name }}</option>
                                     @endforeach
                                 </select>
                             </td>
@@ -229,6 +228,7 @@
                                 </span>
                             @endif
                         </tr>
+
 
                         <tr>
                             <td> select Brand</td>

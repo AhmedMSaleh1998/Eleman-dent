@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Requests\BannerRequest;
-use App\Services\BannerService;
+use App\Http\Requests\BrandRequest;
+use App\Services\BrandService;
 
 class BrandController extends BaseController
 {
-    public function __construct(BannerService $service)
+    public function __construct(BrandService $service)
     {
         parent::__construct($service);
     }
@@ -20,8 +20,8 @@ class BrandController extends BaseController
      */
     public function index()
     {
-        $banners = $this->service->getAll();
-        return view('admin.banner.index', compact('banners'));
+        $brands = $this->service->get();
+        return view('admin.brand.index', compact('brands'));
     }
 
     /**
@@ -31,7 +31,7 @@ class BrandController extends BaseController
      */
     public function create()
     {
-        return view('admin.banner.create');
+        return view('admin.brand.create');
     }
 
     /**
@@ -40,10 +40,15 @@ class BrandController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BannerRequest $request)
+    public function store(BrandRequest $request)
     {
-        $this->service->store($request);
-        return redirect()->back()->with(['success' => 'Banner added successfully']);;
+        try{
+            $this->service->store($request);
+            return redirect()->back()->with(['success' => 'Brand added successfully']);
+        }catch(\Exception $e){
+            dd($e);
+        }
+        
     }
 
     /**
@@ -54,8 +59,8 @@ class BrandController extends BaseController
      */
     public function edit($id)
     {
-        $banner = $this->service->show($id);
-        return view('admin.banner.edit', compact('banner', 'id'));
+        $brand = $this->service->show($id);
+        return view('admin.brand.edit', compact('brand'));
     }
 
     /**
@@ -65,10 +70,11 @@ class BrandController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(BannerRequest $request, $id)
+    public function update(BrandRequest $request, $id)
     {
-        $this->service->update($request,$id);
-        return redirect()->back()->with(['success' => 'Banner updated successfully ']);
+
+        $this->service->update($request, $id);
+        return redirect()->back()->with(['success' => 'Brand updated successfully ']);
     }
 
     /**
@@ -80,6 +86,6 @@ class BrandController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.banner.index'))->with(['success' => 'Banner deleted successfully']);
+        return redirect(route('admin.brand.index'))->with(['success' => 'Brand deleted successfully']);
     }
 }

@@ -26,4 +26,9 @@ class Order extends Model
         return $this->belongsTo('App\Models\UserAddress');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
 }

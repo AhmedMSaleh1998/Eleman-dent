@@ -203,7 +203,7 @@
                         <li><a href="{{ route('admin.city.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Cities </span></a></li>
                         <li><a href="{{ route('admin.event.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Events </span></a></li>
                        
-                        <li><a href="{{ route('admin.about.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> About Us </span></a></li>
+                        <!-- <li><a href="{{ route('admin.about.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> About Us </span></a></li> -->
                         <!-- <li><a href="{{ route('admin.type.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الأنواع </span></a></li> -->
                         <li><a href="{{ route('admin.product.index') }}" class="waves-effect"><i class="icon icon-boxes-stacked-regular"></i> <span> Products </span></a></li>
                         <li><a href="{{ route('admin.order.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Orders </span></a></li>

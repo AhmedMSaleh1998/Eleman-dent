@@ -22,7 +22,7 @@
         <div class="alert alert-danger">{{ Session::get('danger') }}</div>
         @endif
         <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
-        <a style="color: #fff;" href="{{ route('admin.paymentmethod.index') }}">/ طرق دفع / </a>
+        <a style="color: #fff;" href="{{ route('admin.payment.index') }}">/ طرق دفع / </a>
         <a style="color: #36404a;"> تعديل </a>
 
         <ul>
@@ -35,17 +35,27 @@
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <h4 class="header-title m-t-0 m-b-20">تعديل منطقة</h4>
+            <h4 class="header-title m-t-0 m-b-20">تعديل طريقة الدفع</h4>
 
             <table class="table table-bordered table-striped">
                 {{ Form::model($paymentmethod, ['method' => 'PATCH', 'action' => ['App\Http\Controllers\Admin\PaymentMethodController@update', $paymentmethod->id], 'files' => true]) }}
                 <tbody>
                     <tr>
-                        <td>اسم</td>
-                        <td><input type="text" class="form-control" name="name" required value="{{ $paymentmethod->name }}"></td>
-                        @if ($errors->has('name'))
+                        <td>اسم عربي</td>
+                        <td><input type="text" class="form-control" name="name_ar" required value="{{ $paymentmethod->translate('ar')->name }}"></td>
+                        @if ($errors->has('name_ar'))
                         <span class="alert alert-danger">
-                            <strong>{{ $errors->first('name') }}</strong>
+                            <strong>{{ $errors->first('name_ar') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+
+                    <tr>
+                        <td>اسم انجليزي</td>
+                        <td><input type="text" class="form-control" name="name_en" required value="{{ $paymentmethod->translate('en')->name }}"></td>
+                        @if ($errors->has('name_en'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('name_en') }}</strong>
                         </span>
                         @endif
                     </tr>

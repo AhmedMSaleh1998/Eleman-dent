@@ -16,24 +16,18 @@ class UserResource extends JsonResource
     {
         $original = [
             'id' => $this->id,
-            'name' => $this->name,
+            'email' => $this->email,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
             'phone' => $this->phone,
             'code' => $this->code,
             'status' => $this->status,
             'image' => $this->image == null ? null : asset('admin_assets/images/users/' . $this->image),
-            //'cart_count' => $this->baskets->count() == null ? 0 : $this->baskets->count(),
+            'city' => new CityResource($this->city),
+            //'cart_count' => $this->baskets->count() == null ? 0 : $this->baskets->count(),''
         ];
         return array_merge($original, [
-            'token' => $this->token,
-        ]);/*
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'phone' => $this->phone,
-            'code' => $this->code,
-            'status' => $this->status,
-            'image' => asset('admin_assets/images/users/' . $this->image),
-            'cart_count' => $this->baskets->count(),
-        ]; */
+            'token' => $this->api_token,
+        ]);
     }
 }

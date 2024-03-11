@@ -33,6 +33,8 @@ class ProductController extends BaseController
     public function create()
     {
         $data = $this->service->getFormData();
+        // dd($data);
+        // dd($data['categories']->pluck('name_ar' , 'id'));
         return view('admin.product.create', ['data' => $data]);
     }
 
@@ -46,7 +48,7 @@ class ProductController extends BaseController
     {
 
         $this->service->store($request);
-        return redirect()->back()->with(['success' => 'تم إضافة المنتج بنجاح']);;
+        return redirect()->back()->with(['success' => 'Product added successfully']);;
     }
 
     /**
@@ -84,7 +86,7 @@ class ProductController extends BaseController
     public function update(ProductRequest $request, $id)
     {
         $this->service->update($request, $id);
-        return redirect()->back()->with(['success' => 'تم تعديل المنتج بنجاح']);
+        return redirect()->back()->with(['success' => 'Product updated successfully']);
     }
 
     /**
@@ -96,6 +98,6 @@ class ProductController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.product.index'))->with(['success' => 'تم حذف المنتج بنجاح']);
+        return redirect(route('admin.product.index'))->with(['success' => 'Product deleted successfully']);
     }
 }

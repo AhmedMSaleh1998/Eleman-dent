@@ -33,9 +33,9 @@ abstract class BaseRepository implements IRepository
         return $this->model->where($this->model->getKeyName(), $id)->with($with)->firstOrFail();
     }
 
-    public function show($id, $with = [])
+    public function show($id)
     {
-        return $this->find($id, $with);
+        return $this->find($id);
     }
 
     public function orderBy($orderBy, $dir)

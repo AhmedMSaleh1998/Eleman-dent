@@ -16,7 +16,7 @@
             @elseif(Session::has('danger'))
             <div class="alert alert-danger">{{ Session::get('danger') }}</div>
             @endif
-            <h4 class="page-title">صور المنتج</h4>
+            <h4 class="page-title"> Product Images</h4>
         </div>
 
     </div>
@@ -29,10 +29,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
-                        <a href="{{ route('admin.productimage.create', $product_id) }}" class="btn btn-default waves-effect">اضافه
-                            صورة
-                            للمنتج
-                            +</a>
+                        <a href="{{ route('admin.productimage.create', $product_id) }}" class="btn btn-default waves-effect">  Product Image +</a>
                     </div>
                 </div>
             </div>
@@ -42,21 +39,21 @@
 
                     <thead>
                         <tr>
-                            <th data-field="الصورة الرئيسية" data-align="center"> صورة المنتج </th>
-                            <th data-field="الحالة" data-align="center">الحالة</th>
-                            <th data-field="التحكم" data-align="center">التحكم</th>
+                            <th data-field="الصورة الرئيسية" data-align="center"> Product Image  </th>
+                            <th data-field="alt" data-align="center">Alt</th>
+                            <th data-field="التحكم" data-align="center">Control</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($projectImage as $Image)
                         <tr>
                             <td><img src="{{ asset('admin_assets/images/products/' . $Image->image) }}" class="img-responsive" width="100px" height="100px"></td>
-                            <td>{{ $Image->status === 1 ? 'مفعل' : 'غير مفعل' }}</td>
+                            <td>{{ $Image->alt ?? 'None'}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus', [$Image->status, 'product_images', $Image->id]) }}" class="btn btn-{{ $Image->status == 1 ? 'secondary' : 'dark' }} waves-effect" title="الحالة"> {{ $Image->status == 1 ? 'إبطال' : 'تفعيل' }}</a>
-                                <a href="{{ route('admin.productimage.edit', $Image->id) }}" class="btn btn-success waves-effect" title="تعديل">تعديل</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{ $Image->id }}delete" title="حذف">حذف </button>
+                                {{-- <a href="{{ route('admin.changeStatus', [$Image->status, 'product_images', $Image->id]) }}" class="btn btn-{{ $Image->status == 1 ? 'secondary' : 'dark' }} waves-effect" title="Status"> {{ $Image->status == 1 ? 'Hide' : 'Show' }}</a> --}}
+                                <a href="{{ route('admin.productimage.edit', $Image->id) }}" class="btn btn-success waves-effect" title="edit">Edit</a>
+                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{ $Image->id }}delete" title="delete">Delete </button>
                             </td>
                         </tr>
 
@@ -68,13 +65,13 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="icon error animateErrorIcon" style="display: block;"><span class="x-mark animateXMark"><span class="line left"></span><span class="line right"></span></span></div>
-                                        <h4 style="text-align:center;">تأكيد الحذف</h4>
+                                        <h4 style="text-align:center;"> ! Confirm to delete this image</h4>
                                     </div>
                                     <div class="modal-footer" style="text-align:center">
                                         <form action="{{ route('admin.productimage.destroy', $Image->id) }}" method="post">
                                             @csrf
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <button class="btn btn-danger" type="submit" dir="ltr">حذف</button>
+                                            <button class="btn btn-danger" type="submit" dir="ltr">Delete</button>
                                         </form>
                                     </div>
                                 </div>

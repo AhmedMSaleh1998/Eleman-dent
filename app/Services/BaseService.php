@@ -64,7 +64,7 @@ class BaseService implements IService
 
     public function get()
     {
-        return $this->repository->where('status', '!=', 2)->get();
+        return $this->repository->get();
     }
 
     public function getAll()

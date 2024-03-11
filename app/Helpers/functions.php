@@ -1,11 +1,12 @@
 <?php
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 if (!function_exists('getCurrentUser')) {
     function getCurrentUser()
     {
-        return resolve(\App\Services\AuthService::class)->getAuthUser('api')->id ?? null;
+        return Auth::user()->id ?? null;
+        // return resolve(\App\Services\AuthService::class)->getAuthUser('api')->id ?? null;
     }
 }
 

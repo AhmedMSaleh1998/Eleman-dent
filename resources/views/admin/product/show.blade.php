@@ -9,9 +9,9 @@
         @elseif(Session::has('danger'))
         <div class="alert alert-danger">{{ Session::get('danger') }}</div>
         @endif
-        <a style="color: #fff;" href="{{route('admin.home')}}">الرئيسية</a>
-        <a style="color: #fff;" href="{{route('admin.product.index')}}">/ المنتجات / </a>
-        <a style="color: #36404a;"> مشاهدة </a>
+        <a style="color: #fff;" href="{{route('admin.home')}}">Home</a>
+        <a style="color: #fff;" href="{{route('admin.product.index')}}">/ Products / </a>
+        <a style="color: #36404a;"> Show </a>
 
         <ul>
             @foreach ($errors->all() as $error)
@@ -29,57 +29,82 @@
                 <tbody>
 
                     <tr>
-                        <td>الصورة الرئيسية</td>
+                        <td> Main Image</td>
                         <td><img src="{{asset('admin_assets/images/products/'.$product->image)}}" class="img-responsive" width="100px" height="100px"></td>
                     </tr>
                     <tr>
-                        <td>الاسم عربي</td>
-                        <td>{{ $product->name_ar }}</td>
+                        <td> Name Ar</td>
+                        <td>{{ $product->translate('ar')->name }}</td>
                     </tr>
                     <tr>
-                        <td>الاسم انجليزي</td>
-                        <td>{{ $product->name_en }}</td>
+                        <td>Name En </td>
+                        <td>{{ $product->translate('en')->name }}</td>
                     </tr>
                     <tr>
-                        <td>القسم</td>
-                        <td>{{ $product->category->name_ar }}</td>
+    <td>Categories</td>
+    <td>
+        @foreach ($product->categories as $category)
+            {{ $category->translate('ar')->name }}
+            @if (!$loop->last)
+                , <!-- Add comma if it's not the last category -->
+            @endif
+        @endforeach
+    </td>
+</tr>
+                    <tr>
+                        <td> Title Ar</td>
+                        <td>{{ $product->translate('ar')->title }}</td>
                     </tr>
                     <tr>
-                        <td>الوصف عربي</td>
-                        <td>{{ $product->description_ar }}</td>
+                        <td>Title En  </td>
+                        <td>{{ $product->translate('en')->title }}</td>
                     </tr>
                     <tr>
-                        <td>الوصف انجليزي </td>
-                        <td>{{ $product->description_en }}</td>
+                        <td> Alt Ar</td>
+                        <td>{{ $product->translate('ar')->alt }}</td>
                     </tr>
                     <tr>
-                        <td>sku</td>
-                        <td>{{ $product->sku }}</td>
+                        <td>Alt En  </td>
+                        <td>{{ $product->translate('en')->alt }}</td>
                     </tr>
                     <tr>
-                        <td>الحالة</td>
-                        <td>{{$product->status == 1 ? 'مفعل' : 'لم يفعل'}}</td>
+                        <td> Description Ar</td>
+                        <td>{{ $product->translate('ar')->description }}</td>
                     </tr>
                     <tr>
-                        <td>popular</td>
-                        <td>{{$product->popular == 1 ? 'مفعل' : 'لم يفعل'}}</td>
+                        <td>Description En  </td>
+                        <td>{{ $product->translate('en')->description }}</td>
+                    </tr>
+                   
+                    <tr>
+                        <td> Description Meta Ar</td>
+                        <td>{{ $product->translate('ar')->description_meta }}</td>
                     </tr>
                     <tr>
-                        <td>اللون</td>
-                        <td>
-                            @foreach($product->colors as $color)
-                            {{ $color->name_ar }} |
-                            @endforeach
-                        </td>
+                        <td>Description Meta En  </td>
+                        <td>{{ $product->translate('en')->description_meta }}</td>
+                    </tr><tr>
+                        <td> Keyword Ar</td>
+                        <td>{{ $product->translate('ar')->keywords }}</td>
                     </tr>
                     <tr>
-                        <td>الانواع</td>
-                        <td>
-                            @foreach($product->types as $type)
-                            {{ $type->name_ar }} |
-                            @endforeach
-                        </td>
+                        <td>Keyword En  </td>
+                        <td>{{ $product->translate('en')->keywords }}</td>
+                    </tr><tr>
+                        <td> Keyword Meta Ar</td>
+                        <td>{{ $product->translate('ar')->keywords_meta }}</td>
                     </tr>
+                    <tr>
+                        <td>Keyword Meta En  </td>
+                        <td>{{ $product->translate('en')->keywords_meta }}</td>
+                    </tr>
+                    <tr>
+                        <td>status</td>
+                        <td>{{$product->status == 1 ? 'Active' : ' Inactive'}}</td>
+                    </tr>
+                  
+                   
+                  
                 </tbody>
             </table>
         </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\BaseController;
+use App\Http\Resources\CityResource;
 use Illuminate\Http\Request;
 use App\Services\CityService;
 use Auth;
@@ -15,13 +16,14 @@ class CityController extends BaseController
         parent::__construct($service);
     }
 
-    public function get($city_id = null)
+    public function get()
     {
+        
         try {
-            $data = $this->service->getApi($city_id);
-            return $this->sendResponse($data, 'تم عرض المدن بنجاح');
+            $data = $this->service->getAll();
+            return $this->sendResponse(CityResource::collection($data), 'تم عرض المدن بنجاح' , 200);
         } catch (Exception $exception) {
-            return $this->sendError('خطأ.', $exception->getMessage());
+            return $this->sendError('خطأ.', $exception->getMessage(),400);
         }
     }
 }

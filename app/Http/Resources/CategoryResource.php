@@ -17,6 +17,13 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'alt' => $this->alt,
+            'keywords' => $this->keywords,
+            'keywords_meta' => $this->keywords_meta,
+            'title' => $this->title,
+            'description' => $this->description,
+            'description_meta' => $this->description_meta,
+            'products' => ListProductResource::collection($this->products)
         ];
     }
 }

@@ -15,19 +15,15 @@ class AddressService extends BaseService
     private $cityRepository;
     private $districtRepository;
 
-    public function __construct(AddressRepository $repository, DistrictRepository $districtRepository, Request $request)
+    public function __construct(AddressRepository $repository, Request $request)
     {
         parent::__construct($repository, $request);
 
-        $this->with = [
-            'district'
-        ];
-        $this->districtRepository = $districtRepository;
     }
 
     public function getUserAddresses($user_id)
     {
-        $data = $this->repository->where('user_id', $user_id)->where('status', '!=', '2')->get();
+        $data = $this->repository->where('user_id', $user_id)->get();
         return $data;
     }
 

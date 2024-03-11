@@ -9,6 +9,6 @@ class Contact extends Model
 
     protected $table = 'contacts';
     public $timestamps = true;
-    protected $fillable = array('name', 'phone', 'subject', 'message', 'email', 'status');
+    protected $fillable = array('name', 'email','message', 'status');
 
 }

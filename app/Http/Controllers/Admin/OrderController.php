@@ -53,6 +53,6 @@ class OrderController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.district.index'))->with(['success' => 'تم حذف المنطقة بنجاح']);
+        return redirect(route('admin.order.index'))->with(['success' => 'تم حذف المنطقة بنجاح']);
     }
 }

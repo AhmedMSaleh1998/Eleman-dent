@@ -24,7 +24,9 @@ class UserRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            'name'      => 'required|string|max:255',
+            'first_name'      => 'required|string|max:255',
+            'last_name'      => 'required|string|max:255',
+            'city_id'   => 'required|exists:cities,id', 
             'email'     => 'required|email|unique:users|max:255',
             'password'  => 'required|string|min:8',
             'phone'     => 'required',

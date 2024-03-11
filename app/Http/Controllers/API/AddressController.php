@@ -9,6 +9,7 @@ use App\Services\AddressService;
 use Auth;
 use Exception;
 
+
 class AddressController extends BaseController
 {
     public function __construct(AddressService $service)
@@ -19,8 +20,8 @@ class AddressController extends BaseController
     public function get()
     {
         try {
-            $data = $this->service->getِApi();
-            return $this->sendResponse($data, 'تم عرض العناوين بنجاح');
+            $data = $this->service->getUserAddresses(getCurrentUser());
+            return $this->sendResponse(AddressResource::collection($data), 'تم عرض العناوين بنجاح' ,200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
@@ -30,7 +31,7 @@ class AddressController extends BaseController
     {
         try {
             $data = $this->service->store($request->all() + ['user_id' => getCurrentUser()]);
-            return $this->sendResponse($data, 'تم !ضافة عنوان بنجاح');
+            return $this->sendResponse($data, 'تم !ضافة عنوان بنجاح' , 200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
@@ -39,8 +40,8 @@ class AddressController extends BaseController
     public function show($id)
     {
         try {
-            $data = $this->service->showApi($id);
-            return $this->sendResponse($data, 'تم عرض العنوان بنجاح');
+            $data = $this->service->show($id);
+            return $this->sendResponse($data, 'تم عرض العنوان بنجاح' , 200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
@@ -50,7 +51,7 @@ class AddressController extends BaseController
     {
         try {
             $data = $this->service->update($id, $request->all());
-            return $this->sendResponse($data, 'تم تعديل عنوان بنجاح');
+            return $this->sendResponse($data, 'تم تعديل عنوان بنجاح' , 200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
@@ -60,7 +61,7 @@ class AddressController extends BaseController
     {
         try {
             $this->service->destroy($id);
-            return $this->sendResponse([], 'تم حذف عنوان بنجاح');
+            return $this->sendResponse([], 'تم حذف عنوان بنجاح' , 200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }

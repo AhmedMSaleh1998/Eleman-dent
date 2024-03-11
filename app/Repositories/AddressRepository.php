@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Address;
+use App\Models\UserAddress;
 use Illuminate\Container\Container as App;
 //use Your Model
 
@@ -17,6 +18,6 @@ class AddressRepository extends BaseRepository
      */
     public function model()
     {
-        return Address::class;
+        return UserAddress::class;
     }
 }

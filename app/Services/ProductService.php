@@ -14,24 +14,22 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\RelatedProductsResource;
+use App\Models\Product;
+use App\Repositories\BrandRepository;
 use App\Repositories\FavouriteRepository;
 use Symfony\Component\Mime\Part\Multipart\RelatedPart;
 
 class ProductService extends BaseService
 {
     private $categoryRepository;
-    private $ProductSizeRepository;
-    private $colorRepository;
-    private $typeRepository;
-    private $sizeRepository;
+    private $brandRepository;
 
-    public function __construct(ProductRepository $repository, CategoryRepository $categoryRepository, ProductSizeRepository $ProductSizeRepository, ColorRepository $colorRepository, TypeRepository $typeRepository, Request $request)
+    public function __construct(ProductRepository $repository, CategoryRepository $categoryRepository, BrandRepository $brandRepository, Request $request)
     {
         parent::__construct($repository, $request);
         $this->categoryRepository       = $categoryRepository;
-        $this->ProductSizeRepository    = $ProductSizeRepository;
-        $this->colorRepository          = $colorRepository;
-        $this->typeRepository          = $typeRepository;
+        $this->brandRepository    = $brandRepository;
+
 
         /* $this->with = [
             'productImages',
@@ -44,51 +42,35 @@ class ProductService extends BaseService
     public function getAllProducts($request)
     {
         if (empty($request)) {
-            $data = $this->repository->where('status', '1')->paginate(8);
+            $data = $this->repository->where('status', '1');
         } else {
 
             $input = $request->all();
 
             $data = $this->repository->query();
-
+            
             if (isset($input['filter']['category_id'])) {
-                $subCategories = $this->categoryRepository->where('parent_id', $input['filter']['category_id'])->pluck('id');
-                $data = $data->whereIn('category_id', $subCategories);
+                $data = $data->where('category_id', $input['filter']['category_id']);
             }
 
-            if (isset($input['filter']['sub_category_id'])) {
-                $data = $data->where('category_id', $input['filter']['sub_category_id']);
-            }
-
-            if (isset($input['filter']['color_id'])) {
-                $data = $data->where('color_id', $input['filter']['color_id']);
-            }
-
-            if (isset($input['filter']['model_id'])) {
-                $data = $data->where('model_id', $input['filter']['model_id']);
-            }
-
-            if (isset($input['filter']['size_id'])) {
-                $products = $this->ProductSizeRepository->where('size_id', $input['filter']['size_id'])->pluck('product_id');
-                $data = $data->whereIn('id', $products);
+            if (isset($input['filter']['brand_id'])) {
+                $data = $data->where('brand_id', $input['filter']['brand_id']);
             }
 
             if (isset($input['filter']['min_price']) && isset($input['filter']['max_price'])) {
 
-                $data = $data->whereBetween('discount_price', array($input['filter']['min_price'], $input['filter']['max_price']));
+                $data = $data->whereBetween('price', array($input['filter']['min_price'], $input['filter']['max_price']));
             }
-            $data = $data->where('status', '1')->paginate(8);
+            $data = $data->where('status', '1')->paginate(12);
         }
-        return ProductResource::collection($data);
-        //return $data;
+        return ProductResource::collection($data)->response()->getData();
     }
+    
     public function getFormData()
     {
         return [
             'categories' => $this->categoryRepository->getActiveItems(),
-            'colors'     => $this->colorRepository->getActiveItems(),
-            'types'      => $this->typeRepository->getActiveItems(),
-            'related'    => $this->repository->getActiveItems(),
+            'brands'     => $this->brandRepository->getActiveItems(),
         ];
     }
 
@@ -98,16 +80,32 @@ class ProductService extends BaseService
 
         $record['image'] = uploadImage($record['image'], 'products');
 
-        $product = $this->repository->create($record);
-        if ($request->has('color_id')) {
-            $product->colors()->attach($record['color_id']);
-        }
-        if ($request->has('type_id')) {
-            $product->types()->attach($record['type_id']);
-        }
-        if ($request->has('related_id')) {
-            $product->related()->attach($record['related_id']);
-        }
+        $product = Product::create([
+            'image' => $record['image'],
+            'price' => $record['price'],
+            'quantity' => $record['quantity'],
+            'brand_id' => $record['brand_id'] ?? null,
+            'en' => [
+                'name' => $record['name_en'],
+                'title' => $record['title_en'],
+                'alt' => $record['alt_en'],
+                'description' => $record['description_en'],
+                'description_meta' => $record['description_meta_en'],
+                'keywords_meta' => $record['keywords_meta_en'],
+                'keywords' => $record['keywords_en'],
+
+            ],
+            'ar' => [
+                'name' => $record['name_ar'],
+                'title' => $record['title_ar'],
+                'alt' => $record['alt_ar'],
+                'description' => $record['description_ar'],
+                'description_meta' => $record['description_meta_ar'],
+                'keywords_meta' => $record['keywords_meta_ar'],
+                'keywords' => $record['keywords_ar'],
+            ],
+        ]);
+        $product->categories()->attach($record['category_id']);
         return $record;
     }
 
@@ -115,21 +113,37 @@ class ProductService extends BaseService
     {
         $product = $this->show($id);
 
-        $record = $request->validated();
-        //dd($record);
-        unset($record['color_id']);
-        unset($record['type_id']);
-        unset($record['related_id']);
-
         if ($request->hasFile('image')) {
-            $record['image'] = uploadImage($request['image'], 'products', 'products', $id);
+            $image = uploadImage($request['image'], 'products', 'products', $id);
         }
 
-        $product = parent::update($id, $record);
+        $product->update([
+            'image' => $image ?? $product->image,
+            'price' => $request['price'],
+            'quantity' => $request['quantity'],
+            'brand_id' => $request['brand_id'],
+            'en' => [
+                'name' => $request['name_en'],
+                'title' => $request['title_en'],
+                'alt' => $request['alt_en'],
+                'description' => $request['description_en'],
+                'description_meta' => $request['description_meta_en'],
+                'keywords_meta' => $request['keywords_meta_en'],
+                'keywords' => $request['keywords_en'],
 
-        $product->colors()->sync($request->color_id);
-        $product->types()->sync($request->type_id);
-        $product->related()->sync($request->related_id);
+            ],
+            'ar' => [
+                'name' => $request['name_ar'],
+                'title' => $request['title_ar'],
+                'alt' => $request['alt_ar'],
+                'description' => $request['description_ar'],
+                'description_meta' => $request['description_meta_ar'],
+                'keywords_meta' => $request['keywords_meta_ar'],
+                'keywords' => $request['keywords_ar'],
+            ],
+        ]);
+        $product->categories()->sync($request['category_id']);
+
         return $product;
     }
 
@@ -143,10 +157,10 @@ class ProductService extends BaseService
         $related = $this->repository->get()->where('category_id', $category_id);
     }
 
-    public function productRate($request)
-    {
-        return $this->productRateRepository->create($request);
-    }
+    // public function productRate($request)
+    // {
+    //     return $this->productRateRepository->create($request);
+    // }
 
     public function relatedProducts($product_id)
     {
@@ -168,19 +182,33 @@ class ProductService extends BaseService
 
     public function search($filter)
     {
-        $record = $this->repository->where('name', 'like', '%' . $filter . '%')->orWhere('description', 'like', '%' . $filter . '%')->get();
-        return ProductResource::collection($record);
+        $products = Product::where('status', 1)
+            ->when($filter, function ($query) use ($filter) {
+                return $query->where(function ($query) use ($filter) {
+                    $query->whereHas('translations', function ($query) use ($filter) {
+                        $query->where(function ($subQuery) use ($filter) {
+                            $subQuery->where('name', 'like', '%' . $filter . '%')
+                                ->orWhere('keywords', 'like', '%' . $filter . '%')
+                                ->orWhere('description', 'like', '%' . $filter . '%')
+                                ->orWhere('title', 'like', '%' . $filter . '%');
+                        });
+                    });
+                });
+            })
+            ->get();
+    
+        return ProductResource::collection($products);
     }
 
     public function allLookups()
     {
         $data = [];
 
-        $data['color'] = $this->colorRepository->get();
-        $data['material'] = $this->MaterialRepository->get();
-        $data['model'] = $this->modelRepository->get();
-        $data['sole'] = $this->soleRepository->get();
-        $data['size'] = $this->sizeRepository->get();
+        // $data['color'] = $this->colorRepository->get();
+        // $data['material'] = $this->MaterialRepository->get();
+        // $data['model'] = $this->modelRepository->get();
+        // $data['sole'] = $this->soleRepository->get();
+        // $data['size'] = $this->sizeRepository->get();
         $data['price']['min'] = $this->repository->min('discount_price');
         $data['price']['max'] = $this->repository->max('discount_price');
 

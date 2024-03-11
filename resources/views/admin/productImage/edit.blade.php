@@ -14,16 +14,17 @@
 
 @section('content')
 <!-- Page-Title -->
+@if (Session::has('success'))
+<div class="alert alert-success text-center">{{ Session::get('success') }}</div>
+@elseif(Session::has('danger'))
+<div class="alert alert-danger text-center">{{ Session::get('danger') }}</div>
+@endif
 <div class="row">
     <div class="main-title-00">
-        @if (Session::has('success'))
-        <div class="alert alert-success">{{ Session::get('success') }}</div>
-        @elseif(Session::has('danger'))
-        <div class="alert alert-danger">{{ Session::get('danger') }}</div>
-        @endif
-        <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
-        <a style="color: #fff;" href="{{ route('admin.product.index') }}">/ صور المنتج / </a>
-        <a style="color: #36404a;"> تعديل </a>
+      
+        <a style="color: #fff;" href="{{ route('admin.home') }}">Home</a>
+        <a style="color: #fff;" href="{{ route('admin.productimage.index',$productImage->product_id) }}">/ Product Images/ </a>
+        <a style="color: #36404a;"> Edit </a>
 
         <ul>
             @foreach ($errors->all() as $error)
@@ -35,15 +36,15 @@
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <h4 class="header-title m-t-0 m-b-20">تعديل صورة المنتج</h4>
+            <h4 class="header-title m-t-0 m-b-20"> Edit Product Image </h4>
             {{ Form::model($productImage,['method' => 'PUT', 'action' => ['App\Http\Controllers\Admin\ProductImageController@update', $productImage->id], 'files' => true]) }}
             <table class="table table-bordered table-striped">
                 <tbody>
                     <tr>
-                        <td>الصورة</td>
+                        <td>image</td>
                         <input type="hidden" name="product_id" value="{{ $productImage->product_id }}">
                         <td>
-                            <input type="file" class="filestyle" data-placeholder="No file" data-iconname="fa fa-cloud-upload" name="image" required>
+                            <input type="file" class="filestyle" data-placeholder="No file" data-iconname="fa fa-cloud-upload" name="image" >
                             @if ($errors->has('image'))
                             <span class="alert alert-danger">
                                 <strong>{{ $errors->first('image') }}</strong>
@@ -51,10 +52,20 @@
                             @endif
 
                         </td>
+                        <tr>
+                            <td> Alt  </td>
+                            <td><input type="text" class="form-control" name="alt" 
+                                    value="{{ $productImage->alt }}"></td>
+                            @if ($errors->has('alt'))
+                                <span class="alert alert-danger">
+                                    <strong>{{ $errors->first('alt') }}</strong>
+                                </span>
+                            @endif
+                        </tr>
                     </tr>
                     <tr>
                         <td style="width:25%"></td>
-                        <td><button type="submit" class="btn btn-default waves-effect waves-light form-control">تعديل</button></td>
+                        <td><button type="submit" class="btn btn-default waves-effect waves-light form-control">Save</button></td>
                     </tr>
                 </tbody>
             </table>

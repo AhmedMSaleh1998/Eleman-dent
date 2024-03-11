@@ -20,7 +20,7 @@ class BasketController extends BaseController
     {
         try {
             $data = $this->service->store($request->all() + ['user_id' => getCurrentUser()]);
-            return $this->sendResponse($data, 'تم !ضافة للسلة بنجاح');
+            return $this->sendResponse($data, 'تم !ضافة للسلة بنجاح',200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
@@ -30,7 +30,7 @@ class BasketController extends BaseController
     {
         try {
             $data = $this->service->getApi();
-            return $this->sendResponse($data, 'تم عرض منتجات السلة بنجاح');
+            return $this->sendResponse($data, 'تم عرض منتجات السلة بنجاح',200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
@@ -40,7 +40,7 @@ class BasketController extends BaseController
     {
         try {
             $this->service->destroy($id);
-            return $this->sendResponse([], 'تم حذف منتج من السلة بنجاح');
+            return $this->sendResponse([], 'تم حذف منتج من السلة بنجاح',200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
@@ -50,7 +50,7 @@ class BasketController extends BaseController
     {
         try {
             $this->service->destroyAll();
-            return $this->sendResponse([], 'تم حذف السلة بنجاح');
+            return $this->sendResponse([], 'تم حذف السلة بنجاح',200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }
@@ -60,7 +60,7 @@ class BasketController extends BaseController
     {
         try {
             $data = $this->service->updateQty($id, $quantity);
-            return $this->sendResponse([], 'تم تعديل منتج من السلة بنجاح');
+            return $this->sendResponse([], 'تم تعديل منتج من السلة بنجاح',200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());
         }

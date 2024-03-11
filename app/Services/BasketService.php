@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\BasketResource;
+use App\Models\Product;
 use App\Repositories\CartItemRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class BasketService extends BaseService
 
     public function getApi()
     {
-        $data = $this->repository->get($this->with)->where('user_id', getCurrentUser())->where('order_id', null);
+        $data = $this->repository->get()->where('user_id', getCurrentUser())->where('order_id', null);
         return BasketResource::collection($data);
     }
 
@@ -40,12 +41,14 @@ class BasketService extends BaseService
 
     public function store($data)
     {
-        $record = $this->repository->where('user_id', $data['user_id'])->where('product_size_id', $data['product_size_id'])->where('color_id', $data['color_id'])->where('order_id', null)->first();
+        $record = $this->repository->where('user_id', $data['user_id'])->where('product_id', $data['product_id'])->where('order_id', null)->first();
 
         if ($record) {
             $record->quantity += $data['quantity'];
             $record->update();
         } else {
+            $product = Product::find($data['product_id']);
+            $data['price'] = $product->price;
             $record = $this->repository->create($data);
         }
 

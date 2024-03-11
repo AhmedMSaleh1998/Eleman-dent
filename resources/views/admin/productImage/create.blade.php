@@ -14,16 +14,17 @@
 
 @section('content')
 <!-- Page-Title -->
+@if (Session::has('success'))
+<div class="alert alert-success text-center">{{ Session::get('success') }}</div>
+@elseif(Session::has('danger'))
+<div class="alert alert-danger text-center">{{ Session::get('danger') }}</div>
+@endif
 <div class="row">
     <div class="main-title-00">
-        @if (Session::has('success'))
-        <div class="alert alert-success">{{ Session::get('success') }}</div>
-        @elseif(Session::has('danger'))
-        <div class="alert alert-danger">{{ Session::get('danger') }}</div>
-        @endif
-        <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
-        <a style="color: #fff;" href="{{ route('admin.product.index') }}">/ المنتجات / </a>
-        <a style="color: #36404a;"> إضافة </a>
+      
+        <a style="color: #fff;" href="{{ route('admin.home') }}">Home</a>
+        <a style="color: #fff;" href="{{ route('admin.productimage.index',$product_id) }}">/ Product Images/ </a>
+        <a style="color: #36404a;"> Add </a>
 
         <ul>
             @foreach ($errors->all() as $error)
@@ -35,7 +36,7 @@
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <h4 class="header-title m-t-0 m-b-20">اضافه صورة منتج</h4>
+            <h4 class="header-title m-t-0 m-b-20"> Add Product Image</h4>
             {{ Form::open(['method'=>'POST','action' => ['App\Http\Controllers\Admin\ProductImageController@store'], 'files' => true])}}
 
             @csrf
@@ -43,7 +44,7 @@
                 <tbody>
                     <input type="hidden" name="product_id" value="{{ $product_id }}">
                     <tr>
-                        <td>الصورة</td>
+                        <td>Image</td>
                         <td>
                             <input type="file" class="filestyle" data-placeholder="No file" data-iconname="fa fa-cloud-upload" name="image" required>
                             @if ($errors->has('image'))
@@ -53,10 +54,20 @@
                             @endif
 
                         </td>
+
+                        <tr>
+                            <td>Alt </td>
+                            <td><input type="text" class="form-control" name="alt" ></td>
+                            @if ($errors->has('alt'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('alt') }}</strong>
+                            </span>
+                            @endif
+                        </tr>
                     </tr>
                     <tr>
                         <td style="width:25%"></td>
-                        <td><button type="submit" class="btn btn-default waves-effect waves-light form-control">حفظ</button></td>
+                        <td><button type="submit" class="btn btn-default waves-effect waves-light form-control">save</button></td>
                     </tr>
                 </tbody>
             </table>

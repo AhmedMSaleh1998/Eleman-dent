@@ -9,11 +9,6 @@ class ProductImage extends Model
 
     protected $table = 'product_images';
     public $timestamps = true;
-    protected $fillable = array('image', 'product_id');
-
-    public function product()
-    {
-        return $this->belongsTo('App\Models\Product');
-    }
+    protected $fillable = array('product_id', 'image', 'alt');
 
 }

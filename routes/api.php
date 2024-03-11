@@ -14,20 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['namespace' => 'App\\Http\\Controllers\\API'], function () {
+Route::group(['namespace' => 'App\\Http\\Controllers\\API','middleware'=>['api', 'localization']], function () {
     Route::post('login', 'LoginController@login');
+    Route::post('logout', 'LogoutController@logout');
     Route::post('register', 'RegisterController@register');
     Route::post('verify', 'VerifyController@activate');
     Route::post('forgetPassword', 'ForgetPasswordController@forget');
     Route::post('resend', 'ForgetPasswordController@resend');
     Route::post('changePassword', 'ForgetPasswordController@changePassword');
 
-    Route::get('category/{parent_id?}', 'CategoryController@get');
-    Route::get('city/{district_id?}', 'CityController@get');
+    Route::get('categories', 'CategoryController@list');
+    Route::get('category/show/{id}', 'CategoryController@show');
+    Route::get('cities', 'CityController@get');
     Route::get('color', 'ColorController');
     Route::get('size', 'SizeController');
     Route::get('model', 'ModelController');
@@ -37,11 +39,18 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\API'], function () {
 
     Route::get('setting', 'SettingController@index');
     Route::get('about_us', 'AboutController@index');
-
+    Route::get('home', 'HomeController@index');
+    Route::get('events', 'EventController@index');
+    Route::get('payment_methods', 'PaymentMethodController@index');
+    Route::get('event/{id}', 'EventController@show');
+    Route::get('events/{year}', 'EventController@getYearEvents');
+    Route::post('contact_us', 'ContactUsController@store');
     Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('user/profile', 'ProfileController@show');
         Route::post('user/update_profile', 'ProfileController@update');
+        Route::post('user/destroy', 'ProfileController@delete');
+        Route::post('user/changePassword', 'ProfileController@changePassword');
 
         Route::get('user/addresses', 'AddressController@get');
         Route::post('user/address/store', 'AddressController@store');
@@ -51,7 +60,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\API'], function () {
 
         Route::get('user/favourites', 'FavouriteController@get');
         Route::post('user/favourites/store', 'FavouriteController@store');
-        Route::get('user/favourites/destroy/{product_id}', 'FavouriteController@destroy');
+        Route::get('user/favourites/destroy', 'FavouriteController@destroy');
 
         Route::post('basket/store', 'BasketController@store');
         Route::get('basket/show', 'BasketController@getAll');
@@ -67,8 +76,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\API'], function () {
 
         Route::post('product_rate', 'ProductController@rate');
         Route::get('product_favourite/{product_id}', 'ProductController@isFavourite');
-
-        Route::post('contact_us', 'ContactUsController@store');
     });
     Route::get('product_search/{filter}', 'ProductController@search');
+
 });

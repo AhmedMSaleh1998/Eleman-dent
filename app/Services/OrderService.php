@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Models\User;
+use App\Models\UserAddress;
 use App\Repositories\OrderRepository;
 use App\Repositories\CartItemRepository;
 use App\Repositories\CouponRepository;
@@ -20,13 +22,11 @@ class OrderService extends BaseService
 
     public function __construct(
         OrderRepository $repository,
-        CouponRepository $couponRepository,
         Request $request,
         CartItemRepository $basketRepository,
     ) {
         parent::__construct($repository, $request);
         $this->basketRepository = $basketRepository;
-        $this->couponRepository = $couponRepository;
     }
 
     public function order($request)
@@ -34,34 +34,24 @@ class OrderService extends BaseService
 
         $baskets = $this->basketRepository->getCartBasketsForUser(getCurrentUser());
         if (!$baskets->count()) {
-            throw new Exception();
+            throw new Exception('السلة فارغة لا يمكن تنفيذ الطلب');
         }
-
-        $coupon_value = 0;
-
-        if ($request->coupon_id) {
-            $coupon = $this->couponRepository->find($request->coupon_id);
-
-            $coupon_value = 0;
-
-            if ($coupon) {
-                $coupon_value = $coupon->type == 1 ? $coupon->value : ($request->total * ($coupon->value / 100));
-            }
-
-            if ($request['total'] < $coupon->min_total) {
-                throw new Exception();
-            }
+        $total = 0;
+        foreach($baskets as $basket)
+        {
+            $total += $basket->price * $basket->quantity;
         }
+        
+        $address = UserAddress::find($request['address_id']);
+        $total += $total + $address->city->shipping_fess;
 
         $order = $this->repository->create(
             [
-                'payment_id'    => $request->payment_medthod_id,
+                'payment_id'    => $request->payment_id,
                 'address_id'    => $request->address_id,
-                'coupon_id'     => $request->coupon_id,
-                'coupon_value'     => $coupon_value,
                 'user_id'       => getCurrentUser(),
-                'total'         => $request->total,
-                'shipping'      => $request->shipping,
+                'total'         => $total,
+                'shipping'      => $address->city->shipping_fess,
             ]
         );
         $this->basketRepository->multipleUpdate($baskets->pluck('id'), ['order_id' => $order->id]);
@@ -78,7 +68,7 @@ class OrderService extends BaseService
     public function orderDetails($id)
     {
         $order = $this->repository->show($id, $this->with);
-        return new OrderResource($order);
+        return $order;
     }
 
     public function updateStatus($id, $status)

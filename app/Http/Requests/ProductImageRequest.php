@@ -26,6 +26,7 @@ class ProductImageRequest extends FormRequest
         return [
             'image'       => 'required',
             'product_id'  => 'required|integer',
+            'alt'         => 'nullable'
         ];
     }
 }

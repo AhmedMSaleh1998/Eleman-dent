@@ -30,7 +30,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.paymentmethod.create') }}" class="btn btn-default waves-effect">اضافه طريقة دفع +</a>
+                        <a href="{{ route('admin.payment.create') }}" class="btn btn-default waves-effect">اضافه طريقة دفع +</a>
                     </div>
                 </div>
             </div>
@@ -40,7 +40,8 @@
 
                     <thead>
                         <tr>
-                            <th data-field="اسم" data-align="center">اسم</th>
+                            <th data-field="اسم عربي" data-align="center">اسم عربي</th>
+                            <th data-field=" اسم انجليزي" data-align="center">اسم انجليزي</th>
                             <th data-field="الحالة" data-align="center">الحالة</th>
                             <th data-field="التحكم" data-align="center">التحكم</th>
                         </tr>
@@ -49,12 +50,13 @@
                         @if(isset($payment_methods))
                         @foreach($payment_methods as $paymentmethod)
                         <tr>
-                            <td>{{$paymentmethod->name}}</td>
+                            <td>{{ $paymentmethod->translate('ar')->name }}</td>
+                            <td>{{ $paymentmethod->translate('en')->name }}</td>
                             <td>{{$paymentmethod->status === 1 ? 'مفعل' : 'غير مفعل'}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus',[$paymentmethod->status,'payment_methods',$paymentmethod->id]) }}" class="btn btn-{{$paymentmethod->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="الحالة"> {{$paymentmethod->status == 1 ? 'إبطال' : 'تفعيل'}}</a>
-                                <a href="{{ route('admin.paymentmethod.edit',$paymentmethod->id) }}" class="btn btn-success waves-effect" title="تعديل">تعديل</a>
+                                <a href="{{ route('admin.changeStatus',[$paymentmethod->status,'payments',$paymentmethod->id]) }}" class="btn btn-{{$paymentmethod->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="الحالة"> {{$paymentmethod->status == 1 ? 'إبطال' : 'تفعيل'}}</a>
+                                <a href="{{ route('admin.payment.edit',$paymentmethod->id) }}" class="btn btn-success waves-effect" title="تعديل">تعديل</a>
                                 <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$paymentmethod->id}}delete" title="حذف">حذف </button>
                             </td>
                         </tr>
@@ -70,7 +72,7 @@
                                         <h4 style="text-align:center;">تأكيد الحذف</h4>
                                     </div>
                                     <div class="modal-footer" style="text-align:center">
-                                        <form action="{{ route('admin.paymentmethod.destroy',$paymentmethod->id) }}" method="POST">
+                                        <form action="{{ route('admin.payment.destroy',$paymentmethod->id) }}" method="POST">
                                             {{csrf_field()}}
                                             <input name="_method" type="hidden" value="DELETE">
                                             <button class="btn btn-danger" type="submit" dir="ltr">حذف</button>

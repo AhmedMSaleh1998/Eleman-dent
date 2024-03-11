@@ -24,15 +24,31 @@ class SettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone_one' => 'nullable',
+            'location_one' => 'required',
+            'location_two' => 'required',
+            'src_one' => 'required',
+            'src_two' => 'required',
+            'phone_one' => 'required',
             'phone_two' => 'nullable',
-            'email_one' => 'nullable',
-            'email_two' => 'nullable',
-            'address_ar' => 'nullable',
-            'address_en' => 'nullable',
-            'facebook' => 'nullable',
-            'twitter' => 'nullable',
-            'instagram' => 'nullable',
+            'email' => 'required|email',
+            'address_one_ar' => 'nullable|string',
+            'address_one_en' => 'nullable|string',
+            'address_two_ar' => 'nullable|string',
+            'address_two_en' => 'nullable|string',
+            'facebook' => 'nullable|url',
+            'twitter' => 'nullable|url',
+            'instagram' => 'nullable|url',
+            'whatsapp' => 'nullable',
+            'youtube' => 'nullable|url',
+            'keywords_ar' => 'nullable|string',
+            'keywords_en' => 'nullable|string',
+            'privacy_ar' => 'nullable|string',
+            'privacy_en' => 'nullable|string',
+            'terms_ar' => 'required|string',
+            'terms_en' => 'required|string',
+            'about_us_ar' => 'nullable|string',
+            'about_us_en' => 'nullable|string',
+
         ];
     }
 }

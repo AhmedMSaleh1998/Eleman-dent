@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\CategoryRequest;
+use App\Models\Category;
 use App\Services\CategoryService;
 
 class CategoryController extends BaseController
@@ -42,8 +43,13 @@ class CategoryController extends BaseController
      */
     public function store(CategoryRequest $request)
     {
-        $this->service->store($request);
-        return redirect()->back()->with(['success' => 'تم إضافة القسم بنجاح']);
+        try{
+            $this->service->store($request);
+            return redirect()->back()->with(['success' => 'Category added successfully']);
+        }catch(\Exception $e){
+            dd($e);
+        }
+        
     }
 
     /**
@@ -69,7 +75,7 @@ class CategoryController extends BaseController
     {
 
         $this->service->update($request, $id);
-        return redirect()->back()->with(['success' => 'تم تعديل القسم بنجاح']);
+        return redirect()->back()->with(['success' => 'Category updated successfully ']);
     }
 
     /**
@@ -81,6 +87,6 @@ class CategoryController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.category.index'))->with(['success' => 'تم حذف القسم بنجاح']);
+        return redirect(route('admin.category.index'))->with(['success' => ' Category deleted successfully']);
     }
 }

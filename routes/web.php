@@ -14,15 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
-    Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
-        Route::resource('slider', 'SliderController');
+Route::group(['namespace' => 'App\Http\Controllers\Admin' , 'middleware' => 'auth:web'], function () {
+    Route::group(['as' => 'admin.'], function () {
+        Route::resource('banner', 'BannerController');
+        Route::resource('brand', 'BrandController');
         Route::resource('category', 'CategoryController');
         Route::resource('product', 'ProductController');
+        Route::resource('event', 'EventController');
+        Route::resource('achievement', 'AchievementController');
         Route::resource('color', 'ColorController');
-        Route::resource('district', 'DistrictController');
+        Route::resource('city', 'CityController');
         Route::resource('setting', 'SettingController');
-        Route::resource('paymentmethod', 'PaymentMethodController');
+        Route::resource('payment', 'PaymentMethodController');
         Route::resource('coupon', 'CouponController');
         Route::resource('contact', 'ContactController');
         Route::resource('about', 'AboutController');
@@ -36,6 +39,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
         Route::resource('type', 'TypeController');
         Route::resource('producttype', 'ProductTypeController');
         Route::resource('delivertime', 'DeliverTimeController');
+        Route::resource('review', 'CustomerReviewController');
         /**
          * Global Status Change
          */
@@ -53,6 +57,16 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
         Route::get('productimage/{product_id}/edit', 'ProductImageController@edit')->name('productimage.edit');
         Route::put('productimage/{product_id}/update', 'ProductImageController@update')->name('productimage.update');
         Route::delete('productimage/{image_id}/delete', 'ProductImageController@destroy')->name('productimage.destroy');
+
+        /**
+         * Event Images Routes
+         */
+        Route::get('product/{product_id}/eventimage', 'EventImageController@index')->name('eventimage.index');
+        Route::get('product/{product_id}/eventimage/create', 'EventImageController@create')->name('eventimage.create');
+        Route::post('eventimage/store', 'EventImageController@store')->name('eventimage.store');
+        Route::get('eventimage/{product_id}/edit', 'EventImageController@edit')->name('eventimage.edit');
+        Route::put('eventimage/{product_id}/update', 'EventImageController@update')->name('eventimage.update');
+        Route::delete('eventimage/{image_id}/delete', 'EventImageController@destroy')->name('eventimage.destroy');
         /**
          * END
          */
@@ -85,13 +99,18 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
          * Change Order Status
          */
         Route::get('order/status/{order_id}/{status}', 'OrderController@updateStatus')->name('order.status');
+        Route::get('home', 'HomeController@index')->name('home');
+
         /**
          * End
          **/
     });
 
-    Route::get('/index', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('admin.home');
+    // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+   
 });
 
 Auth::routes();
+
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('admin.home');

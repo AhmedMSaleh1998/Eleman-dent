@@ -16,7 +16,7 @@
             @elseif(Session::has('danger'))
             <div class="alert alert-danger">{{ Session::get('danger') }}</div>
             @endif
-            <h4 class="page-title">المدن</h4>
+            <h4 class="page-title">Cities</h4>
         </div>
 
     </div>
@@ -30,7 +30,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.city.create') }}" class="btn btn-default waves-effect">اضافه مدينة +</a>
+                        <a href="{{ route('admin.city.create') }}" class="btn btn-default waves-effect">Add City +</a>
                     </div>
                 </div>
             </div>
@@ -40,23 +40,26 @@
 
                     <thead>
                         <tr>
-                            <th data-field="اسم" data-align="center">اسم</th>
-                            <th data-field="الحالة" data-align="center">الحالة</th>
-                            <th data-field="التحكم" data-align="center">التحكم</th>
+                            <th data-field="Name Ar" data-align="center">Name Ar</th>
+                            <th data-field="Name En" data-align="center">Name En</th>
+                            <th data-field="Shipping fees" data-align="center">Shipping fees</th>
+                            <th data-field="Status" data-align="center">Status</th>
+                            <th data-field="Control" data-align="center">Control</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if(isset($cities))
                         @foreach($cities as $city)
                         <tr>
-                            <td>{{$city->name}}</td>
-                            <td>{{$city->status === 1 ? 'مفعل' : 'غير مفعل'}}</td>
+                            <td>{{$city->translate('ar')->name}}</td>
+                            <td>{{$city->translate('en')->name}}</td>
+                            <td>{{$city->shipping_fess}}</td>
+                            <td>{{$city->status === 1 ? 'Shown' : 'hidden'}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus',[$city->status,'cities',$city->id]) }}" class="btn btn-{{$city->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="الحالة"> {{$city->status == 1 ? 'إبطال' : 'تفعيل'}}</a>
-                                <a href="{{ route('admin.city.edit',$city->id) }}" class="btn btn-success waves-effect" title="تعديل">تعديل</a>
-                                <a href="{{ route('admin.district.index',$city->id) }}" class="btn btn-info waves-effect" title="المناطق">المناطق</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$city->id}}delete" title="حذف">حذف </button>
+                                <a href="{{ route('admin.changeStatus',[$city->status,'cities',$city->id]) }}" class="btn btn-{{$city->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="Status"> {{$city->status == 1 ? 'Hide' : 'Show'}}</a>
+                                <a href="{{ route('admin.city.edit',$city->id) }}" class="btn btn-success waves-effect" title="Edit">Edit</a>
+                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$city->id}}delete" title="Delete">Delete </button>
                             </td>
                         </tr>
 
@@ -68,13 +71,13 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="icon error animateErrorIcon" style="display: block;"><span class="x-mark animateXMark"><span class="line left"></span><span class="line right"></span></span></div>
-                                        <h4 style="text-align:center;">تأكيد الحذف</h4>
+                                        <h4 style="text-align:center;">Confirm Delete</h4>
                                     </div>
                                     <div class="modal-footer" style="text-align:center">
                                         <form action="{{ route('admin.city.destroy',$city->id) }}" method="POST">
                                             {{csrf_field()}}
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <button class="btn btn-danger" type="submit" dir="ltr">حذف</button>
+                                            <button class="btn btn-danger" type="submit" dir="ltr">Delete</button>
                                         </form>
                                     </div>
                                 </div><!-- /.modal-content -->

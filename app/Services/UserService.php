@@ -9,6 +9,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
 
 
 class UserService extends BaseService
@@ -50,18 +51,21 @@ class UserService extends BaseService
         return $record;
     }
 
-    /* public function deleteUser($id)
+     public function deleteUser()
     {
-        $user = $this->repository->find($id);
-        $user->destroy();
-        // $record = parent::destroy($id);
-        // return true;
+        $user = $this->repository->find(getCurrentUser());
+        $user->delete();
+    } 
+
+    public function changePassword($request)
+    {
+        $user = $this->repository->where('email', $request['email'])->first();
+        if($user){
+            $user->password = bcrypt($request['password']);
+            $user->save();
+        }else{
+            throw new \Exception('Wrong Email');
+        }
         
-        ->only(
-            'name',
-            'phone',
-            'image',
-        ));
-        
-    } */
+    }
 }

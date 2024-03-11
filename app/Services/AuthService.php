@@ -27,15 +27,21 @@ class AuthService extends BaseService
      */
     public function userLogin(Request $request)
     {
+        
         $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
+        if (Auth::guard('api')->attempt($credentials)) {
             // Authentication passed
-            $user = Auth::user();
+            $user = Auth::guard('api')->user();
+            if($user->status == 0)
+            {
+                throw new Exception('Account is not verified , please verify it then login');
+            }
             $token = $user->createToken('authToken')->plainTextToken;
-            return response()->json(['token' => $token], 200);
+            $user->api_token = $token;
+            $user->save();
+            return response()->json(['token' => $token , 'user' => new UserResource($user)], 200);
         }
-        throw new Exception('Wrong credentilas');
+        throw new Exception('invalid email or password');
 
     }
 
@@ -77,11 +83,11 @@ class AuthService extends BaseService
             }else{
                 $user->status = 1;
                 $user->code = null;
+                $user->api_token =  $user->createToken('MyApp')->plainTextToken;
                 $user->save();
-                $user['token'] =  $user->createToken('MyApp')->plainTextToken;
             }
             $token = $user->createToken('authToken')->plainTextToken;
-            return response()->json(['token' => $token], 200);
+            return response()->json(['token' => $token , 'user' => new UserResource($user)], 200);
             
             // return new UserResource($user);
         }
@@ -118,11 +124,17 @@ class AuthService extends BaseService
         if($user){
             $user->password = bcrypt($request['password']);
             $user->save();
-            $token = $user->createToken('authToken')->plainTextToken;
-            return response()->json(['token' => $token], 200);
         }else{
             throw new Exception('Wrong Email or code');
         }
         
+    }
+
+    public function logout()
+    {
+        $user = Auth::guard('api')->user();
+        $user->api_token = null ;
+        $user->save();
+        Auth::logout();
     }
 }

@@ -20,6 +20,7 @@ class SettingController extends BaseController
     public function index()
     {
         $setting = $this->service->first();
+        // dd($setting);
         return view('admin.setting.index', compact('setting'));
     }
 
@@ -28,8 +29,9 @@ class SettingController extends BaseController
      */
     public function store(SettingRequest $request)
     {
+        // dd($request->all());
         $this->service->store($request->validated());
-        return redirect()->back()->with(['success' => 'تم إضافة الإعدادات بنجاح']);
+        return redirect()->back()->with(['success' => 'Setting saved successfully' ]);
     }
 
     /**
@@ -37,7 +39,7 @@ class SettingController extends BaseController
      */
     public function update(SettingRequest $request, $id)
     {
-        $model = $this->service->update($id, $request->validated());
-        return redirect()->back()->with(['success' => 'تم تعديل الإعدادات بنجاح']);
+        $model = $this->service->updateSetting($request,$id);
+        return redirect()->back()->with(['success' => 'Setting saved successfully' ]);
     }
 }

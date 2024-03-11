@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\PaymentMethod;
-use Faker\Provider\ar_EG\Payment;
+use App\Models\Payment;
 use Illuminate\Container\Container as App;
 //use Your Model
 
@@ -18,6 +18,6 @@ class PaymentMethodRepository extends BaseRepository
      */
     public function model()
     {
-        return PaymentMethod::class;
+        return Payment::class;
     }
 }

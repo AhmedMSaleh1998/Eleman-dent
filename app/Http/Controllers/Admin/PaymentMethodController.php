@@ -44,7 +44,7 @@ class PaymentMethodController extends BaseController
      */
     public function store(PaymentMethodRequest $request)
     {
-        $this->service->store($request->validated());
+        $this->service->store($request);
         return redirect()->back()->with(['success' => 'تم إضافة طريقة الدفع بنجاح']);
     }
 
@@ -69,7 +69,7 @@ class PaymentMethodController extends BaseController
      */
     public function update(PaymentMethodRequest $request, $id)
     {
-        $category = $this->service->update($id, $request->validated());
+        $category = $this->service->update($request->validated() , $id);
         return redirect()->back()->with(['success' => 'تم تعديل طريقة الدفع بنجاح']);
     }
 
@@ -82,6 +82,6 @@ class PaymentMethodController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.payment_method.index'))->with(['success' => 'تم حذف طريقة الدفع بنجاح']);
+        return redirect(route('admin.payment.index'))->with(['success' => 'تم حذف طريقة الدفع بنجاح']);
     }
 }

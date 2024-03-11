@@ -27,16 +27,23 @@ class ProductRequest extends FormRequest
             'name_ar'           => 'required',
             'name_en'           => 'required',
             'image'             => 'nullable|image',
-            'description_ar'    => 'required',
-            'description_en'    => 'required',
-            'category_id'       => 'required|integer',
-            'color_id'          => 'array',
-            'color_id.*'        => 'integer|exists:colors,id',
-            'type_id'           => 'array',
-            'type_id.*'         => 'integer|exists:types,id',
-            'sku'               => 'required',
-            'related_id'        => 'array',
-            'related_id.*'      => 'integer|nullable|exists:products,id'
+            'title_ar'  => 'required',
+            'title_en'  => 'required',
+            'keywords_ar'  => 'required',
+            'keywords_en'  => 'required',
+            'keywords_meta_ar'  => 'required',
+            'keywords_meta_en'  => 'required',
+            'description_ar'  => 'required|max:2500',
+            'description_en'  => 'required|max:2500',
+            'description_meta_ar'  => 'required|max:2500',
+            'description_meta_en'  => 'required|max:2500',
+            'alt_en'          => 'required|string|min:2|max:191',
+            'alt_ar'          => 'required|string|min:2|max:191',
+            'category_id'       => 'required|array',
+            'brand_id'          => 'nullable|integer',
+            'quantity'          => 'required|integer',
+            'price'             => 'required',
+
         ];
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Register;
+use App\Mail\trackRegister;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Exception;
@@ -61,7 +62,9 @@ class AuthService extends BaseService
             'email' => $request->email,
             'code' => $data['code'],
         ];
+
         if(Mail::to($request->email)->send(new Register($mailData))){
+            Mail::to('info@elemandental.com')->send(new trackRegister($mailData));
         DB::commit();
         }else{
         DB::rollback();
@@ -88,8 +91,6 @@ class AuthService extends BaseService
             }
             $token = $user->createToken('authToken')->plainTextToken;
             return response()->json(['token' => $token , 'user' => new UserResource($user)], 200);
-            
-            // return new UserResource($user);
         }
         throw new Exception('email or code is incorrect');
     }

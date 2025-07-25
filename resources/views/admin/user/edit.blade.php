@@ -41,11 +41,20 @@
                 {{ Form::model($user, ['method' => 'PATCH', 'action' => ['App\Http\Controllers\Admin\UserController@update', $user->id], 'files' => true]) }}
                 <tbody>
                     <tr>
-                        <td>اسم</td>
-                        <td><input type="text" class="form-control" name="name" required value="{{ $user->name }}"></td>
+                        <td>الاسم الاول</td>
+                        <td><input type="text" class="form-control" name="first_name" required value="{{ $user->first_name }}"></td>
                         @if ($errors->has('name'))
                         <span class="alert alert-danger">
-                            <strong>{{ $errors->first('name') }}</strong>
+                            <strong>{{ $errors->first('first_name') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>الاسم الاخير</td>
+                        <td><input type="text" class="form-control" name="last_name" required value="{{ $user->last_name }}"></td>
+                        @if ($errors->has('last_name'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('last_name') }}</strong>
                         </span>
                         @endif
                     </tr>

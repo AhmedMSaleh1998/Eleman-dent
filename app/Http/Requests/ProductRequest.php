@@ -43,7 +43,10 @@ class ProductRequest extends FormRequest
             'brand_id'          => 'nullable|integer',
             'quantity'          => 'required|integer',
             'price'             => 'required',
-
+            'seq' => 'required',
+            'discount_price' => 'nullable',
+            'pdf' => 'sometimes|file|mimes:pdf',
+            'video_url'         => 'nullable|url',
         ];
     }
 }

@@ -33,8 +33,6 @@ class ProductController extends BaseController
     public function create()
     {
         $data = $this->service->getFormData();
-        // dd($data);
-        // dd($data['categories']->pluck('name_ar' , 'id'));
         return view('admin.product.create', ['data' => $data]);
     }
 

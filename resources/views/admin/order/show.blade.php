@@ -29,20 +29,11 @@
                 <tbody>
                     <tr>
                         <td>العنوان</td>
-                        <td>{{ $order->address->district->name ."-". $order->address->street ."-". $order->address->building . "-" .$order->address->floor . "-" .$order->address->apartment }}</td>
-                    </tr>
-
-                    <tr>
-                        <td>الكوبون</td>
-                        @if($order->coupon_id)
-                        <td>{{ $order->coupon->name}}</td>
-                        @else
-                        <td>لا يوجد</td>
-                        @endif
+                        <td>{{ $order->address->city->name ."-". $order->address->street ."-". $order->address->building . "-" .$order->address->floor . "-" .$order->address->apartment }}</td>
                     </tr>
                     <tr>
-                        <td>المستخدم</td>
-                        <td>{{ $order->user->name }}</td>
+                    <td>المستخدم</td>
+                    <td><a href="{{ route('admin.user.show',  $order->user->id) }}">{{ $order->user->first_name }}</a></td>
                     </tr>
                     <tr>
                         <td>الإجمالي</td>
@@ -51,10 +42,6 @@
                     <tr>
                         <td>الشحن</td>
                         <td>{{ $order->shipping }}</td>
-                    </tr>
-                    <tr>
-                        <td>محتوي الكارت</td>
-                        <td>{{ $order->card_description }}</td>
                     </tr>
                     <tr>
                         <td>الحالة</td>
@@ -113,22 +100,19 @@
                 <thead>
                     <tr>
                         <td>اسم المنتج</td>
-                        <td>المقاس </td>
-                        <td>اللون</td>
                         <td>الكمية</td>
                         <td>السعر</td>
+                        <td>الاجمالي</td>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (isset($order->cartItems))
-                    @foreach ($order->cartItems as $item)
+                    @if (isset($order->cartItem))
+                    @foreach ($order->cartItem as $item)
                     <tr>
-                        <td><a href="{{ route('admin.product.show',$item->ProductSize->product->id) }}" target="_blank">{{ $item->ProductSize->product->name_ar }}</a></td>
-                        <td>{{ $item->ProductSize->name_ar }}</td>
-                        <td>{{ $item->ProductSize->name_en }}</td>
+                        <td><a href="{{ route('admin.product.show',$item->product->id) }}" target="_blank">{{ $item->product->name }}</a></td>
                         <td>{{ $item->quantity }}</td>
-                        <td>{{ $item->ProductSize->discount_price }}</td>
-
+                        <td>{{ $item->price }}</td>
+                        <td>{{ ($item->price) * ($item->quantity)}}</td>
                     </tr>
                     @endforeach
                     @endif

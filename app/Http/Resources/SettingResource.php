@@ -33,6 +33,7 @@ class SettingResource extends JsonResource
             'aboutus' => $this->about_us,
             'privacy' => $this->privacy,
             'terms' => $this->terms,
+            'banner' => $this->main_banner ? asset('admin_assets/images/settings/' . $this->main_banner) : null,
         ];
     }
 }

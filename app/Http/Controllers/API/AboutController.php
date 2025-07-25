@@ -9,13 +9,13 @@ use App\Services\AboutService;
 use Illuminate\Http\Request;
 use App\Http\Resources\CustomerReviewResource;
 use App\Http\Resources\ListAchievmentResource;
-use App\Http\Resources\ListBannerResource;
+use App\Http\Resources\CertificateResource;
 use App\Http\Resources\ListBrandResource;
 use App\Http\Resources\ListCategoryResource;
 use App\Http\Resources\ListEventResource;
 use App\Http\Resources\ListProductResource;
 use App\Models\Achievement;
-use App\Models\Banner;
+use App\Models\Certificate;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\CustomerReview;
@@ -40,7 +40,7 @@ class AboutController extends BaseController
     {
         try {
             $data = [];
-            $data['banners'] = ListBannerResource::collection(Banner::all());
+            $data['banners'] = CertificateResource::collection(Certificate::all());
             $data['about'] = new AboutUsResource(Setting::first());
             $data['achievements'] = ListAchievmentResource::collection(Achievement::take('6')->get());
             $data['brands'] = ListBrandResource::collection(Brand::all());

@@ -34,11 +34,6 @@
                     </tr>
 
                     <tr>
-                        <td> ألموضوع</td>
-                        <td>{{$contact->subject}}</td>
-                    </tr>
-
-                    <tr>
                         <td>البريد الالكترونى</td>
                         <td>{{$contact->email}}</td>
                     </tr>

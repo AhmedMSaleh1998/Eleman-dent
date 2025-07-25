@@ -11,7 +11,7 @@ class Product extends Model
     use Translatable;
     protected $table = 'products';
     public $timestamps = true;
-    protected $fillable = array('price', 'image', 'quantity', 'status','category_id','brand_id');
+    protected $fillable = array('price', 'image', 'quantity', 'status','category_id','brand_id','seq','discount_price' , 'pdf' , 'video_url');
     public $translatedAttributes = ['name','alt', 'keywords', 'keywords_meta', 'title', 'description', 'description_meta'];
 
     public function brand()
@@ -37,13 +37,14 @@ class Product extends Model
 
     public function is_favourite()
     {
-        if (getCurrentUser()) {
-            return  DB::table('favourite_products')->where([
-                ['product_id', '=', $this->id],
-                ['user_id', '=', getCurrentUser()]
-            ])->exists() ? 1 : 0;
+        $user = getCurrentUser();
+        if ($user) {
+            return DB::table('favourite_products')
+                ->where('product_id', $this->id)
+                ->where('user_id', $user)
+                ->exists() ? 1 : 0;
         } else {
-            return 0;
+            return 0; // User not available, hence not favorited
         }
     }
 

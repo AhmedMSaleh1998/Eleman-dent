@@ -61,6 +61,40 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>PDF</td>
+                                <td>
+                                    <input type="file" class="filestyle" data-placeholder="No file"
+                                        data-iconname="fa fa-cloud-upload" name="pdf" value="{{ old('pdf') }}">
+                                    
+                                    @if ($product->pdf)
+                                        <p>{{ $product->pdf }}</p> <!-- Display the PDF file name -->
+                                    @else
+                                        <p>No PDF found</p> <!-- Display message if no PDF -->
+                                    @endif
+                                    
+                                    <!-- Optionally display an icon or preview if it's a PDF -->
+                                    @if ($product->pdf)
+                                        <a href="{{ asset('admin_assets/images/product_pdfs/' . $product->pdf) }}" target="_blank">View PDF</a>
+                                    @endif
+                            
+                                    @if ($errors->has('pdf'))
+                                        <span class="alert alert-danger">
+                                            <strong>{{ $errors->first('pdf') }}</strong>
+                                        </span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Video Url </td>
+                                <td><input type="url" class="form-control" name="video_url"
+                                        value="{{ old('video_url') ? old('video_url') : $product->video_url }}"></td>
+                                @if ($errors->has('video_url'))
+                                    <span class="alert alert-danger">
+                                        <strong>{{ $errors->first('video_url') }}</strong>
+                                    </span>
+                                @endif
+                            </tr>
+                            <tr>
                                 <td>Name Ar </td>
                                 <td><input type="text" class="form-control" name="name_ar" required
                                         value="{{ old('name_ar') ? old('name_ar') : $product->translate('ar')->name }}"></td>
@@ -87,6 +121,16 @@
                                 @if ($errors->has('price'))
                                     <span class="alert alert-danger">
                                         <strong>{{ $errors->first('price') }}</strong>
+                                    </span>
+                                @endif
+                            </tr>
+                            <tr>
+                                <td>Discount Price </td>
+                                <td><input type="number" class="form-control" name="discount_price"
+                                        value="{{ old('discount_price') ? old('discount_price') : $product->discount_price }}"></td>
+                                @if ($errors->has('discount_price'))
+                                    <span class="alert alert-danger">
+                                        <strong>{{ $errors->first('discount_price') }}</strong>
                                     </span>
                                 @endif
                             </tr>
@@ -273,7 +317,16 @@
                                     </span>
                                 @endif
                             </tr>
-
+                            <tr>
+                                <td> Order </td>
+                                <td><input type="number" class="form-control" name="seq" required
+                                        value="{{ $product->seq }}"></td>
+                                @if ($errors->has('seq'))
+                                    <span class="alert alert-danger">
+                                        <strong>{{ $errors->first('seq') }}</strong>
+                                    </span>
+                                @endif
+                            </tr>
                             <tr>
                                 <td style="width:25%"></td>
                                 <td><button type="submit"

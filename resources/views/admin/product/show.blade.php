@@ -99,12 +99,13 @@
                         <td>{{ $product->translate('en')->keywords_meta }}</td>
                     </tr>
                     <tr>
+                        <td>Quantity</td>
+                        <td>{{ $product->quantity }}</td>
+                    </tr>
+                    <tr>
                         <td>status</td>
                         <td>{{$product->status == 1 ? 'Active' : ' Inactive'}}</td>
                     </tr>
-                  
-                   
-                  
                 </tbody>
             </table>
         </div>

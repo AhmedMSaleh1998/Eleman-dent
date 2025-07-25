@@ -61,7 +61,7 @@
                     <a href="{{ route('admin.home') }}" class="logo" dir="rtl">
                         <i class="icon-c-logo"></i>
                         <span>
-                            Eleman Dashboard
+                            لوحة تحكم الايمان دنتال
                         </span>
                     </a>
 
@@ -196,35 +196,37 @@
                 <div id="sidebar-menu">
 
                     <ul>
+                        
+                        <li><a href="{{ route('admin.home') }}" class="waves-effect"><i class="fa fa-home"></i> <span>الرئيسية </span></a></li>
+                        <li><a href="{{ route('admin.brand.index') }}" class="waves-effect"><i class="fa fa-tags"></i> <span> البرندات </span></a></li>
+                        <li><a href="{{ route('admin.category.index') }}" class="waves-effect"><i class="fa fa-list-alt"></i> <span> الأقسام </span></a></li>
+                        <li><a href="{{ route('admin.city.index') }}" class="waves-effect"><i class="fa fa-certificate"></i> <span> المدن </span></a></li>
+                        <li><a href="{{ route('admin.event.index') }}" class="waves-effect"><i class="fa fa-calendar"></i> <span> الأحداث </span></a></li>
+                        <li><a href="{{ route('admin.product.index') }}" class="waves-effect"><i class="fa fa-certificate"></i> <span> المنتجات </span></a></li>
+                        <li><a href="{{ route('admin.order.index') }}" class="waves-effect"><i class="fa fa-shopping-cart"></i> <span> الاوردرات </span></a></li>
+                        <li><a href="{{ route('admin.user.index') }}" class="waves-effect"><i class="fa fa-users"></i> <span> المستخدمين </span></a></li>
+                        <li><a href="{{ route('admin.banner.index') }}" class="waves-effect"><i class="fa fa-certificate"></i> <span> البانرز </span></a></li>
+                        <li><a href="{{ route('admin.certificate.index') }}" class="waves-effect"><i class="fa fa-certificate"></i> <span> الشهادات </span></a></li>
+                        <li><a href="{{ route('admin.achievement.index') }}" class="waves-effect"><i class="fa fa-trophy"></i> <span> الانجازات </span></a></li>
+                        <li><a href="{{ route('admin.review.index') }}" class="waves-effect"><i class="fa fa-comments"></i> <span>اراء الاطباء</span></a></li>
+                        <li><a href="{{ route('admin.setting.index') }}" class="waves-effect"><i class="fa fa-cogs"></i> <span> الاعدادات </span></a></li>
+                        <li><a href="{{ route('admin.payment.index') }}" class="waves-effect"><i class="fa fa-credit-card"></i> <span> طرق الدفع </span></a></li>
+                        <li><a href="{{ route('admin.contact.index') }}" class="waves-effect"><i class="fa fa-envelope"></i> <span> رسائل التواصل </span></a></li>
 
-                        <li><a href="{{ route('admin.home') }}" class="waves-effect"><i class="ti-home"></i> <span>Home </span></a></li>
-                        <li><a href="{{ route('admin.brand.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Brands </span></a></li>
-                        <li><a href="{{ route('admin.category.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Categories </span></a></li>
-                        <li><a href="{{ route('admin.city.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Cities </span></a></li>
-                        <li><a href="{{ route('admin.event.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Events </span></a></li>
                        
                         <!-- <li><a href="{{ route('admin.about.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> About Us </span></a></li> -->
                         <!-- <li><a href="{{ route('admin.type.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الأنواع </span></a></li> -->
-                        <li><a href="{{ route('admin.product.index') }}" class="waves-effect"><i class="icon icon-boxes-stacked-regular"></i> <span> Products </span></a></li>
-                        <li><a href="{{ route('admin.order.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Orders </span></a></li>
-                        <li><a href="{{ route('admin.user.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Users </span></a></li>
-                        <li><a href="{{ route('admin.banner.index') }}" class="waves-effect"><i class="fa fa-image"></i> <span> Banners </span></a></li>
-                        <li><a href="{{ route('admin.achievement.index') }}" class="waves-effect"><i class="fa fa-image"></i> <span> Achievements </span></a></li>
-                        <li><a href="{{ route('admin.review.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span>Review</span></a></li>
-                        <li><a href="{{ route('admin.setting.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Setting </span></a></li>
                         <!-- <li><a href="{{ route('admin.coupon.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> الكوبونات </span></a></li> -->
-                        <li><a href="{{ route('admin.payment.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Payment Method </span></a></li>
                         <!-- <li><a href="{{ route('admin.delivertime.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> أوقات التوصيل </span></a></li> -->
                         <!-- <li><a href="{{ route('admin.smsreminder.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> تذكيرات الرسائل </span></a></li> -->
-                        <li><a href="{{ route('admin.contact.index') }}" class="waves-effect"><i class="ion-ios7-information-outline"></i> <span> Contacts </span></a></li>
-                        <li class="has_sub">
-                            <a href="javascript:void(0);" class="waves-effect"><i class=" dripicons-view-list"></i>
-                                <span> Admins and roles </span> <span class="menu-arrow"></span></a>
-                            <ul class="list-unstyled">
-                                <li><a href="{{ route('admin.category.index') }}" class="waves-effect"><span> الادوار </span></a></li>
-                                <li><a href="{{ route('admin.category.index') }}" class="waves-effect"> <span>المسئوليين </span></a></li>
-                            </ul>
-                        </li>
+                        <!--<li class="has_sub">-->
+                        <!--    <a href="javascript:void(0);" class="waves-effect"><i class=" dripicons-view-list"></i>-->
+                        <!--        <span> الادمن والادوار </span> <span class="menu-arrow"></span></a>-->
+                        <!--    <ul class="list-unstyled">-->
+                        <!--        <li><a href="{{ route('admin.category.index') }}" class="waves-effect"><span> الادوار </span></a></li>-->
+                        <!--        <li><a href="{{ route('admin.category.index') }}" class="waves-effect"> <span>المسئوليين </span></a></li>-->
+                        <!--    </ul>-->
+                        <!--</li>-->
                     </ul>
 
                     <div class="clearfix"></div>

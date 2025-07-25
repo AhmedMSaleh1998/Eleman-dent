@@ -42,7 +42,7 @@ class ProductService extends BaseService
     public function getAllProducts($request)
     {
         if (empty($request)) {
-            $data = $this->repository->where('status', '1');
+            $data = $this->repository->where('status', '1')->orderBy('seq', 'asc')->get();
         } else {
 
             $input = $request->all();
@@ -61,7 +61,7 @@ class ProductService extends BaseService
 
                 $data = $data->whereBetween('price', array($input['filter']['min_price'], $input['filter']['max_price']));
             }
-            $data = $data->where('status', '1')->paginate(12);
+            $data = $data->where('status', '1')->orderBy('seq', 'asc')->paginate(12);
         }
         return ProductResource::collection($data)->response()->getData();
     }
@@ -77,14 +77,21 @@ class ProductService extends BaseService
     public function store($request)
     {
         $record = $request->all();
-
+        $pdf = null ;
         $record['image'] = uploadImage($record['image'], 'products');
+        if ($request->hasFile('pdf')) {
+            $pdf = uploadImage($record['pdf'], 'product_pdfs');
+        }
 
         $product = Product::create([
             'image' => $record['image'],
+            'pdf' => $pdf,
             'price' => $record['price'],
+            'discount_price' => $record['discount_price'],
             'quantity' => $record['quantity'],
             'brand_id' => $record['brand_id'] ?? null,
+            'seq' => $record['seq'],
+            'video_url' => $record['video_url'],
             'en' => [
                 'name' => $record['name_en'],
                 'title' => $record['title_en'],
@@ -116,12 +123,20 @@ class ProductService extends BaseService
         if ($request->hasFile('image')) {
             $image = uploadImage($request['image'], 'products', 'products', $id);
         }
+        
+        if ($request->hasFile('pdf')) {
+            $pdf = uploadImage($request['pdf'], 'product_pdfs' , 'products' , $id);
+        }
 
         $product->update([
             'image' => $image ?? $product->image,
+            'pdf' => $pdf ?? $product->pdf,
             'price' => $request['price'],
+            'discount_price' => $request['discount_price'],
             'quantity' => $request['quantity'],
             'brand_id' => $request['brand_id'],
+            'seq' => $request['seq'],
+            'video_url' => $request['video_url'],
             'en' => [
                 'name' => $request['name_en'],
                 'title' => $request['title_en'],

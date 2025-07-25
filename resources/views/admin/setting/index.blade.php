@@ -593,6 +593,22 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Banner</td>
+                        <td>
+                            <input type="file" class="filestyle" data-placeholder="No file"
+                                data-iconname="fa fa-cloud-upload" name="main_banner"
+                                value="{{ old('main_banner') ? old('main_banner') : $setting->main_banner }}">
+                            <img src="{{ asset('admin_assets/images/settings/' . $setting->main_banner) }}"
+                                class="img-responsive" width="100px" height="100px">
+                            @if ($errors->has('main_banner'))
+                                <span class="alert alert-danger">
+                                    <strong>{{ $errors->first('main_banner') }}</strong>
+                                </span>
+                            @endif
+
+                        </td>
+                    </tr>
+                    <tr>
                         <td style="width:25%"></td>
                         <td><button type="submit" class="btn btn-default waves-effect waves-light form-control">Save</button></td>
                     </tr>

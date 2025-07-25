@@ -42,8 +42,6 @@ class EventImageController extends BaseController
      */
     public function store(EventImageRequest $request)
     {
-        /* $productImage = $request->validated();
-        $productImage['image'] = uploadImage($productImage['image'], 'products'); */
         $this->service->store($request);
         return redirect()->back()->with(['success' => 'Event Image added successfully']);
     }

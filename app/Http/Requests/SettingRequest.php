@@ -48,7 +48,7 @@ class SettingRequest extends FormRequest
             'terms_en' => 'required|string',
             'about_us_ar' => 'nullable|string',
             'about_us_en' => 'nullable|string',
-
+            'main_banner' => 'nullable|file',
         ];
     }
 }

@@ -42,11 +42,20 @@
                 <tbody>
                     
                     <tr>
-                        <td>الاسم </td>
-                        <td><input type="text" class="form-control" name="name" required value="{{ old('name') }}"></td>
-                        @if ($errors->has('name'))
+                        <td>الاسم الاول </td>
+                        <td><input type="text" class="form-control" name="first_name" required value="{{ old('first_name') }}"></td>
+                        @if ($errors->has('first_name'))
                         <span class="alert alert-danger">
-                            <strong>{{ $errors->first('name') }}</strong>
+                            <strong>{{ $errors->first('first_name') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>الاسم الاخير </td>
+                        <td><input type="text" class="form-control" name="last_name" required value="{{ old('last_name') }}"></td>
+                        @if ($errors->has('last_name'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('last_name') }}</strong>
                         </span>
                         @endif
                     </tr>
@@ -75,6 +84,22 @@
                         <span class="alert alert-danger">
                             <strong>{{ $errors->first('password') }}</strong>
                         </span>
+                        @endif
+                    </tr>
+                   <tr>
+                        <td>المدينة/المحافظة</td>
+                        <td>
+                            <select name="city_id" class="form-control">
+                                <option value="">Select a city</option>
+                                @foreach($cities as $city)
+                                    <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        @if ($errors->has('city_id'))
+                            <span class="alert alert-danger">
+                                <strong>{{ $errors->first('city_id') }}</strong>
+                            </span>
                         @endif
                     </tr>
                     <tr>

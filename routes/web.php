@@ -40,6 +40,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin' , 'middleware' => 'aut
         Route::resource('producttype', 'ProductTypeController');
         Route::resource('delivertime', 'DeliverTimeController');
         Route::resource('review', 'CustomerReviewController');
+        Route::resource('certificate', 'CertificateController');
+
         /**
          * Global Status Change
          */

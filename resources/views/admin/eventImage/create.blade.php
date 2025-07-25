@@ -57,7 +57,7 @@
 
                         <tr>
                             <td>Alt </td>
-                            <td><input type="text" class="form-control" name="alt" ></td>
+                            <td><input type="text" class="form-control" name="alt" required></td>
                             @if ($errors->has('alt'))
                             <span class="alert alert-danger">
                                 <strong>{{ $errors->first('alt') }}</strong>

@@ -43,3 +43,4 @@ class EventImageService extends BaseService
         $this->repository->destroy($id, $image);
     }
 }
+

@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\EditUserRequest;
 use App\Services\UserService;
+use App\Models\City;
 
 class UserController extends BaseController
 {
@@ -32,7 +33,8 @@ class UserController extends BaseController
      */
     public function create()
     {
-        return view('admin.user.create');
+        $cities = City::all();
+        return view('admin.user.create' , compact('cities'));
     }
 
     /**
@@ -58,6 +60,13 @@ class UserController extends BaseController
         $user = $this->service->show($id);
         return view('admin.user.edit', compact('user', 'id'));
     }
+    
+    public function show($id)
+    {
+        $user = $this->service->show($id);
+        return view('admin.user.show', compact('user'));
+    }
+    
 
     /**
      * Update the specified resource in storage.

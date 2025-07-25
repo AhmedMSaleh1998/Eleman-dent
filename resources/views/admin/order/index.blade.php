@@ -41,7 +41,7 @@
                         @if (isset($orders))
                         @foreach ($orders as $order)
                         <tr>
-                            <td><a href="{{ route('admin.user.show',$order->user_id) }}" target="_blank">{{ $order->user->name }}</a>
+                            <td><a href="{{ route('admin.user.show',$order->user_id) }}" target="_blank">{{ $order->user->first_name }}</a>
                             </td>
                             <td>{{ $order->shipping }}</td>
                             <td>{{ $order->total }}</td>

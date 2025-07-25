@@ -56,6 +56,30 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>Pdf</td>
+                            <td>
+                                <input type="file" class="filestyle" data-placeholder="No file"
+                                    data-iconname="fa fa-cloud-upload" name="pdf">
+                                @if ($errors->has('pdf'))
+                                    <span class="alert alert-danger">
+                                        <strong>{{ $errors->first('pdf') }}</strong>
+                                    </span>
+                                @endif
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Video URL</td>
+                            <td>
+                                <input type="url" class="form-control" name="video_url" placeholder="Enter URL for Video">
+                                @if ($errors->has('video_url'))
+                                    <span class="alert alert-danger">
+                                        <strong>{{ $errors->first('video_url') }}</strong>
+                                    </span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
                             <td>Name Ar </td>
                             <td><input type="text" class="form-control" name="name_ar" required
                                     value="{{ old('name_ar') }}"></td>
@@ -82,6 +106,16 @@
                             @if ($errors->has('price'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('price') }}</strong>
+                                </span>
+                            @endif
+                        </tr>
+                        <tr>
+                            <td>Discount Price</td>
+                            <td><input type="number" class="form-control" name="discount_price"
+                                    value="{{ old('discount_price') }}"></td>
+                            @if ($errors->has('discount_price'))
+                                <span class="alert alert-danger">
+                                    <strong>{{ $errors->first('discount_price') }}</strong>
                                 </span>
                             @endif
                         </tr>
@@ -228,8 +262,6 @@
                                 </span>
                             @endif
                         </tr>
-
-
                         <tr>
                             <td> select Brand</td>
                             <td>
@@ -243,6 +275,15 @@
                             @if ($errors->has('brand_id'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('brand_id') }}</strong>
+                                </span>
+                            @endif
+                        </tr>
+                        <tr>
+                            <td>order</td>
+                            <td><input type="number" min= "1" class="form-control" name="seq" required></td>
+                            @if ($errors->has('seq'))
+                                <span class="alert alert-danger">
+                                    <strong>{{ $errors->first('seq') }}</strong>
                                 </span>
                             @endif
                         </tr>

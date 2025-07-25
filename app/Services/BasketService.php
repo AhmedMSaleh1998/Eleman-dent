@@ -45,10 +45,11 @@ class BasketService extends BaseService
 
         if ($record) {
             $record->quantity += $data['quantity'];
+            $record->price = $record->discount_price >0 ? $record->discount_price : $record->price;
             $record->update();
         } else {
             $product = Product::find($data['product_id']);
-            $data['price'] = $product->price;
+            $data['price'] = $product->discount_price > 0 ? $product->discount_price : $product->price;
             $record = $this->repository->create($data);
         }
 

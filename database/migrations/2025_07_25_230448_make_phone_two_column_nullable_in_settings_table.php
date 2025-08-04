@@ -1,4 +1,4 @@
-<?php
+a<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasColumn('products', 'discount_price')) {
-            Schema::table('products', function (Blueprint $table) {
-                $table->float('discount_price')->nullable();
-            });
-        }
+        Schema::table('settings', function (Blueprint $table) {
+            $table->string('phone_two')->nullable()->change();
+        });
     }
 
     /**
@@ -23,8 +21,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->float('discount_price')->nullable();
+        Schema::table('settings', function (Blueprint $table) {
+            $table->string('phone_two')->nullable(false)->change();
         });
     }
 };
+

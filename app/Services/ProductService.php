@@ -200,12 +200,19 @@ class ProductService extends BaseService
         $products = Product::where('status', 1)
             ->when($filter, function ($query) use ($filter) {
                 return $query->where(function ($query) use ($filter) {
+                    // Search in product translations
                     $query->whereHas('translations', function ($query) use ($filter) {
                         $query->where(function ($subQuery) use ($filter) {
                             $subQuery->where('name', 'like', '%' . $filter . '%')
                                 ->orWhere('keywords', 'like', '%' . $filter . '%')
                                 ->orWhere('description', 'like', '%' . $filter . '%')
                                 ->orWhere('title', 'like', '%' . $filter . '%');
+                        });
+                    })
+                    // Search in brand translations
+                    ->orWhereHas('brand.translations', function ($query) use ($filter) {
+                        $query->where(function ($subQuery) use ($filter) {
+                            $subQuery->where('name', 'like', '%' . $filter . '%');
                         });
                     });
                 });
@@ -228,5 +235,10 @@ class ProductService extends BaseService
         $data['price']['max'] = $this->repository->max('discount_price');
 
         return $data;
+    }
+    
+    public function getAll()
+    {
+        return Product::orderBy('seq', 'ASC')->get();
     }
 }

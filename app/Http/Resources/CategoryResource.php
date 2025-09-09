@@ -23,7 +23,7 @@ class CategoryResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'description_meta' => $this->description_meta,
-            'products' => ListProductResource::collection($this->products)
+            'products' => ListProductResource::collection($this->products()->orderBy('seq', 'asc')->get())
         ];
     }
 }

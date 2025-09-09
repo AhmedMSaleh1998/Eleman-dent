@@ -218,7 +218,7 @@ class ProductService extends BaseService
                 });
             })
             ->get();
-    
+
         return ProductResource::collection($products);
     }
 

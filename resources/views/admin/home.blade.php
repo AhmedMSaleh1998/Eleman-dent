@@ -180,5 +180,17 @@
             </div>
         </a>
     </div>
+
+    <div class="col-md-6 col-lg-6 col-xl-3">
+        <a href="{{ route('admin.payment.index') }}" class="text-decoration-none">
+            <div class="widget-bg-color card-box bg-danger">
+                <div class="text-right">
+                    <h3 class="text-white"><b class="counter">{{$courses}}</b></h3>
+                    <p class="text-white mb-0">الكورسات</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </a>
+    </div>
 </div>
 @endsection

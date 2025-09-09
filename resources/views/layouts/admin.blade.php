@@ -211,6 +211,7 @@
                         <li><a href="{{ route('admin.review.index') }}" class="waves-effect"><i class="fa fa-comments"></i> <span>اراء الاطباء</span></a></li>
                         <li><a href="{{ route('admin.setting.index') }}" class="waves-effect"><i class="fa fa-cogs"></i> <span> الاعدادات </span></a></li>
                         <li><a href="{{ route('admin.payment.index') }}" class="waves-effect"><i class="fa fa-credit-card"></i> <span> طرق الدفع </span></a></li>
+                        <li><a href="{{ route('admin.course.index') }}" class="waves-effect"><i class="fa fa-envelope"></i> <span> الكورسات </span></a></li>
                         <li><a href="{{ route('admin.contact.index') }}" class="waves-effect"><i class="fa fa-envelope"></i> <span> رسائل التواصل </span></a></li>
 
                        

@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\Banner;
 use App\Models\Certificate;
 use App\Models\Achievement;
+use App\Models\Course;
 use App\Models\CustomerReview;
 use App\Models\Payment;
 
@@ -51,6 +52,7 @@ class HomeController extends Controller
             'achievements' => Achievement::count(),
             'reviews' => CustomerReview::count(),
             'paymentMethods' => Payment::count(),
+            'courses' => Course::count(),
         ];
         
         return view('admin.home', $data);

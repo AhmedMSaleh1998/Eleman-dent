@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Requests\CouponRequest;
 use App\Http\Requests\CourseRequest;
 use App\Services\CourseService;
 
@@ -66,9 +65,9 @@ class CourseController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CouponRequest $request, $id)
+    public function update(CourseRequest $request, $id)
     {
-        $course = $this->service->update($id, $request->validated());
+        $course = $this->service->update($request , $id);
         return redirect()->back()->with(['success' => 'تم تعديل الكورس بنجاح']);
     }
 

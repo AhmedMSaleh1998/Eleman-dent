@@ -22,7 +22,7 @@
         <div class="alert alert-danger">{{ Session::get('danger') }}</div>
         @endif
         <a style="coupon: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
-        <a style="coupon: #fff;" href="{{ route('admin.coupon.index') }}">/ كوبونات / </a>
+        <a style="coupon: #fff;" href="{{ route('admin.course.index') }}">/ كورسات / </a>
         <a style="coupon: #36404a;"> تعديل </a>
 
         <ul>
@@ -35,14 +35,23 @@
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <h4 class="header-title m-t-0 m-b-20">تعديل كوبون</h4>
+            <h4 class="header-title m-t-0 m-b-20">تعديل كورس</h4>
 
             <table class="table table-bordered table-striped">
-                {{ Form::model($coupon, ['method' => 'PATCH', 'action' => ['App\Http\Controllers\Admin\CouponController@update', $coupon->id], 'files' => true]) }}
+                {{ Form::model($course, ['method' => 'PATCH', 'action' => ['App\Http\Controllers\Admin\CourseController@update', $course->id], 'files' => true]) }}
                 <tbody>
                     <tr>
-                        <td>اسم </td>
-                        <td><input type="text" class="form-control" name="name" required value="{{ $coupon->name }}"></td>
+                        <td>اسم عربي </td>
+                        <td><input type="text" class="form-control" name="name_ar" required value="{{ $course->translate('ar')->name }}"></td>
+                        @if ($errors->has('name_ar'))
+                        <span class="alert alert-danger">
+                            <strong>{{ $errors->first('name_ar') }}</strong>
+                        </span>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td>اسم انجليزي </td>
+                        <td><input type="text" class="form-control" name="name_en" required value="{{ $course->translate('en')->name }}"></td>
                         @if ($errors->has('name'))
                         <span class="alert alert-danger">
                             <strong>{{ $errors->first('name') }}</strong>
@@ -50,76 +59,37 @@
                         @endif
                     </tr>
                     <tr>
-                        <td>الكود</td>
-                        <td><input type="text" class="form-control" name="code" required value="{{ $coupon->code }}"></td>
-                        @if ($errors->has('code'))
+                        <td>وصف عربي </td>
+                        <td><input type="text" class="form-control" name="description_ar" required value="{{ $course->translate('ar')->description }}"></td>
+                        @if ($errors->has('description_ar'))
                         <span class="alert alert-danger">
-                            <strong>{{ $errors->first('code') }}</strong>
+                            <strong>{{ $errors->first('description_ar') }}</strong>
                         </span>
                         @endif
                     </tr>
                     <tr>
-                        <td>القيمة</td>
-                        <td><input type="text" class="form-control" name="value" required value="{{ $coupon->value }}"></td>
-                        @if ($errors->has('value'))
+                        <td>وصف انجليزي </td>
+                        <td><input type="text" class="form-control" name="description_en" required value="{{ $course->translate('en')->description }}"></td>
+                        @if ($errors->has('description_en'))
                         <span class="alert alert-danger">
-                            <strong>{{ $errors->first('value') }}</strong>
+                            <strong>{{ $errors->first('description_en') }}</strong>
                         </span>
                         @endif
                     </tr>
                     <tr>
-                        <td>النوع</td>
+                        <td>الصورة</td>
                         <td>
-                            <select name="type" class="form-control" required value="{{ $coupon->type}}">
-                                <option value="1" {{$coupon->type == 1 ? 'selected' : ''}}>قيمة ثابتة</option>
-                                <option value="2" {{$coupon->type == 2 ? 'selected' : ''}}>نسبة مئوية %</option>
-                            </select>
+                            <input type="file" class="filestyle" data-placeholder="No file"
+                                data-iconname="fa fa-cloud-upload" name="image">
+                            <img src="{{ asset('admin_assets/images/courses/' . $course->image) }}"
+                                class="img-responsive" width="100px" height="100px">
+                            @if ($errors->has('image'))
+                                <span class="alert alert-danger">
+                                    <strong>{{ $errors->first('image') }}</strong>
+                                </span>
+                            @endif
+
                         </td>
-                        @if ($errors->has('type'))
-                        <span class="alert alert-danger">
-                            <strong>{{ $errors->first('type') }}</strong>
-                        </span>
-                        @endif
-                    </tr>
-                    <tr>
-                        <td>مرات الاستخدام</td>
-                        <td><input type="text" class="form-control" name="uses" required value="{{ $coupon->uses }}"></td>
-                        @if ($errors->has('uses'))
-                        <span class="alert alert-danger">
-                            <strong>{{ $errors->first('uses') }}</strong>
-                        </span>
-                        @endif
-                    </tr>
-                    <tr>
-                        <td>أقل قيمة لتطبيق الكوبون</td>
-                        <td><input type="text" class="form-control" name="min_total" required value="{{ $coupon->min_total }}"></td>
-                        @if ($errors->has('min_total'))
-                        <span class="alert alert-danger">
-                            <strong>{{ $errors->first('min_total') }}</strong>
-                        </span>
-                        @endif
-                    </tr>
-                    <tr>
-                        <td>متاح منذ</td>
-                        <td>
-                            <input type="date" class="form-control" name="valid_from" required value="{{ $coupon->valid_from }}">
-                        </td>
-                        @if ($errors->has('valid_from'))
-                        <span class="alert alert-danger">
-                            <strong>{{ $errors->first('valid_from') }}</strong>
-                        </span>
-                        @endif
-                    </tr>
-                    <tr>
-                        <td>متاح حتي</td>
-                        <td>
-                            <input type="date" class="form-control" name="valid_to" value="{{ $coupon->valid_to }}" required>
-                        </td>
-                        @if ($errors->has('valid_to'))
-                        <span class="alert alert-danger">
-                            <strong>{{ $errors->first('valid_to') }}</strong>
-                        </span>
-                        @endif
                     </tr>
                     <tr>
                         <td style="width:25%"></td>

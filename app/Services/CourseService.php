@@ -34,4 +34,25 @@ class CourseService extends BaseService
 
     }
 
+    public function update($request, $id)
+    {
+        $course = $this->show($id);
+        // dd($request);    
+        if ($request->hasFile('image')) {
+            $image = uploadImage($request['image'], 'courses', 'courses', $id);
+        }
+
+        $course->update([
+            'image' => $image ?? $course->image,
+
+            'en' => [
+                'name' => $request['name_en'],
+                'description' => $request['description_en'],
+            ],
+            'ar' => [
+                'name' => $request['name_ar'],
+                'description' => $request['description_ar'],
+            ],
+        ]);
+    }
 }

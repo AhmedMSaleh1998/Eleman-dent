@@ -51,16 +51,14 @@
                         @if(isset($courses))
                         @foreach($courses as $course)
                         <tr>
-                            <td>{{$course->title}}</td>
+                            <td>{{$course->name}}</td>
                             <td>{{$course->description}}</td>
-                            {{-- <td><img src=asset(
-                                {{$course->image}} . '')</td> --}}
+                            <td><img src="{{ asset('admin_assets/images/courses/' . $course->image) }}" class="img-responsive" width="100px" height="100px"></td>
                             <td>{{$course->status === 1 ? 'مفعل' : 'غير مفعل'}}</td>
 
                             <td class="actions">
                                 <a href="{{ route('admin.changeStatus',[$course->status,'courses',$course->id]) }}" class="btn btn-{{$course->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="الحالة"> {{$course->status == 1 ? 'إبطال' : 'تفعيل'}}</a>
                                 <a href="{{ route('admin.course.edit',$course->id) }}" class="btn btn-success waves-effect" title="تعديل">تعديل</a>
-                                <a href="{{ route('admin.course.show',$course->id) }}" class="btn btn-info waves-effect" title="مشاهدة">مشاهدة</a>
                                 <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$course->id}}delete" title="حذف">حذف </button>
                             </td>
                         </tr>

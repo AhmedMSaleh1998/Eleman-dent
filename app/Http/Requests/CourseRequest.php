@@ -28,7 +28,7 @@ class CourseRequest extends FormRequest
             'name_en' => 'required',
             'description_ar' => 'required',
             'description_en' => 'required',
-            'image' => 'required|image',
+            'image' => 'nullable|image',
         ];
     }
 }

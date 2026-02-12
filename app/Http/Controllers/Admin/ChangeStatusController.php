@@ -14,4 +14,18 @@ class ChangeStatusController extends Controller
         DB::table($db)->where('id', $id)->update(['status' => $status]);
         return redirect()->back()->with(['success' => 'Status changed successfully']);
     }
+
+    public function topProduct($id)
+    {
+        $current = DB::table('products')->where('id', $id)->value('is_top_product');
+        if ($current === null) {
+            return redirect()->back()->with(['danger' => 'Product not found']);
+        }
+
+        $newValue = $current ? 0 : 1;
+        DB::table('products')->where('id', $id)->update(['is_top_product' => $newValue]);
+
+        $message = $newValue ? 'Product added to top products' : 'Product removed from top products';
+        return redirect()->back()->with(['success' => $message]);
+    }
 }

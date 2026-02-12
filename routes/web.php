@@ -46,6 +46,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin' , 'middleware' => 'aut
          * Global Status Change
          */
         Route::get('status/{status}/{db}/{id}', 'ChangeStatusController@status')->name('changeStatus');
+        Route::get('product/{id}/top-product', 'ChangeStatusController@topProduct')->name('product.topProduct');
         /**
          * End
          */

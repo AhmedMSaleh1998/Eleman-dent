@@ -46,6 +46,7 @@
                             <th data-field="Price" data-align="center">Price</th>
                             <th data-field="Quantity" data-align="center">Quantity</th>
                             <th data-field="Order" data-align="center">Order</th>
+                            <th data-field="Top Products" data-align="center">Top Products</th>
                             <th data-field="Status" data-align="center">Status</th>
                             <th data-field="Control" data-align="center">Control</th>
                         </tr>
@@ -60,10 +61,12 @@
                             <td>{{$product->price}}</td>
                             <td>{{$product->quantity}}</td>
                             <td>{{$product->seq}}</td>
+                            <td>{{$product->is_top_product ? 'Yes' : 'No'}}</td>
                             <td>{{$product->status === 1 ? 'Active' : 'Inactive'}}</td>
 
                             <td class="actions">
                                 <a href="{{ route('admin.changeStatus',[$product->status,'products',$product->id]) }}" class="btn btn-{{$product->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="Status"> {{$product->status == 1 ? 'Hide' : 'Show'}}</a>
+                                <a href="{{ route('admin.product.topProduct',$product->id) }}" class="btn btn-{{$product->is_top_product ? 'warning' : 'info'}} waves-effect" title="Top Products"> {{$product->is_top_product ? 'UnTop' : 'Top'}}</a>
                                 <a href="{{ route('admin.product.edit',$product->id) }}" class="btn btn-success waves-effect" title="Edit">Edit</a>
                                 <a href="{{ route('admin.product.show',$product->id) }}" class="btn btn-inverse waves-effect" title="Show">Show</a>
                                 <a href="{{ route('admin.productimage.index',$product->id) }}" class="btn btn-dark waves-effect" title="Product Images">Images </a>

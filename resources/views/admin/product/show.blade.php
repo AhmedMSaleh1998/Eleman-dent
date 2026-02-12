@@ -103,6 +103,10 @@
                         <td>{{ $product->quantity }}</td>
                     </tr>
                     <tr>
+                        <td>Top product</td>
+                        <td>{{ $product->is_top_product ? 'Yes' : 'No' }}</td>
+                    </tr>
+                    <tr>
                         <td>status</td>
                         <td>{{$product->status == 1 ? 'Active' : ' Inactive'}}</td>
                     </tr>

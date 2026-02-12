@@ -47,6 +47,7 @@ class ProductRequest extends FormRequest
             'discount_price' => 'nullable',
             'pdf' => 'sometimes|file|mimes:pdf',
             'video_url'         => 'nullable|url',
+            'is_top_product'    => 'nullable|boolean',
         ];
     }
 }

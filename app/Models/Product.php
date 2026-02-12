@@ -11,7 +11,10 @@ class Product extends Model
     use Translatable;
     protected $table = 'products';
     public $timestamps = true;
-    protected $fillable = array('price', 'image', 'quantity', 'status','category_id','brand_id','seq','discount_price' , 'pdf' , 'video_url');
+    protected $fillable = array('price', 'image', 'quantity', 'status','category_id','brand_id','seq','discount_price' , 'pdf' , 'video_url', 'is_top_product');
+    protected $casts = [
+        'is_top_product' => 'boolean',
+    ];
     public $translatedAttributes = ['name','alt', 'keywords', 'keywords_meta', 'title', 'description', 'description_meta'];
 
     public function brand()

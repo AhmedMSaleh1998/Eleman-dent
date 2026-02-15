@@ -18,7 +18,13 @@ class FavouriteService extends BaseService
 
     public function getApi()
     {
-        $data = $this->repository->where('user_id', getCurrentUser())->get();
+        $data = $this->repository
+            ->where('user_id', getCurrentUser())
+            ->whereHas('product', function ($query) {
+                $query->active();
+            })
+            ->get();
+
         return FavouriteResource::collection($data);
     }
 

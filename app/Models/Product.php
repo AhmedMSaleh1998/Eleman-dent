@@ -17,6 +17,11 @@ class Product extends Model
     ];
     public $translatedAttributes = ['name','alt', 'keywords', 'keywords_meta', 'title', 'description', 'description_meta'];
 
+    public function scopeActive($query)
+    {
+        return $query->where('products.status', 1);
+    }
+
     public function brand()
     {
         return $this->belongsTo('App\Models\Brand');

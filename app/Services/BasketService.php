@@ -25,7 +25,14 @@ class BasketService extends BaseService
 
     public function getApi()
     {
-        $data = $this->repository->get()->where('user_id', getCurrentUser())->where('order_id', null);
+        $data = $this->repository
+            ->where('user_id', getCurrentUser())
+            ->whereNull('order_id')
+            ->whereHas('product', function ($query) {
+                $query->active();
+            })
+            ->get();
+
         return BasketResource::collection($data);
     }
 

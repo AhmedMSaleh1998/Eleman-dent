@@ -42,12 +42,12 @@ class ProductService extends BaseService
     public function getAllProducts($request)
     {
         if (empty($request)) {
-            $data = $this->repository->where('status', '1')->orderBy('seq', 'asc')->get();
+            $data = $this->repository->query()->active()->orderBy('seq', 'asc')->get();
         } else {
 
             $input = $request->all();
 
-            $data = $this->repository->query();
+            $data = $this->repository->query()->active();
             
             if (isset($input['filter']['category_id'])) {
                 $data = $data->where('category_id', $input['filter']['category_id']);
@@ -61,7 +61,7 @@ class ProductService extends BaseService
 
                 $data = $data->whereBetween('price', array($input['filter']['min_price'], $input['filter']['max_price']));
             }
-            $data = $data->where('status', '1')->orderBy('seq', 'asc')->paginate(12);
+            $data = $data->orderBy('seq', 'asc')->paginate(12);
         }
         return ProductResource::collection($data)->response()->getData();
     }
@@ -199,7 +199,7 @@ class ProductService extends BaseService
 
     public function search($filter)
     {
-        $products = Product::where('status', 1)
+        $products = Product::active()
             ->when($filter, function ($query) use ($filter) {
                 return $query->where(function ($query) use ($filter) {
                     // Search in product translations
@@ -233,8 +233,8 @@ class ProductService extends BaseService
         // $data['model'] = $this->modelRepository->get();
         // $data['sole'] = $this->soleRepository->get();
         // $data['size'] = $this->sizeRepository->get();
-        $data['price']['min'] = $this->repository->min('discount_price');
-        $data['price']['max'] = $this->repository->max('discount_price');
+        $data['price']['min'] = Product::active()->min('discount_price');
+        $data['price']['max'] = Product::active()->max('discount_price');
 
         return $data;
     }

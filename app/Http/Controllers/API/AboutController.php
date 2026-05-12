@@ -43,7 +43,7 @@ class AboutController extends BaseController
             $data['banners'] = CertificateResource::collection(Certificate::all());
             $data['about'] = new AboutUsResource(Setting::first());
             $data['achievements'] = ListAchievmentResource::collection(Achievement::take('6')->get());
-            $data['brands'] = ListBrandResource::collection(Brand::all());
+            $data['brands'] = ListBrandResource::collection(Brand::active()->get());
             return $this->sendResponse($data, 'تم عرض من نحن بنجاح',200);
         } catch (\Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());

@@ -56,7 +56,7 @@ class HomeService extends BaseService
                 ->get()
         );
         $data['achievements'] = ListAchievmentResource::collection(Achievement::take('6')->get());
-        $data['brands'] = ListBrandResource::collection(Brand::all());
+        $data['brands'] = ListBrandResource::collection(Brand::active()->get());
         $data['events'] = ListEventResource::collection(Event::take(4)->get());
         $data['reviews'] = CustomerReviewResource::collection(CustomerReview::all());
         return $data;

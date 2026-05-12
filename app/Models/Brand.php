@@ -13,6 +13,11 @@ class Brand extends Model
     public $translatedAttributes = ['name', 'alt', 'keywords', 'keywords_meta', 'title', 'description', 'description_meta'];
     protected $fillable = array('status', 'image');
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
     public function products()
     {
         return $this->hasMany('App\Models\User');

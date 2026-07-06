@@ -49,6 +49,7 @@ class SettingRequest extends FormRequest
             'about_us_ar' => 'nullable|string',
             'about_us_en' => 'nullable|string',
             'main_banner' => 'nullable|file',
+            'logo' => 'nullable|image|mimes:jpeg,jpg,png,gif,webp,svg|max:2048',
         ];
     }
 }

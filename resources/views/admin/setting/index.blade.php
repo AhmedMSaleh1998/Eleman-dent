@@ -609,6 +609,23 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Logo</td>
+                        <td>
+                            <input type="file" class="filestyle" data-placeholder="No file"
+                                data-iconname="fa fa-cloud-upload" name="logo">
+                            @if ($setting->logo)
+                            <img src="{{ asset('admin_assets/images/settings/' . $setting->logo) }}"
+                                class="img-responsive" width="100px" height="100px">
+                            @endif
+                            @if ($errors->has('logo'))
+                                <span class="alert alert-danger">
+                                    <strong>{{ $errors->first('logo') }}</strong>
+                                </span>
+                            @endif
+
+                        </td>
+                    </tr>
+                    <tr>
                         <td style="width:25%"></td>
                         <td><button type="submit" class="btn btn-default waves-effect waves-light form-control">Save</button></td>
                     </tr>

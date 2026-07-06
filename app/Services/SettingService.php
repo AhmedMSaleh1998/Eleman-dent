@@ -61,7 +61,11 @@ class SettingService extends BaseService
         if ($request->hasFile('main_banner')) {
             $banner = uploadImage($request['main_banner'], 'settings');
         }
-        
+
+        if ($request->hasFile('logo')) {
+            $logo = uploadImage($request['logo'], 'settings');
+        }
+
         $setting ->update(
             [
                 'location_one' => $request['location_one'],
@@ -77,6 +81,7 @@ class SettingService extends BaseService
                 'twitter' => $request['twitter'],
                 'youtube' => $request['youtube'],
                 'main_banner' => $banner ?? null,
+                'logo' => $logo ?? $setting->logo,
                 'en' => [
                     'address_one' => $request['address_one_en'],
                     'address_two' => $request['address_two_en'],

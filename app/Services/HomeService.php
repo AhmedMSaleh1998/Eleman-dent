@@ -47,7 +47,9 @@ class HomeService extends BaseService
     {
         $data = [];
         $data['banners'] = ListBannerResource::collection(Banner::all())->where('status' , true);
-        $data['categories'] = ListCategoryResource::collection(Category::where('status' , true)->get());
+        $data['categories'] = ListCategoryResource::collection(
+            Category::with('translations')->where('status', true)->whereNull('parent_id')->get()
+        );
         $data['top_products'] = ListProductResource::collection(
             Product::active()
                 ->where('is_top_product', 1)

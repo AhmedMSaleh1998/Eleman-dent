@@ -24,9 +24,9 @@
     <div class="row">
         <div class="main-title-00">
 
-            <a style="color: #fff;" href="{{ route('admin.home') }}">Home</a>
-            <a style="color: #fff;" href="{{ route('admin.category.index') }}">/ Category / </a>
-            <a style="color: #36404a;"> Add </a>
+            <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
+            <a style="color: #fff;" href="{{ route('admin.category.index') }}">/ الأقسام / </a>
+            <a style="color: #36404a;"> إضافة </a>
 
             <ul>
                 @foreach ($errors->all() as $error)
@@ -38,7 +38,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card-box">
-                <h4 class="header-title m-t-0 m-b-20">Category Add</h4>
+                <h4 class="header-title m-t-0 m-b-20">إضافة قسم جديد</h4>
+                <p style="background:#fdf3f2; border:1px solid #f5c6cb; border-radius:6px; padding:8px 14px; font-size:13px; margin-bottom:15px;">الحقول المعلمة بعلامة <span style="color:#e74c3c; font-weight:bold;">*</span> إجبارية ولا يمكن الحفظ بدونها — حقل "القسم الأب" فقط اختياري.</p>
 
                 <table class="table table-bordered table-striped">
                     {{ Form::open(['method' => 'POST', 'action' => ['App\Http\Controllers\Admin\CategoryController@store'], 'files' => true]) }}
@@ -46,9 +47,28 @@
                     <tbody>
 
                         <tr>
-                            <td>image</td>
+                            <td>القسم الأب <small style="color:#7a8791; font-weight:normal;">(اختياري)</small></td>
                             <td>
-                                <input type="file" class="filestyle" data-placeholder="No file"
+                                <select name="parent_id" class="form-control">
+                                    <option value="">— قسم رئيسي (بدون قسم أب) —</option>
+                                    @foreach ($parents as $parent)
+                                        <option value="{{ $parent['id'] }}"
+                                            {{ (string) old('parent_id', $selectedParent ?? '') === (string) $parent['id'] ? 'selected' : '' }}>
+                                            {!! str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $parent['depth']) !!}{{ $parent['depth'] > 0 ? '↳ ' : '' }}{{ $parent['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('parent_id'))
+                                    <span class="alert alert-danger">
+                                        <strong>{{ $errors->first('parent_id') }}</strong>
+                                    </span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>الصورة (اللوجو) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td>
+                                <input type="file" class="filestyle" data-placeholder="لم يتم اختيار ملف"
                                     data-iconname="fa fa-cloud-upload" name="image" required>
                                 @if ($errors->has('image'))
                                     <span class="alert alert-danger">
@@ -59,8 +79,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Name Ar</td>
-                            <td><input type="text" class="form-control" name="name_ar" required></td>
+                            <td>الاسم (عربي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td><input type="text" class="form-control" name="name_ar" required placeholder="اسم القسم كما سيظهر في الموقع"></td>
                             @if ($errors->has('name_ar'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('name_ar') }}</strong>
@@ -68,8 +88,8 @@
                             @endif
                         </tr>
                         <tr>
-                            <td>Name En</td>
-                            <td><input type="text" class="form-control" name="name_en" required></td>
+                            <td>الاسم (إنجليزي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td><input type="text" class="form-control" name="name_en" required placeholder="Category name as shown on the website"></td>
                             @if ($errors->has('name_en'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('name_en') }}</strong>
@@ -77,8 +97,8 @@
                             @endif
                         </tr>
                         <tr>
-                            <td>Title Ar</td>
-                            <td><input type="text" class="form-control" name="title_ar" required></td>
+                            <td>عنوان الصفحة SEO (عربي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td><input type="text" class="form-control" name="title_ar" required placeholder="عنوان الصفحة في نتائج بحث جوجل"></td>
                             @if ($errors->has('title_ar'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('title_ar') }}</strong>
@@ -86,8 +106,8 @@
                             @endif
                         </tr>
                         <tr>
-                            <td>Title En</td>
-                            <td><input type="text" class="form-control" name="title_en" required></td>
+                            <td>عنوان الصفحة SEO (إنجليزي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td><input type="text" class="form-control" name="title_en" required placeholder="Page title in Google search results"></td>
                             @if ($errors->has('title_en'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('title_en') }}</strong>
@@ -95,8 +115,8 @@
                             @endif
                         </tr>
                         <tr>
-                            <td>Alt Ar</td>
-                            <td><input type="text" class="form-control" name="alt_ar" required></td>
+                            <td>النص البديل للصورة (عربي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td><input type="text" class="form-control" name="alt_ar" required placeholder="وصف قصير لصورة القسم (مهم للـ SEO)"></td>
                             @if ($errors->has('alt_ar'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('alt_ar') }}</strong>
@@ -104,8 +124,8 @@
                             @endif
                         </tr>
                         <tr>
-                            <td>Alt En</td>
-                            <td><input type="text" class="form-control" name="alt_en" required></td>
+                            <td>النص البديل للصورة (إنجليزي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td><input type="text" class="form-control" name="alt_en" required placeholder="Short description of the image (SEO)"></td>
                             @if ($errors->has('alt_en'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('alt_en') }}</strong>
@@ -113,8 +133,8 @@
                             @endif
                         </tr>
                         <tr>
-                            <td>Description Ar</td>
-                            <td><input type="text" class="form-control" name="description_ar" required></td>
+                            <td>الوصف (عربي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td><input type="text" class="form-control" name="description_ar" required placeholder="وصف يظهر أعلى صفحة القسم في الموقع"></td>
                             @if ($errors->has('description_ar'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('description_ar') }}</strong>
@@ -122,8 +142,8 @@
                             @endif
                         </tr>
                         <tr>
-                            <td>Description Ar</td>
-                            <td><input type="text" class="form-control" name="description_en" required></td>
+                            <td>الوصف (إنجليزي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td><input type="text" class="form-control" name="description_en" required placeholder="Description shown on the category page"></td>
                             @if ($errors->has('description_en'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('description_en') }}</strong>
@@ -131,8 +151,8 @@
                             @endif
                         </tr>
                         <tr>
-                            <td>Description Meta Ar</td>
-                            <td><input type="text" class="form-control" name="description_meta_ar" required></td>
+                            <td>وصف الميتا SEO (عربي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td><input type="text" class="form-control" name="description_meta_ar" required placeholder="وصف مختصر يظهر في نتائج جوجل (حوالي 160 حرف)"></td>
                             @if ($errors->has('description_meta_ar'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('description_meta_ar') }}</strong>
@@ -140,8 +160,8 @@
                             @endif
                         </tr>
                         <tr>
-                            <td>Description Meta En</td>
-                            <td><input type="text" class="form-control" name="description_meta_en" required></td>
+                            <td>وصف الميتا SEO (إنجليزي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td><input type="text" class="form-control" name="description_meta_en" required placeholder="Short description for Google results (~160 chars)"></td>
                             @if ($errors->has('description_meta_en'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('description_meta_en') }}</strong>
@@ -149,8 +169,8 @@
                             @endif
                         </tr>
                         <tr>
-                            <td>keywords Ar</td>
-                            <td><input type="text" class="form-control" name="keywords_ar" required></td>
+                            <td>الكلمات المفتاحية (عربي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td><input type="text" class="form-control" name="keywords_ar" required placeholder="كلمات مفصولة بفواصل: تعقيم, أجهزة, أسنان"></td>
                             @if ($errors->has('keywords_ar'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('keywords_ar') }}</strong>
@@ -158,8 +178,8 @@
                             @endif
                         </tr>
                         <tr>
-                            <td>keywords En</td>
-                            <td><input type="text" class="form-control" name="keywords_en" required></td>
+                            <td>الكلمات المفتاحية (إنجليزي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td><input type="text" class="form-control" name="keywords_en" required placeholder="Comma separated: sterilization, devices"></td>
                             @if ($errors->has('keywords_en'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('keywords_en') }}</strong>
@@ -167,8 +187,8 @@
                             @endif
                         </tr>
                         <tr>
-                            <td>keywords_meta_ar</td>
-                            <td><input type="text" class="form-control" name="keywords_meta_ar" required></td>
+                            <td>كلمات الميتا المفتاحية SEO (عربي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td><input type="text" class="form-control" name="keywords_meta_ar" required placeholder="كلمات الميتا مفصولة بفواصل"></td>
                             @if ($errors->has('keywords_meta_ar'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('keywords_meta_ar') }}</strong>
@@ -176,8 +196,8 @@
                             @endif
                         </tr>
                         <tr>
-                            <td>keywords_meta_en</td>
-                            <td><input type="text" class="form-control" name="keywords_meta_en" required></td>
+                            <td>كلمات الميتا المفتاحية SEO (إنجليزي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
+                            <td><input type="text" class="form-control" name="keywords_meta_en" required placeholder="Meta keywords, comma separated"></td>
                             @if ($errors->has('keywords_meta_en'))
                                 <span class="alert alert-danger">
                                     <strong>{{ $errors->first('keywords_meta_en') }}</strong>
@@ -187,7 +207,7 @@
                         <tr>
                             <td style="width:25%"></td>
                             <td><button type="submit"
-                                    class="btn btn-default waves-effect waves-light form-control">Save</button></td>
+                                    class="btn btn-default waves-effect waves-light form-control">حفظ</button></td>
                         </tr>
                     </tbody>
                     {{-- </form> --}}

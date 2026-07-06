@@ -21,7 +21,7 @@ class CategoryController extends BaseController
     public function list()
     {
         try {
-            $data = $this->service->get();
+            $data = $this->service->tree();
             return $this->sendResponse(CategoryResource::collection($data), 'تم عرض الاقسام بنجاح' , 200);
         } catch (Exception $exception) {
             return $this->sendError('خطأ.', $exception->getMessage());

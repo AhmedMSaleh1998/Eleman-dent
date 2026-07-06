@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CategoryRequest extends FormRequest
@@ -23,7 +24,27 @@ class CategoryRequest extends FormRequest
      */
     public function rules()
     {
+        $categoryId = $this->route('category');
+
         return [
+            'parent_id' => [
+                'nullable',
+                'integer',
+                'exists:categories,id',
+                function ($attribute, $value, $fail) use ($categoryId) {
+                    if (!$categoryId || !$value) {
+                        return;
+                    }
+                    if ((int) $value === (int) $categoryId) {
+                        $fail('لا يمكن أن يكون القسم أباً لنفسه.');
+                        return;
+                    }
+                    $category = Category::find($categoryId);
+                    if ($category && in_array((int) $value, $category->descendantIds())) {
+                        $fail('لا يمكن نقل القسم داخل أحد أقسامه الفرعية.');
+                    }
+                },
+            ],
             'name_ar'  => 'required',
             'name_en'  => 'required',
             'title_ar'  => 'required',

@@ -32,7 +32,10 @@ class CategoryController extends BaseController
      */
     public function create()
     {
-        return view('admin.category.create');
+        $parents = $this->service->parentOptions();
+        // ييجي من زر "+ Sub" في القائمة عشان القسم الأب يكون متحدد جاهز
+        $selectedParent = request('parent_id');
+        return view('admin.category.create', compact('parents', 'selectedParent'));
     }
 
     /**
@@ -45,7 +48,7 @@ class CategoryController extends BaseController
     {
         try{
             $this->service->store($request);
-            return redirect()->back()->with(['success' => 'Category added successfully']);
+            return redirect()->back()->with(['success' => 'تم إضافة القسم بنجاح']);
         }catch(\Exception $e){
             dd($e);
         }
@@ -61,7 +64,8 @@ class CategoryController extends BaseController
     public function edit($id)
     {
         $category = $this->service->show($id);
-        return view('admin.category.edit', compact('category'));
+        $parents = $this->service->parentOptions($id);
+        return view('admin.category.edit', compact('category', 'parents'));
     }
 
     /**
@@ -75,7 +79,7 @@ class CategoryController extends BaseController
     {
 
         $this->service->update($request, $id);
-        return redirect()->back()->with(['success' => 'Category updated successfully ']);
+        return redirect()->back()->with(['success' => 'تم تحديث القسم بنجاح']);
     }
 
     /**
@@ -87,6 +91,6 @@ class CategoryController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.category.index'))->with(['success' => ' Category deleted successfully']);
+        return redirect(route('admin.category.index'))->with(['success' => 'تم حذف القسم بنجاح']);
     }
 }

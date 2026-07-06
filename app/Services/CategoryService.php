@@ -22,6 +22,7 @@ class CategoryService extends BaseService
         $input['image'] = uploadImage($input['image'], 'categories');
         Category::create([
             'image' => $input['image'],
+            'parent_id' => $input['parent_id'] ?? null,
             'en' => [
                 'name' => $input['name_en'],
                 'title' => $input['title_en'],
@@ -54,6 +55,7 @@ class CategoryService extends BaseService
         }
         $category->update([
             'image' => $image ?? $category->image,
+            'parent_id' => $request['parent_id'] ?? null,
             'en' => [
                 'name' => $request['name_en'],
                 'title' => $request['title_en'],
@@ -77,5 +79,55 @@ class CategoryService extends BaseService
         ]);
     }
 
-    
+    /**
+     * الأقسام الرئيسية النشطة مع فروعها (للـ API)
+     */
+    public function tree()
+    {
+        return Category::with('translations')
+            ->where('status', 1)
+            ->whereNull('parent_id')
+            ->get();
+    }
+
+    /**
+     * قائمة مسطحة بكل الأقسام بترتيب شجري (لاختيار الأب في الأدمن)
+     * مع استبعاد القسم نفسه وكل فروعه عند التعديل لمنع الحلقات
+     */
+    public function parentOptions($exceptId = null)
+    {
+        $all = Category::with('translations')->get();
+
+        $excluded = [];
+        if ($exceptId) {
+            $current = $all->firstWhere('id', (int) $exceptId);
+            if ($current) {
+                $excluded = array_merge([$current->id], $current->descendantIds());
+            }
+        }
+
+        $options = [];
+        $walk = function ($parentId, $depth) use (&$walk, $all, $excluded, &$options) {
+            foreach ($all as $category) {
+                $categoryParent = $category->parent_id === null ? null : (int) $category->parent_id;
+                if ($categoryParent !== $parentId) {
+                    continue;
+                }
+                if (in_array($category->id, $excluded)) {
+                    continue;
+                }
+                $nameAr = optional($category->translate('ar'))->name;
+                $nameEn = optional($category->translate('en'))->name;
+                $options[] = [
+                    'id' => $category->id,
+                    'depth' => $depth,
+                    'name' => trim(($nameAr ?? '') . ' — ' . ($nameEn ?? ''), ' —'),
+                ];
+                $walk($category->id, $depth + 1);
+            }
+        };
+        $walk(null, 0);
+
+        return $options;
+    }
 }

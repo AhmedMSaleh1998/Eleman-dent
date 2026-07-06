@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Symfony\Component\Mime\Part\Multipart\RelatedPart;
 
 class ListCategoryResource extends JsonResource
 {
@@ -18,7 +17,12 @@ class ListCategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'image' => asset('admin_assets/images/categories/' . $this->image), 
+            'description' => $this->description,
+            'image' => $this->image ? asset('admin_assets/images/categories/' . $this->image) : null,
+            'parent_id' => $this->parent_id,
+            'children' => ListCategoryResource::collection(
+                $this->activeChildren()->with('translations')->get()
+            ),
         ];
     }
 }

@@ -12,6 +12,7 @@
     <link href="{{ asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('admin_assets/plugins/custombox/css/custombox.css') }}" rel="stylesheet">
+    @include('admin._form_styles')
 @endsection
 
 @section('content')
@@ -24,9 +25,9 @@
     <div class="row">
         <div class="main-title-00">
 
-            <a style="color: #fff;" href="{{ route('admin.home') }}">Home</a>
-            <a style="color: #fff;" href="{{ route('admin.certificate.index') }}">/ Certificates / </a>
-            <a style="color: #36404a;"> edit </a>
+            <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
+            <a style="color: #fff;" href="{{ route('admin.certificate.index') }}">/ الشهادات / </a>
+            <a style="color: #36404a;"> تعديل </a>
 
             <ul>
                 @foreach ($errors->all() as $error)
@@ -38,57 +39,64 @@
     <div class="row">
         <div class="col-12">
             <div class="card-box">
-                <h4 class="header-title m-t-0 m-b-20"> Edit Certificate</h4>
-                {{ Form::model($certificate, ['method' => 'PATCH', 'action' => ['App\Http\Controllers\Admin\CertificateController@update', $certificate->id], 'files' => true]) }}
+                <h4 class="header-title m-t-0 m-b-20" style="text-align:center;">
+                    تعديل الشهادة: {{ optional($certificate->translate('ar'))->alt }}
+                </h4>
 
-                <table class="table table-bordered table-striped">
-                    <tbody>
+                <div class="ff-wrap">
+                    <p class="ff-note">الحقول المعلمة بعلامة <span style="color:#e74c3c; font-weight:bold;">*</span>
+                        إجبارية ولا يمكن الحفظ بدونها — الصورة اختيارية.</p>
 
-                        <tr>
-                            <td>Image</td>
-                            <td>
-                                <input type="file" class="filestyle" data-placeholder="No file"
+                    {{ Form::model($certificate, ['method' => 'PATCH', 'action' => ['App\Http\Controllers\Admin\CertificateController@update', $certificate->id], 'files' => true]) }}
+
+                    {{-- الصورة --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-image"></i> صورة الشهادة</div>
+                        <div class="ff-grid">
+                            <div class="ff-field ff-field--full">
+                                <label>الصورة
+                                    <span class="opt">(اختياري — اتركها فارغة للاحتفاظ بالصورة الحالية)</span></label>
+                                <input type="file" class="filestyle" data-placeholder="لم يتم اختيار ملف"
                                     data-iconname="fa fa-cloud-upload" name="image">
-                                <img src="{{ asset('admin_assets/images/certificates/' . $certificate->image) }}"
-                                    class="img-responsive" width="100px" height="100px">
+                                <img class="ff-current-img"
+                                    src="{{ asset('admin_assets/images/certificates/' . $certificate->image) }}"
+                                    onerror="this.style.display='none'">
                                 @if ($errors->has('image'))
-                                    <span class="alert alert-danger">
-                                        <strong>{{ $errors->first('image') }}</strong>
-                                    </span>
+                                    <span class="ff-error">{{ $errors->first('image') }}</span>
                                 @endif
+                            </div>
+                        </div>
+                    </div>
 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Alt Ar </td>
-                            <td><input type="text" class="form-control" name="alt_ar" required
-                                    value={{ $certificate->translate('ar')->alt}}></td>
-                            @if ($errors->has('alt_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('alt_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>Alt En </td>
-                            <td><input type="text" class="form-control" name="alt_en" required
-                                    value={{ $certificate->translate('en')->alt }}></td>
-                            @if ($errors->has('alt_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('alt_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td style="width:25%"></td>
-                            <td><button type="submit"
-                                    class="btn btn-default waves-effect waves-light form-control">Save</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+                    {{-- بيانات الشهادة --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-info-circle"></i> بيانات الشهادة</div>
+                        <div class="ff-grid">
+                            <div class="ff-field">
+                                <label>النص البديل للصورة (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="alt_ar" required
+                                    value="{{ old('alt_ar', $certificate->translate('ar')->alt) }}">
+                                @if ($errors->has('alt_ar'))
+                                    <span class="ff-error">{{ $errors->first('alt_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>النص البديل للصورة (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="alt_en" required dir="ltr"
+                                    value="{{ old('alt_en', $certificate->translate('en')->alt) }}">
+                                @if ($errors->has('alt_en'))
+                                    <span class="ff-error">{{ $errors->first('alt_en') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
 
-                {!! Form::close() !!}
+                    <div class="ff-actions">
+                        <button type="submit" class="ff-submit">حفظ</button>
+                    </div>
 
+                    {!! Form::close() !!}
+                </div>
             </div>
         </div><!-- end col -->
     </div>

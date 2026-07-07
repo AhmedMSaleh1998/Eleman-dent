@@ -22,6 +22,7 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'image' => $this->image ? asset('admin_assets/images/categories/' . $this->image) : null,
+            'banner' => $this->banner ? asset('admin_assets/images/categories/banners/' . $this->banner) : null,
             'parent_id' => $this->parent_id,
             'alt' => $this->alt,
             'keywords' => $this->keywords,

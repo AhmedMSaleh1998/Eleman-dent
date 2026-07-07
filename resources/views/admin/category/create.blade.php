@@ -12,6 +12,7 @@
     <link href="{{ asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('admin_assets/plugins/custombox/css/custombox.css') }}" rel="stylesheet">
+    @include('admin._form_styles')
 @endsection
 
 @section('content')
@@ -38,18 +39,23 @@
     <div class="row">
         <div class="col-12">
             <div class="card-box">
-                <h4 class="header-title m-t-0 m-b-20">إضافة قسم جديد</h4>
-                <p style="background:#fdf3f2; border:1px solid #f5c6cb; border-radius:6px; padding:8px 14px; font-size:13px; margin-bottom:15px;">الحقول المعلمة بعلامة <span style="color:#e74c3c; font-weight:bold;">*</span> إجبارية ولا يمكن الحفظ بدونها — حقل "القسم الأب" فقط اختياري.</p>
+                <h4 class="header-title m-t-0 m-b-20" style="text-align:center;">إضافة قسم جديد</h4>
 
-                <table class="table table-bordered table-striped">
+                <div class="ff-wrap">
+                    <p class="ff-note">الحقول المعلمة بعلامة <span style="color:#e74c3c; font-weight:bold;">*</span>
+                        إجبارية ولا يمكن الحفظ بدونها — حقل "القسم الأب" فقط اختياري.</p>
+
                     {{ Form::open(['method' => 'POST', 'action' => ['App\Http\Controllers\Admin\CategoryController@store'], 'files' => true]) }}
                     @csrf
-                    <tbody>
 
-                        <tr>
-                            <td>القسم الأب <small style="color:#7a8791; font-weight:normal;">(اختياري)</small></td>
-                            <td>
-                                <select name="parent_id" class="form-control">
+                    {{-- الهيكل والصورة --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-sitemap"></i> الهيكل والصورة</div>
+                        <div class="ff-grid">
+                            <div class="ff-field">
+                                <label>القسم الأب <span class="opt">(اختياري — اتركه "رئيسي" إذا لم يكن قسماً
+                                        فرعياً)</span></label>
+                                <select name="parent_id" class="ff-input">
                                     <option value="">— قسم رئيسي (بدون قسم أب) —</option>
                                     @foreach ($parents as $parent)
                                         <option value="{{ $parent['id'] }}"
@@ -59,160 +65,177 @@
                                     @endforeach
                                 </select>
                                 @if ($errors->has('parent_id'))
-                                    <span class="alert alert-danger">
-                                        <strong>{{ $errors->first('parent_id') }}</strong>
-                                    </span>
+                                    <span class="ff-error">{{ $errors->first('parent_id') }}</span>
                                 @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>الصورة (اللوجو) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td>
+                            </div>
+                            <div class="ff-field">
+                                <label>الصورة (اللوجو) <span class="req">*</span></label>
                                 <input type="file" class="filestyle" data-placeholder="لم يتم اختيار ملف"
                                     data-iconname="fa fa-cloud-upload" name="image" required>
                                 @if ($errors->has('image'))
-                                    <span class="alert alert-danger">
-                                        <strong>{{ $errors->first('image') }}</strong>
-                                    </span>
+                                    <span class="ff-error">{{ $errors->first('image') }}</span>
                                 @endif
+                            </div>
+                            <div class="ff-field ff-field--full">
+                                <label>بانر الصفحة
+                                    <span class="opt">(اختياري — صورة عريضة تظهر كخلفية أعلى صفحة القسم في الموقع، يفضل
+                                        1600×400)</span></label>
+                                <input type="file" class="filestyle" data-placeholder="لم يتم اختيار ملف"
+                                    data-iconname="fa fa-cloud-upload" name="banner">
+                                @if ($errors->has('banner'))
+                                    <span class="ff-error">{{ $errors->first('banner') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>الاسم (عربي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td><input type="text" class="form-control" name="name_ar" required placeholder="اسم القسم كما سيظهر في الموقع"></td>
-                            @if ($errors->has('name_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('name_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>الاسم (إنجليزي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td><input type="text" class="form-control" name="name_en" required placeholder="Category name as shown on the website"></td>
-                            @if ($errors->has('name_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('name_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>عنوان الصفحة SEO (عربي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td><input type="text" class="form-control" name="title_ar" required placeholder="عنوان الصفحة في نتائج بحث جوجل"></td>
-                            @if ($errors->has('title_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('title_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>عنوان الصفحة SEO (إنجليزي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td><input type="text" class="form-control" name="title_en" required placeholder="Page title in Google search results"></td>
-                            @if ($errors->has('title_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('title_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>النص البديل للصورة (عربي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td><input type="text" class="form-control" name="alt_ar" required placeholder="وصف قصير لصورة القسم (مهم للـ SEO)"></td>
-                            @if ($errors->has('alt_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('alt_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>النص البديل للصورة (إنجليزي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td><input type="text" class="form-control" name="alt_en" required placeholder="Short description of the image (SEO)"></td>
-                            @if ($errors->has('alt_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('alt_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>الوصف (عربي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td><input type="text" class="form-control" name="description_ar" required placeholder="وصف يظهر أعلى صفحة القسم في الموقع"></td>
-                            @if ($errors->has('description_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('description_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>الوصف (إنجليزي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td><input type="text" class="form-control" name="description_en" required placeholder="Description shown on the category page"></td>
-                            @if ($errors->has('description_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('description_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>وصف الميتا SEO (عربي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td><input type="text" class="form-control" name="description_meta_ar" required placeholder="وصف مختصر يظهر في نتائج جوجل (حوالي 160 حرف)"></td>
-                            @if ($errors->has('description_meta_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('description_meta_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>وصف الميتا SEO (إنجليزي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td><input type="text" class="form-control" name="description_meta_en" required placeholder="Short description for Google results (~160 chars)"></td>
-                            @if ($errors->has('description_meta_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('description_meta_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>الكلمات المفتاحية (عربي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td><input type="text" class="form-control" name="keywords_ar" required placeholder="كلمات مفصولة بفواصل: تعقيم, أجهزة, أسنان"></td>
-                            @if ($errors->has('keywords_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('keywords_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>الكلمات المفتاحية (إنجليزي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td><input type="text" class="form-control" name="keywords_en" required placeholder="Comma separated: sterilization, devices"></td>
-                            @if ($errors->has('keywords_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('keywords_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>كلمات الميتا المفتاحية SEO (عربي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td><input type="text" class="form-control" name="keywords_meta_ar" required placeholder="كلمات الميتا مفصولة بفواصل"></td>
-                            @if ($errors->has('keywords_meta_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('keywords_meta_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>كلمات الميتا المفتاحية SEO (إنجليزي) <span style="color:#e74c3c; font-weight:bold;">*</span></td>
-                            <td><input type="text" class="form-control" name="keywords_meta_en" required placeholder="Meta keywords, comma separated"></td>
-                            @if ($errors->has('keywords_meta_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('keywords_meta_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td style="width:25%"></td>
-                            <td><button type="submit"
-                                    class="btn btn-default waves-effect waves-light form-control">حفظ</button></td>
-                        </tr>
-                    </tbody>
-                    {{-- </form> --}}
+                    {{-- الاسم --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-tag"></i> اسم القسم</div>
+                        <div class="ff-grid">
+                            <div class="ff-field">
+                                <label>الاسم (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="name_ar" required
+                                    value="{{ old('name_ar') }}" placeholder="اسم القسم كما سيظهر في الموقع">
+                                @if ($errors->has('name_ar'))
+                                    <span class="ff-error">{{ $errors->first('name_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>الاسم (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="name_en" required dir="ltr"
+                                    value="{{ old('name_en') }}" placeholder="Category name as shown on the website">
+                                @if ($errors->has('name_en'))
+                                    <span class="ff-error">{{ $errors->first('name_en') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- الوصف --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-align-right"></i> الوصف
+                            <small>يظهر أعلى صفحة القسم في الموقع</small>
+                        </div>
+                        <div class="ff-grid">
+                            <div class="ff-field ff-field--full">
+                                <label>الوصف (عربي) <span class="req">*</span></label>
+                                <textarea class="ff-input" name="description_ar" rows="3" required
+                                    placeholder="وصف يظهر أعلى صفحة القسم في الموقع">{{ old('description_ar') }}</textarea>
+                                @if ($errors->has('description_ar'))
+                                    <span class="ff-error">{{ $errors->first('description_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field ff-field--full">
+                                <label>الوصف (إنجليزي) <span class="req">*</span></label>
+                                <textarea class="ff-input" name="description_en" rows="3" required dir="ltr"
+                                    placeholder="Description shown on the category page">{{ old('description_en') }}</textarea>
+                                @if ($errors->has('description_en'))
+                                    <span class="ff-error">{{ $errors->first('description_en') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- SEO --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-search"></i> تحسين محركات البحث (SEO)
+                            <small>هذه الحقول تظهر في نتائج بحث جوجل</small>
+                        </div>
+                        <div class="ff-grid">
+                            <div class="ff-field">
+                                <label>عنوان الصفحة SEO (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="title_ar" required
+                                    value="{{ old('title_ar') }}" placeholder="عنوان الصفحة في نتائج بحث جوجل">
+                                @if ($errors->has('title_ar'))
+                                    <span class="ff-error">{{ $errors->first('title_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>عنوان الصفحة SEO (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="title_en" required dir="ltr"
+                                    value="{{ old('title_en') }}" placeholder="Page title in Google search results">
+                                @if ($errors->has('title_en'))
+                                    <span class="ff-error">{{ $errors->first('title_en') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>النص البديل للصورة (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="alt_ar" required
+                                    value="{{ old('alt_ar') }}" placeholder="وصف قصير لصورة القسم (مهم للـ SEO)">
+                                @if ($errors->has('alt_ar'))
+                                    <span class="ff-error">{{ $errors->first('alt_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>النص البديل للصورة (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="alt_en" required dir="ltr"
+                                    value="{{ old('alt_en') }}" placeholder="Short description of the image (SEO)">
+                                @if ($errors->has('alt_en'))
+                                    <span class="ff-error">{{ $errors->first('alt_en') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>وصف الميتا SEO (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="description_meta_ar" required
+                                    value="{{ old('description_meta_ar') }}"
+                                    placeholder="وصف مختصر يظهر في نتائج جوجل (حوالي 160 حرف)">
+                                @if ($errors->has('description_meta_ar'))
+                                    <span class="ff-error">{{ $errors->first('description_meta_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>وصف الميتا SEO (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="description_meta_en" required dir="ltr"
+                                    value="{{ old('description_meta_en') }}"
+                                    placeholder="Short description for Google results (~160 chars)">
+                                @if ($errors->has('description_meta_en'))
+                                    <span class="ff-error">{{ $errors->first('description_meta_en') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>الكلمات المفتاحية (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="keywords_ar" required
+                                    value="{{ old('keywords_ar') }}"
+                                    placeholder="كلمات مفصولة بفواصل: تعقيم, أجهزة, أسنان">
+                                @if ($errors->has('keywords_ar'))
+                                    <span class="ff-error">{{ $errors->first('keywords_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>الكلمات المفتاحية (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="keywords_en" required dir="ltr"
+                                    value="{{ old('keywords_en') }}"
+                                    placeholder="Comma separated: sterilization, devices">
+                                @if ($errors->has('keywords_en'))
+                                    <span class="ff-error">{{ $errors->first('keywords_en') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>كلمات الميتا المفتاحية SEO (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="keywords_meta_ar" required
+                                    value="{{ old('keywords_meta_ar') }}" placeholder="كلمات الميتا مفصولة بفواصل">
+                                @if ($errors->has('keywords_meta_ar'))
+                                    <span class="ff-error">{{ $errors->first('keywords_meta_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>كلمات الميتا المفتاحية SEO (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="keywords_meta_en" required dir="ltr"
+                                    value="{{ old('keywords_meta_en') }}" placeholder="Meta keywords, comma separated">
+                                @if ($errors->has('keywords_meta_en'))
+                                    <span class="ff-error">{{ $errors->first('keywords_meta_en') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ff-actions">
+                        <button type="submit" class="ff-submit">حفظ القسم</button>
+                    </div>
+
                     {!! Form::close() !!}
-                </table>
+                </div>
             </div>
         </div><!-- end col -->
     </div>

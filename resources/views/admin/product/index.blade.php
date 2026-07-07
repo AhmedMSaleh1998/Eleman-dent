@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('admin_assets/plugins/custombox/css/custombox.css')}}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -16,7 +17,7 @@
             @elseif(Session::has('danger'))
             <div class="alert alert-danger">{{ Session::get('danger') }}</div>
             @endif
-            <h4 class="page-title">Products</h4>
+            <h4 class="page-title">المنتجات</h4>
         </div>
 
     </div>
@@ -30,7 +31,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.product.create') }}" class="btn btn-default waves-effect">+ Add Product</a>
+                        <a href="{{ route('admin.product.create') }}" class="btn btn-default waves-effect">+ إضافة منتج</a>
                     </div>
                 </div>
             </div>
@@ -40,15 +41,15 @@
 
                     <thead>
                         <tr>
-                            <th data-field="Id" data-align="center">Id</th>
-                            <th data-field="Image" data-align="center">Image</th>
-                            <th data-field="Product Name" data-align="center"> Product Name</th>
-                            <th data-field="Price" data-align="center">Price</th>
-                            <th data-field="Quantity" data-align="center">Quantity</th>
-                            <th data-field="Order" data-align="center">Order</th>
-                            <th data-field="Top Products" data-align="center">Top Products</th>
-                            <th data-field="Status" data-align="center">Status</th>
-                            <th data-field="Control" data-align="center">Control</th>
+                            <th data-field="Id" data-align="center">الرقم</th>
+                            <th data-field="Image" data-align="center">الصورة</th>
+                            <th data-field="Product Name" data-align="center">اسم المنتج</th>
+                            <th data-field="Price" data-align="center">السعر</th>
+                            <th data-field="Quantity" data-align="center">الكمية</th>
+                            <th data-field="Order" data-align="center">الترتيب</th>
+                            <th data-field="Top Products" data-align="center">منتج مميز</th>
+                            <th data-field="Status" data-align="center">الحالة</th>
+                            <th data-field="Control" data-align="center">التحكم</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,16 +62,24 @@
                             <td>{{$product->price}}</td>
                             <td>{{$product->quantity}}</td>
                             <td>{{$product->seq}}</td>
-                            <td>{{$product->is_top_product ? 'Yes' : 'No'}}</td>
-                            <td>{{$product->status === 1 ? 'Active' : 'Inactive'}}</td>
+                            <td>{{$product->is_top_product ? 'نعم' : 'لا'}}</td>
+                            <td>{{$product->status === 1 ? 'ظاهر' : 'مخفي'}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus',[$product->status,'products',$product->id]) }}" class="btn btn-{{$product->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="Status"> {{$product->status == 1 ? 'Hide' : 'Show'}}</a>
-                                <a href="{{ route('admin.product.topProduct',$product->id) }}" class="btn btn-{{$product->is_top_product ? 'warning' : 'info'}} waves-effect" title="Top Products"> {{$product->is_top_product ? 'UnTop' : 'Top'}}</a>
-                                <a href="{{ route('admin.product.edit',$product->id) }}" class="btn btn-success waves-effect" title="Edit">Edit</a>
-                                <a href="{{ route('admin.product.show',$product->id) }}" class="btn btn-inverse waves-effect" title="Show">Show</a>
-                                <a href="{{ route('admin.productimage.index',$product->id) }}" class="btn btn-dark waves-effect" title="Product Images">Images </a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$product->id}}delete" title="Delete">Delete </button>
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.product.edit',$product->id) }}" title="تعديل"><i class="fa fa-pencil"></i> تعديل</a>
+                                        <a class="dropdown-item" href="{{ route('admin.product.show',$product->id) }}" title="عرض التفاصيل"><i class="fa fa-eye"></i> عرض</a>
+                                        <a class="dropdown-item" href="{{ route('admin.productimage.index',$product->id) }}" title="صور المنتج"><i class="fa fa-picture-o"></i> صور المنتج</a>
+                                        <a class="dropdown-item" href="{{ route('admin.product.topProduct',$product->id) }}" title="منتج مميز — يظهر في الرئيسية"><i class="fa {{$product->is_top_product ? 'fa-star-o' : 'fa-star'}}"></i> {{$product->is_top_product ? 'إلغاء التمييز' : 'تمييز'}}</a>
+                                        <a class="dropdown-item" href="{{ route('admin.changeStatus',[$product->status,'products',$product->id]) }}" title="تغيير الحالة"><i class="fa {{$product->status == 1 ? 'fa-eye-slash' : 'fa-eye'}}"></i> {{$product->status == 1 ? 'إخفاء' : 'إظهار'}}</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{$product->id}}delete" title="حذف"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 
@@ -82,13 +91,13 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="icon error animateErrorIcon" style="display: block;"><span class="x-mark animateXMark"><span class="line left"></span><span class="line right"></span></span></div>
-                                        <h4 style="text-align:center;">Confirm to  delete this product </h4>
+                                        <h4 style="text-align:center;">تأكيد الحذف</h4>
                                     </div>
                                     <div class="modal-footer" style="text-align:center">
                                         <form action="{{ route('admin.product.destroy',$product->id) }}" method="POST">
                                             {{csrf_field()}}
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <button class="btn btn-danger" type="submit" dir="ltr">Delete</button>
+                                            <button class="btn btn-danger" type="submit" dir="ltr">حذف</button>
                                         </form>
                                     </div>
                                 </div><!-- /.modal-content -->

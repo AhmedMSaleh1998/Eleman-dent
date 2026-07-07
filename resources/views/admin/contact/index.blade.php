@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('admin_assets/plugins/custombox/css/custombox.css')}}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -16,7 +17,7 @@
             @elseif(Session::has('danger'))
             <div class="alert alert-danger">{{ Session::get('danger') }}</div>
             @endif
-            <h4 class="page-title">طلبات تواصل</h4>
+            <h4 class="page-title">رسائل التواصل</h4>
         </div>
 
     </div>
@@ -32,9 +33,9 @@
                     <thead>
                         <tr>
                             <th data-field="الاسم" data-align="center">الاسم</th>
-                            <th data-field="رقم الهاتف" data-align="center">البريد الألكتروني</th>
+                            <th data-field="رقم الهاتف" data-align="center">البريد الإلكتروني</th>
                             <th data-field="رقم الهاتف" data-align="center">رقم الهاتف</th>
-                            <th data-field="تاريخ الطلب" data-align="center">تاريخ الطلب</th>
+                            <th data-field="تاريخ الطلب" data-align="center">تاريخ الإرسال</th>
                             <th data-field="الحالة" data-align="center">الحالة</th>
                             <th data-field="التحكم" data-align="center">التحكم</th>
                         </tr>
@@ -50,8 +51,16 @@
                             <td>{{$contact->status === 1 ? 'تم المشاهدة' : 'لم يتم المشاهدة'}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.contact.show',$contact->id) }}" class="btn btn-primary waves-effect" title="مشاهدة">مشاهدة</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{ $contact->id }}delete" title="حذف">حذف </button>
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.contact.show',$contact->id) }}" title="عرض"><i class="fa fa-envelope-open-o"></i> عرض</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{ $contact->id }}delete" title="حذف"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 

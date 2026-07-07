@@ -12,7 +12,7 @@ class Category extends Model
     public $translatedAttributes = ['name', 'alt', 'keywords', 'keywords_meta', 'title', 'description', 'description_meta'];
     protected $table = 'categories';
     public $timestamps = true;
-    protected $fillable = array('image', 'status', 'parent_id');
+    protected $fillable = array('image', 'banner', 'status', 'parent_id');
 
     public function category_products()
     {

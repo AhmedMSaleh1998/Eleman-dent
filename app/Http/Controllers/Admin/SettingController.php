@@ -31,7 +31,7 @@ class SettingController extends BaseController
     {
         // dd($request->all());
         $this->service->store($request->validated());
-        return redirect()->back()->with(['success' => 'Setting saved successfully' ]);
+        return redirect()->back()->with(['success' => 'تم حفظ الإعدادات بنجاح' ]);
     }
 
     /**
@@ -40,6 +40,6 @@ class SettingController extends BaseController
     public function update(SettingRequest $request, $id)
     {
         $model = $this->service->updateSetting($request,$id);
-        return redirect()->back()->with(['success' => 'Setting saved successfully' ]);
+        return redirect()->back()->with(['success' => 'تم حفظ الإعدادات بنجاح' ]);
     }
 }

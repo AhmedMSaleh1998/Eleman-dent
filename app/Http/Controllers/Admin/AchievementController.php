@@ -45,7 +45,7 @@ class AchievementController extends BaseController
     public function store(AchievementRequest $request)
     {
         $this->service->store($request);
-        return redirect()->back()->with(['success' => 'Achievement Added Successfully']);
+        return redirect()->back()->with(['success' => 'تم إضافة الانجاز بنجاح']);
     }
 
     /**
@@ -70,7 +70,7 @@ class AchievementController extends BaseController
     public function update(AchievementRequest $request, $id)
     {
         $achievement = $this->service->update($request,$id);
-        return redirect()->back()->with(['success' => 'Achievement Edited Successfully']);
+        return redirect()->back()->with(['success' => 'تم تحديث الانجاز بنجاح']);
     }
 
     /**
@@ -82,6 +82,6 @@ class AchievementController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.achievement.index'))->with(['success' => 'Achievement Deleted Successfully']);
+        return redirect(route('admin.achievement.index'))->with(['success' => 'تم حذف الانجاز بنجاح']);
     }
 }

@@ -12,6 +12,7 @@
     <link href="{{ asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('admin_assets/plugins/custombox/css/custombox.css') }}" rel="stylesheet">
+    @include('admin._form_styles')
 @endsection
 
 @section('content')
@@ -23,9 +24,9 @@
     @endif
     <div class="row">
         <div class="main-title-00">
-            <a style="color: #fff;" href="{{ route('admin.home') }}">Home</a>
-            <a style="color: #fff;" href="{{ route('admin.product.index') }}">/ Products / </a>
-            <a style="color: #36404a;"> Add </a>
+            <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
+            <a style="color: #fff;" href="{{ route('admin.product.index') }}">/ المنتجات / </a>
+            <a style="color: #36404a;"> إضافة </a>
 
             <ul>
                 @foreach ($errors->all() as $error)
@@ -37,265 +38,256 @@
     <div class="row">
         <div class="col-12">
             <div class="card-box">
-                <h4 class="header-title m-t-0 m-b-20">Add new product</h4>
-                {{ Form::open(['method' => 'POST', 'action' => ['App\Http\Controllers\Admin\ProductController@store'], 'files' => true]) }}
-                @csrf
-                <table class="table table-bordered table-striped">
-                    <tbody>
-                        <tr>
-                            <td>Image</td>
-                            <td>
-                                <input type="file" class="filestyle" data-placeholder="No file"
+                <h4 class="header-title m-t-0 m-b-20" style="text-align:center;">إضافة منتج جديد</h4>
+
+                <div class="ff-wrap">
+                    <p class="ff-note">الحقول المعلمة بعلامة <span style="color:#e74c3c; font-weight:bold;">*</span>
+                        إجبارية ولا يمكن الحفظ بدونها.</p>
+
+                    {{ Form::open(['method' => 'POST', 'action' => ['App\Http\Controllers\Admin\ProductController@store'], 'files' => true]) }}
+                    @csrf
+
+                    {{-- الصور والملفات --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-image"></i> الصور والملفات</div>
+                        <div class="ff-grid">
+                            <div class="ff-field ff-field--full">
+                                <label>صورة المنتج الرئيسية <span class="req">*</span></label>
+                                <input type="file" class="filestyle" data-placeholder="لم يتم اختيار ملف"
                                     data-iconname="fa fa-cloud-upload" name="image" required>
                                 @if ($errors->has('image'))
-                                    <span class="alert alert-danger">
-                                        <strong>{{ $errors->first('image') }}</strong>
-                                    </span>
+                                    <span class="ff-error">{{ $errors->first('image') }}</span>
                                 @endif
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Pdf</td>
-                            <td>
-                                <input type="file" class="filestyle" data-placeholder="No file"
+                            </div>
+                            <div class="ff-field">
+                                <label>كتالوج PDF <span class="opt">(اختياري)</span></label>
+                                <input type="file" class="filestyle" data-placeholder="لم يتم اختيار ملف"
                                     data-iconname="fa fa-cloud-upload" name="pdf">
                                 @if ($errors->has('pdf'))
-                                    <span class="alert alert-danger">
-                                        <strong>{{ $errors->first('pdf') }}</strong>
-                                    </span>
+                                    <span class="ff-error">{{ $errors->first('pdf') }}</span>
                                 @endif
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Video URL</td>
-                            <td>
-                                <input type="url" class="form-control" name="video_url" placeholder="Enter URL for Video">
+                            </div>
+                            <div class="ff-field">
+                                <label>رابط الفيديو <span class="opt">(اختياري)</span></label>
+                                <input type="url" class="ff-input" name="video_url" dir="ltr"
+                                    value="{{ old('video_url') }}" placeholder="https://www.youtube.com/watch?v=...">
                                 @if ($errors->has('video_url'))
-                                    <span class="alert alert-danger">
-                                        <strong>{{ $errors->first('video_url') }}</strong>
-                                    </span>
+                                    <span class="ff-error">{{ $errors->first('video_url') }}</span>
                                 @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Name Ar </td>
-                            <td><input type="text" class="form-control" name="name_ar" required
-                                    value="{{ old('name_ar') }}"></td>
-                            @if ($errors->has('name_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('name_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td> Name En </td>
-                            <td><input type="text" class="form-control" name="name_en" required
-                                    value="{{ old('name_en') }}"></td>
-                            @if ($errors->has('name_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('name_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>Price</td>
-                            <td><input type="number" class="form-control" name="price" required
-                                    value="{{ old('price') }}"></td>
-                            @if ($errors->has('price'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('price') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>Discount Price</td>
-                            <td><input type="number" class="form-control" name="discount_price"
-                                    value="{{ old('discount_price') }}"></td>
-                            @if ($errors->has('discount_price'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('discount_price') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
+                            </div>
+                        </div>
+                    </div>
 
-                            <td>Quantity</td>
-                            <td><input type="number" class="form-control" name="quantity" required
-                                    value="{{ old('quantity') }}"></td>
-                            @if ($errors->has('quantity'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('quantity') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>Title Ar</td>
-                            <td><input type="text" class="form-control" name="title_ar" required></td>
-                            @if ($errors->has('title_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('title_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>Title En</td>
-                            <td><input type="text" class="form-control" name="title_en" required></td>
-                            @if ($errors->has('title_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('title_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>Alt Ar</td>
-                            <td><input type="text" class="form-control" name="alt_ar" required></td>
-                            @if ($errors->has('alt_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('alt_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>Alt En</td>
-                            <td><input type="text" class="form-control" name="alt_en" required></td>
-                            @if ($errors->has('alt_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('alt_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>   
-                    <tr>
-                        <td>Description Ar</td>
-                        <td>
-                            <textarea name="description_ar" class="form-control" id="content2"><?php if(isset($product->description)){echo $product->description;} ?></textarea>
-                            @if ($errors->has('description_ar'))
-                            <span class=" alert alert-danger">
-                                <strong>{{ $errors->first('description_ar') }}</strong>
-                            </span>
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                            <td> Description En</td>
-                            <td>
-                            <textarea name="description_en" class="form-control" id="content2"><?php if(isset($product->description)){echo $product->description;} ?></textarea>
-                            @if ($errors->has('description_en'))
-                            <span class=" alert alert-danger">
-                                <strong>{{ $errors->first('description_en') }}</strong>
-                            </span>
-                            @endif
-                        </td>
-                            @if ($errors->has('description_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('description_en') }}</strong>
-                                </span>
-                            @endif
-                    </tr>
-                        <tr>
-                            <td>Description Meta Ar</td>
-                            <td><input type="text" class="form-control" name="description_meta_ar" required></td>
-                            @if ($errors->has('description_meta_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('description_meta_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>Description Meta En</td>
-                            <td><input type="text" class="form-control" name="description_meta_en" required></td>
-                            @if ($errors->has('description_meta_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('description_meta_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>keywords Ar</td>
-                            <td><input type="text" class="form-control" name="keywords_ar" required></td>
-                            @if ($errors->has('keywords_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('keywords_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>keywords En</td>
-                            <td><input type="text" class="form-control" name="keywords_en" required></td>
-                            @if ($errors->has('keywords_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('keywords_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>keywords_meta_ar</td>
-                            <td><input type="text" class="form-control" name="keywords_meta_ar" required></td>
-                            @if ($errors->has('keywords_meta_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('keywords_meta_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>keywords_meta_en</td>
-                            <td><input type="text" class="form-control" name="keywords_meta_en" required></td>
-                            @if ($errors->has('keywords_meta_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('keywords_meta_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                        <td>Select Categories</td>
-                            <td>
-                                <select name="category_id[]" id="category" class="form-control" multiple>
+                    {{-- البيانات الأساسية --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-tag"></i> البيانات الأساسية</div>
+                        <div class="ff-grid">
+                            <div class="ff-field">
+                                <label>اسم المنتج (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="name_ar" required
+                                    value="{{ old('name_ar') }}" placeholder="اسم المنتج كما سيظهر في الموقع">
+                                @if ($errors->has('name_ar'))
+                                    <span class="ff-error">{{ $errors->first('name_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>اسم المنتج (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="name_en" required dir="ltr"
+                                    value="{{ old('name_en') }}" placeholder="Product name as shown on the website">
+                                @if ($errors->has('name_en'))
+                                    <span class="ff-error">{{ $errors->first('name_en') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>القسم <span class="req">*</span>
+                                    <span class="opt">(يمكن اختيار أكثر من قسم — اضغط Ctrl مع النقر)</span></label>
+                                <select name="category_id[]" id="category" class="form-control ff-input" multiple>
                                     @foreach ($data['categories'] as $category)
-                                        <option value="{{ $category->id }}">{{ $category->translate('ar')->name }}</option>
+                                        <option value="{{ $category->id }}"
+                                            {{ in_array($category->id, old('category_id', [])) ? 'selected' : '' }}>
+                                            {{ $category->translate('ar')->name }}</option>
                                     @endforeach
                                 </select>
-                            </td>
-                            @if ($errors->has('category_id'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('category_id') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td> select Brand</td>
-                            <td>
-                                <select name="brand_id" id="brand" class="form-control">
+                                @if ($errors->has('category_id'))
+                                    <span class="ff-error">{{ $errors->first('category_id') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>البرند <span class="opt">(اختياري)</span></label>
+                                <select name="brand_id" id="brand" class="form-control ff-input">
                                     @foreach ($data['brands'] as $brand)
-                                        <option value="{{ $brand->id }}">{{ $brand->translate('ar')->name }}
+                                        <option value="{{ $brand->id }}"
+                                            {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
+                                            {{ $brand->translate('ar')->name }}
                                         </option>
                                     @endforeach
                                 </select>
-                            </td>
-                            @if ($errors->has('brand_id'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('brand_id') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td>order</td>
-                            <td><input type="number" min= "1" class="form-control" name="seq" required></td>
-                            @if ($errors->has('seq'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('seq') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td style="width:25%"></td>
-                            <td><button type="submit"
-                                    class="btn btn-default waves-effect waves-light form-control">Save</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-                {!! Form::close() !!}
+                                @if ($errors->has('brand_id'))
+                                    <span class="ff-error">{{ $errors->first('brand_id') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>الترتيب <span class="req">*</span></label>
+                                <input type="number" min="1" class="ff-input" name="seq" required dir="ltr"
+                                    value="{{ old('seq') }}" placeholder="ترتيب ظهور المنتج (رقم أصغر = أولاً)">
+                                @if ($errors->has('seq'))
+                                    <span class="ff-error">{{ $errors->first('seq') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
 
+                    {{-- السعر والمخزون --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-money"></i> السعر والمخزون</div>
+                        <div class="ff-grid">
+                            <div class="ff-field">
+                                <label>السعر <span class="req">*</span></label>
+                                <input type="number" class="ff-input" name="price" required dir="ltr"
+                                    value="{{ old('price') }}" placeholder="سعر المنتج">
+                                @if ($errors->has('price'))
+                                    <span class="ff-error">{{ $errors->first('price') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>سعر الخصم <span class="opt">(اختياري)</span></label>
+                                <input type="number" class="ff-input" name="discount_price" dir="ltr"
+                                    value="{{ old('discount_price') }}" placeholder="السعر بعد الخصم إن وجد">
+                                @if ($errors->has('discount_price'))
+                                    <span class="ff-error">{{ $errors->first('discount_price') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>الكمية <span class="req">*</span></label>
+                                <input type="number" class="ff-input" name="quantity" required dir="ltr"
+                                    value="{{ old('quantity') }}" placeholder="الكمية المتاحة في المخزون">
+                                @if ($errors->has('quantity'))
+                                    <span class="ff-error">{{ $errors->first('quantity') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- الوصف --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-align-right"></i> الوصف</div>
+                        <div class="ff-grid">
+                            <div class="ff-field ff-field--full">
+                                <label>الوصف (عربي) <span class="req">*</span></label>
+                                <textarea name="description_ar" class="ff-input" id="content2" rows="4"
+                                    placeholder="وصف تفصيلي يظهر في صفحة المنتج">{{ old('description_ar') }}</textarea>
+                                @if ($errors->has('description_ar'))
+                                    <span class="ff-error">{{ $errors->first('description_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field ff-field--full">
+                                <label>الوصف (إنجليزي) <span class="req">*</span></label>
+                                <textarea name="description_en" class="ff-input" rows="4" dir="ltr"
+                                    placeholder="Detailed description shown on the product page">{{ old('description_en') }}</textarea>
+                                @if ($errors->has('description_en'))
+                                    <span class="ff-error">{{ $errors->first('description_en') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- SEO --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-search"></i> تحسين محركات البحث (SEO)
+                            <small>هذه الحقول تظهر في نتائج بحث جوجل</small>
+                        </div>
+                        <div class="ff-grid">
+                            <div class="ff-field">
+                                <label>عنوان الصفحة SEO (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="title_ar" required
+                                    value="{{ old('title_ar') }}" placeholder="عنوان الصفحة في نتائج بحث جوجل">
+                                @if ($errors->has('title_ar'))
+                                    <span class="ff-error">{{ $errors->first('title_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>عنوان الصفحة SEO (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="title_en" required dir="ltr"
+                                    value="{{ old('title_en') }}" placeholder="Page title in Google search results">
+                                @if ($errors->has('title_en'))
+                                    <span class="ff-error">{{ $errors->first('title_en') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>النص البديل للصورة (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="alt_ar" required
+                                    value="{{ old('alt_ar') }}" placeholder="وصف قصير لصورة المنتج (مهم للـ SEO)">
+                                @if ($errors->has('alt_ar'))
+                                    <span class="ff-error">{{ $errors->first('alt_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>النص البديل للصورة (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="alt_en" required dir="ltr"
+                                    value="{{ old('alt_en') }}" placeholder="Short description of the image (SEO)">
+                                @if ($errors->has('alt_en'))
+                                    <span class="ff-error">{{ $errors->first('alt_en') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>وصف الميتا SEO (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="description_meta_ar" required
+                                    value="{{ old('description_meta_ar') }}"
+                                    placeholder="وصف مختصر يظهر في نتائج جوجل (حوالي 160 حرف)">
+                                @if ($errors->has('description_meta_ar'))
+                                    <span class="ff-error">{{ $errors->first('description_meta_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>وصف الميتا SEO (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="description_meta_en" required dir="ltr"
+                                    value="{{ old('description_meta_en') }}"
+                                    placeholder="Short description for Google results (~160 chars)">
+                                @if ($errors->has('description_meta_en'))
+                                    <span class="ff-error">{{ $errors->first('description_meta_en') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>الكلمات المفتاحية (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="keywords_ar" required
+                                    value="{{ old('keywords_ar') }}" placeholder="كلمات مفصولة بفواصل">
+                                @if ($errors->has('keywords_ar'))
+                                    <span class="ff-error">{{ $errors->first('keywords_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>الكلمات المفتاحية (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="keywords_en" required dir="ltr"
+                                    value="{{ old('keywords_en') }}" placeholder="Comma separated keywords">
+                                @if ($errors->has('keywords_en'))
+                                    <span class="ff-error">{{ $errors->first('keywords_en') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>كلمات الميتا المفتاحية SEO (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="keywords_meta_ar" required
+                                    value="{{ old('keywords_meta_ar') }}" placeholder="كلمات الميتا مفصولة بفواصل">
+                                @if ($errors->has('keywords_meta_ar'))
+                                    <span class="ff-error">{{ $errors->first('keywords_meta_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>كلمات الميتا المفتاحية SEO (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="keywords_meta_en" required dir="ltr"
+                                    value="{{ old('keywords_meta_en') }}" placeholder="Meta keywords, comma separated">
+                                @if ($errors->has('keywords_meta_en'))
+                                    <span class="ff-error">{{ $errors->first('keywords_meta_en') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ff-actions">
+                        <button type="submit" class="ff-submit">حفظ المنتج</button>
+                    </div>
+
+                    {!! Form::close() !!}
+                </div>
             </div>
         </div><!-- end col -->
     </div>

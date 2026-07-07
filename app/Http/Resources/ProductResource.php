@@ -32,7 +32,12 @@ class ProductResource extends JsonResource
             'description_meta' => $this->description_meta ?? '',
             'keywords' => $this->keywords ?? '',
             'keywords_meta' => $this->keywords_meta ?? '',
-            'category' => new CategoryResource($this->category),
+            // شكل مختصر — الـ CategoryResource الكاملة كانت بترجّع منتجات القسم كلها مع كل منتج
+            'category' => $this->category ? [
+                'id' => $this->category->id,
+                'name' => $this->category->name,
+                'parent_id' => $this->category->parent_id,
+            ] : null,
             'video_url' => $this->video_url,
         ];
     }

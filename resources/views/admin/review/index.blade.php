@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('admin_assets/plugins/custombox/css/custombox.css')}}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -17,7 +18,7 @@
     <div class="col-sm-12">
         <div class="main-title-00">
             
-            <h4 class="page-title">Reviews</h4>
+            <h4 class="page-title">اراء الاطباء</h4>
         </div>
 
     </div>
@@ -31,7 +32,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.review.create') }}" class="btn btn-default waves-effect">Add Review +</a>
+                        <a href="{{ route('admin.review.create') }}" class="btn btn-default waves-effect">+ إضافة رأي</a>
                     </div>
                 </div>
             </div>
@@ -41,10 +42,10 @@
 
                     <thead>
                         <tr>
-                            <th data-field="Image" data-align="center">Image</th>
-                            <th data-field="Name" data-align="center">Name</th>
-                            <th data-field="Review" data-align="center">Review</th>
-                            <th data-field="Control" data-align="center">Control</th>
+                            <th data-field="Image" data-align="center">الصورة</th>
+                            <th data-field="Name" data-align="center">اسم الطبيب</th>
+                            <th data-field="Review" data-align="center">الرأي</th>
+                            <th data-field="Control" data-align="center">التحكم</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,8 +58,16 @@
                             <td>{{$review->review}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.review.edit',$review->id) }}" class="btn btn-success waves-effect" title="Edit">Edit</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$review->id}}delete" title="Delete">Delete </button>
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.review.edit',$review->id) }}" title="تعديل"><i class="fa fa-pencil"></i> تعديل</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{$review->id}}delete" title="حذف"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 
@@ -70,13 +79,13 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="icon error animateErrorIcon" style="display: block;"><span class="x-mark animateXMark"><span class="line left"></span><span class="line right"></span></span></div>
-                                        <h4 style="text-align:center;">Confirm delete this review</h4>
+                                        <h4 style="text-align:center;">تأكيد الحذف</h4>
                                     </div>
                                     <div class="modal-footer" style="text-align:center">
                                         <form action="{{ route('admin.review.destroy',$review->id) }}" method="POST">
                                             {{csrf_field()}}
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <button class="btn btn-danger" type="submit" dir="ltr">Delete</button>
+                                            <button class="btn btn-danger" type="submit" dir="ltr">حذف</button>
                                         </form>
                                     </div>
                                 </div><!-- /.modal-content -->

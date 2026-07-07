@@ -4,6 +4,7 @@
     <link href="{{ asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('admin_assets/plugins/custombox/css/custombox.css') }}" rel="stylesheet">
+    @include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -68,16 +69,18 @@
                                         <td>{{ $category->status === 1 ? 'ظاهر' : 'مخفي' }}</td>
 
                                         <td class="actions">
-                                            <a href="{{ route('admin.changeStatus', [$category->status, 'categories', $category->id]) }}"
-                                                class="btn btn-{{ $category->status == 1 ? 'secondary' : 'dark' }} waves-effect"
-                                                title="تغيير الحالة"> {{ $category->status == 1 ? 'إخفاء' : 'إظهار' }}</a>
-                                            <a href="{{ route('admin.category.create', ['parent_id' => $category->id]) }}"
-                                                class="btn btn-primary waves-effect"
-                                                title="إضافة قسم فرعي داخل هذا القسم">+ قسم فرعي</a>
-                                            <a href="{{ route('admin.category.edit', $category->id) }}"
-                                                class="btn btn-success waves-effect" title="تعديل">تعديل</a>
-                                            <button type="button" class="btn btn-danger waves-effect" data-toggle="modal"
-                                                data-target="#{{ $category->id }}delete" title="حذف">حذف</button>
+                                            <div class="dropdown action-dd">
+                                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    الإجراءات <i class="fa fa-angle-down"></i>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" href="{{ route('admin.category.edit', $category->id) }}"><i class="fa fa-pencil"></i> تعديل</a>
+                                                    <a class="dropdown-item" href="{{ route('admin.changeStatus', [$category->status, 'categories', $category->id]) }}"><i class="fa fa-eye{{ $category->status == 1 ? '-slash' : '' }}"></i> {{ $category->status == 1 ? 'إخفاء' : 'إظهار' }}</a>
+                                                    <a class="dropdown-item" href="{{ route('admin.category.create', ['parent_id' => $category->id]) }}" title="إضافة قسم فرعي داخل هذا القسم"><i class="fa fa-plus"></i> + قسم فرعي</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{ $category->id }}delete"><i class="fa fa-trash"></i> حذف</a>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
 

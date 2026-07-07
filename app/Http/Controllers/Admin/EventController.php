@@ -43,7 +43,7 @@ class EventController extends BaseController
     public function store(EventRequest $request)
     {
         $this->service->store($request);
-        return redirect()->back()->with(['success' => 'Event added successfully']);;
+        return redirect()->back()->with(['success' => 'تم إضافة الحدث بنجاح']);;
     }
 
      /**
@@ -81,7 +81,7 @@ class EventController extends BaseController
     public function update(EventRequest $request, $id)
     {
         $this->service->update($request, $id);
-        return redirect()->back()->with(['success' => 'Event updated successfully']);
+        return redirect()->back()->with(['success' => 'تم تعديل الحدث بنجاح']);
     }
 
     /**
@@ -93,6 +93,6 @@ class EventController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.event.index'))->with(['success' => 'Event deleted successfully']);
+        return redirect(route('admin.event.index'))->with(['success' => 'تم حذف الحدث بنجاح']);
     }
 }

@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('admin_assets/plugins/custombox/css/custombox.css')}}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -30,7 +31,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.coupon.create') }}" class="btn btn-default waves-effect">اضافه كوبون +</a>
+                        <a href="{{ route('admin.coupon.create') }}" class="btn btn-default waves-effect">+ إضافة كوبون</a>
                     </div>
                 </div>
             </div>
@@ -40,9 +41,9 @@
 
                     <thead>
                         <tr>
-                            <th data-field="اسم" data-align="center">اسم</th>
+                            <th data-field="اسم" data-align="center">الاسم</th>
                             <th data-field="الكود" data-align="center">الكود</th>
-                            <th data-field="القيمة" data-align="center">القيمة</th>
+                            <th data-field="القيمة" data-align="center">قيمة الخصم</th>
                             <th data-field="الحالة" data-align="center">الحالة</th>
                             <th data-field="التحكم" data-align="center">التحكم</th>
                         </tr>
@@ -54,13 +55,21 @@
                             <td>{{$coupon->name}}</td>
                             <td>{{$coupon->code}}</td>
                             <td>{{$coupon->value}}</td>
-                            <td>{{$coupon->status === 1 ? 'مفعل' : 'غير مفعل'}}</td>
+                            <td>{{$coupon->status === 1 ? 'فعال' : 'غير فعال'}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus',[$coupon->status,'coupons',$coupon->id]) }}" class="btn btn-{{$coupon->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="الحالة"> {{$coupon->status == 1 ? 'إبطال' : 'تفعيل'}}</a>
-                                <a href="{{ route('admin.coupon.edit',$coupon->id) }}" class="btn btn-success waves-effect" title="تعديل">تعديل</a>
-                                <a href="{{ route('admin.coupon.show',$coupon->id) }}" class="btn btn-info waves-effect" title="مشاهدة">مشاهدة</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$coupon->id}}delete" title="حذف">حذف </button>
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.changeStatus',[$coupon->status,'coupons',$coupon->id]) }}"><i class="fa fa-toggle-{{$coupon->status == 1 ? 'off' : 'on'}}"></i> {{$coupon->status == 1 ? 'تعطيل' : 'تفعيل'}}</a>
+                                        <a class="dropdown-item" href="{{ route('admin.coupon.edit',$coupon->id) }}"><i class="fa fa-pencil"></i> تعديل</a>
+                                        <a class="dropdown-item" href="{{ route('admin.coupon.show',$coupon->id) }}"><i class="fa fa-eye"></i> عرض</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{$coupon->id}}delete"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 

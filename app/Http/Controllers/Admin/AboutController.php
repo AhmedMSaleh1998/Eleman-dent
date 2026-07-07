@@ -28,7 +28,7 @@ class AboutController extends BaseController
     public function store(AboutRequest $request)
     {
         $this->service->store($request->validated());
-        return redirect()->back();
+        return redirect()->back()->with(['success' => 'تم الحفظ بنجاح']);
     }
 
     /**
@@ -37,6 +37,6 @@ class AboutController extends BaseController
     public function update(AboutRequest $request, $id)
     {
         $model = $this->service->update($id, $request->validated());
-        return redirect()->back();
+        return redirect()->back()->with(['success' => 'تم حفظ التعديلات بنجاح']);
     }
 }

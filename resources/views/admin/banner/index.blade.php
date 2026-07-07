@@ -4,6 +4,7 @@
     <link href="{{ asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('admin_assets/plugins/custombox/css/custombox.css') }}" rel="stylesheet">
+    @include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -18,7 +19,7 @@
         <div class="col-sm-12">
             <div class="main-title-00">
 
-                <h4 class="page-title">Banners</h4>
+                <h4 class="page-title">البانرز</h4>
             </div>
 
         </div>
@@ -32,8 +33,7 @@
                     <div class="col-sm-12">
                         <div class=" main-btn-00">
                             <!-- Responsive modal -->
-                            <a href="{{ route('admin.banner.create') }}" class="btn btn-default waves-effect"> Add Banner
-                                +</a>
+                            <a href="{{ route('admin.banner.create') }}" class="btn btn-default waves-effect">+ إضافة بانر</a>
                         </div>
                     </div>
                 </div>
@@ -45,12 +45,12 @@
 
                         <thead>
                             <tr>
-                                <th data-field="Image" data-align="center">Image</th>
-                                <th data-field="alt_ar" data-align="center">Alt Ar</th>
-                                <th data-field="alt_en" data-align="center">Alt En</th>
-                                <th data-field="Url" data-align="center">Url</th>
-                                <th data-field="Status" data-align="center">Status</th>
-                                <th data-field="Control" data-align="center">Control</th>
+                                <th data-field="Image" data-align="center">الصورة</th>
+                                <th data-field="alt_ar" data-align="center">النص البديل بالعربية</th>
+                                <th data-field="alt_en" data-align="center">النص البديل بالإنجليزية</th>
+                                <th data-field="Url" data-align="center">الرابط</th>
+                                <th data-field="Status" data-align="center">الحالة</th>
+                                <th data-field="Control" data-align="center">التحكم</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -62,15 +62,19 @@
                                         <td>{{ $banner->translate('ar')->alt }}</td>
                                         <td>{{ $banner->translate('ar')->alt }}</td>
                                         <td>{{ $banner->url }}</td>
-                                        <td>{{ $banner->status === 1 ? 'Active' : ' Inactive' }}</td>
+                                        <td>{{ $banner->status === 1 ? 'ظاهر' : 'مخفي' }}</td>
                                         <td class="actions">
-                                            <a href="{{ route('admin.changeStatus', [$banner->status, 'banners', $banner->id]) }}"
-                                                class="btn btn-{{ $banner->status == 1 ? 'secondary' : 'dark' }} waves-effect"
-                                                title="ststus"> {{ $banner->status == 1 ? 'Hide' : 'Show' }}</a>
-                                            <a href="{{ route('admin.banner.edit', $banner->id) }}"
-                                                class="btn btn-success waves-effect" title="Edit">Edit</a>
-                                            <button type="button" class="btn btn-danger waves-effect" data-toggle="modal"
-                                                data-target="#{{ $banner->id }}delete" title="Delete">Delete </button>
+                                            <div class="dropdown action-dd">
+                                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    الإجراءات <i class="fa fa-angle-down"></i>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" href="{{ route('admin.banner.edit', $banner->id) }}"><i class="fa fa-pencil"></i> تعديل</a>
+                                                    <a class="dropdown-item" href="{{ route('admin.changeStatus', [$banner->status, 'banners', $banner->id]) }}"><i class="fa fa-eye{{ $banner->status == 1 ? '-slash' : '' }}"></i> {{ $banner->status == 1 ? 'إخفاء' : 'إظهار' }}</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{ $banner->id }}delete"><i class="fa fa-trash"></i> حذف</a>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
 
@@ -86,7 +90,7 @@
                                                     <div class="icon error animateErrorIcon" style="display: block;"><span
                                                             class="x-mark animateXMark"><span class="line left"></span><span
                                                                 class="line right"></span></span></div>
-                                                    <h4 style="text-align:center;"> Confirm to delete this banner</h4>
+                                                    <h4 style="text-align:center;">تأكيد الحذف</h4>
                                                 </div>
                                                 <div class="modal-footer" style="text-align:center">
                                                     <form
@@ -95,7 +99,7 @@
                                                         {{ csrf_field() }}
                                                         <input name="_method" type="hidden" value="DELETE">
                                                         <button class="btn btn-danger" type="submit"
-                                                            dir="ltr">Delete</button>
+                                                            dir="ltr">حذف</button>
                                                     </form>
                                                 </div>
                                             </div><!-- /.modal-content -->

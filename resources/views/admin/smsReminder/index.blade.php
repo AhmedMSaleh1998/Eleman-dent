@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('admin_assets/plugins/custombox/css/custombox.css')}}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -16,7 +17,7 @@
             @elseif(Session::has('danger'))
             <div class="alert alert-danger">{{ Session::get('danger') }}</div>
             @endif
-            <h4 class="page-title">الخامات</h4>
+            <h4 class="page-title">رسائل التذكير</h4>
         </div>
 
     </div>
@@ -30,7 +31,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.smsreminder.create') }}" class="btn btn-default waves-effect">اضافه تذكير رسائل +</a>
+                        <a href="{{ route('admin.smsreminder.create') }}" class="btn btn-default waves-effect">+ إضافة رسالة تذكير</a>
                     </div>
                 </div>
             </div>
@@ -40,9 +41,9 @@
 
                     <thead>
                         <tr>
-                            <th data-field="اسم" data-align="center">اسم</th>
+                            <th data-field="اسم" data-align="center">الاسم</th>
                             <th data-field="الهاتف" data-align="center">الهاتف</th>
-                            <th data-field="تذكير الاوردر" data-align="center">تذكير الاوردر</th>
+                            <th data-field="تذكير الاوردر" data-align="center">تذكير الطلبات</th>
                             <th data-field="تذكير الدفع" data-align="center">تذكير الدفع</th>
                             <th data-field="الحالة" data-align="center">الحالة</th>
                             <th data-field="التحكم" data-align="center">التحكم</th>
@@ -54,14 +55,22 @@
                         <tr>
                             <td>{{$smsReminder->name}}</td>
                             <td>{{$smsReminder->phone}}</td>
-                            <td>{{$smsReminder->notify_order === 1 ? 'مفعل' : 'غير مفعل'}}</td>
-                            <td>{{$smsReminder->notify_payment === 1 ? 'مفعل' : 'غير مفعل'}}</td>
-                            <td>{{$smsReminder->status === 1 ? 'مفعل' : 'غير مفعل'}}</td>
+                            <td>{{$smsReminder->notify_order === 1 ? 'فعال' : 'غير فعال'}}</td>
+                            <td>{{$smsReminder->notify_payment === 1 ? 'فعال' : 'غير فعال'}}</td>
+                            <td>{{$smsReminder->status === 1 ? 'فعال' : 'غير فعال'}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus',[$smsReminder->status,'sms_reminders',$smsReminder->id]) }}" class="btn btn-{{$smsReminder->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="الحالة"> {{$smsReminder->status == 1 ? 'إبطال' : 'تفعيل'}}</a>
-                                <a href="{{ route('admin.smsreminder.edit',$smsReminder->id) }}" class="btn btn-success waves-effect" title="تعديل">تعديل</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$smsReminder->id}}delete" title="حذف">حذف </button>
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.changeStatus',[$smsReminder->status,'sms_reminders',$smsReminder->id]) }}"><i class="fa fa-toggle-{{$smsReminder->status == 1 ? 'off' : 'on'}}"></i> {{$smsReminder->status == 1 ? 'تعطيل' : 'تفعيل'}}</a>
+                                        <a class="dropdown-item" href="{{ route('admin.smsreminder.edit',$smsReminder->id) }}"><i class="fa fa-pencil"></i> تعديل</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{$smsReminder->id}}delete"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 

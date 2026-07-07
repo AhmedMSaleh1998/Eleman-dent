@@ -58,6 +58,7 @@ class CategoryRequest extends FormRequest
             'description_meta_ar'  => 'required',
             'description_meta_en'  => 'required',
             'image' => 'nullable|image',
+            'banner' => 'nullable|image',
             'alt_en'          => 'required|string|min:2|max:191',
             'alt_ar'          => 'required|string|min:2|max:191',
         ];

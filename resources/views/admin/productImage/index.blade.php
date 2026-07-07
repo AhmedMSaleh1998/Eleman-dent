@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{ asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('admin_assets/plugins/custombox/css/custombox.css') }}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -16,7 +17,7 @@
             @elseif(Session::has('danger'))
             <div class="alert alert-danger">{{ Session::get('danger') }}</div>
             @endif
-            <h4 class="page-title"> Product Images</h4>
+            <h4 class="page-title">صور المنتج</h4>
         </div>
 
     </div>
@@ -29,7 +30,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
-                        <a href="{{ route('admin.productimage.create', $product_id) }}" class="btn btn-default waves-effect">  Product Image +</a>
+                        <a href="{{ route('admin.productimage.create', $product_id) }}" class="btn btn-default waves-effect">+ إضافة صورة</a>
                     </div>
                 </div>
             </div>
@@ -39,21 +40,29 @@
 
                     <thead>
                         <tr>
-                            <th data-field="الصورة الرئيسية" data-align="center"> Product Image  </th>
-                            <th data-field="alt" data-align="center">Alt</th>
-                            <th data-field="التحكم" data-align="center">Control</th>
+                            <th data-field="الصورة الرئيسية" data-align="center">الصورة</th>
+                            <th data-field="alt" data-align="center">النص البديل (Alt)</th>
+                            <th data-field="التحكم" data-align="center">التحكم</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($projectImage as $Image)
                         <tr>
                             <td><img src="{{ asset('admin_assets/images/products/' . $Image->image) }}" class="img-responsive" width="100px" height="100px"></td>
-                            <td>{{ $Image->alt ?? 'None'}}</td>
+                            <td>{{ $Image->alt ?? 'لا يوجد'}}</td>
 
                             <td class="actions">
-                                {{-- <a href="{{ route('admin.changeStatus', [$Image->status, 'product_images', $Image->id]) }}" class="btn btn-{{ $Image->status == 1 ? 'secondary' : 'dark' }} waves-effect" title="Status"> {{ $Image->status == 1 ? 'Hide' : 'Show' }}</a> --}}
-                                <a href="{{ route('admin.productimage.edit', $Image->id) }}" class="btn btn-success waves-effect" title="edit">Edit</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{ $Image->id }}delete" title="delete">Delete </button>
+                                {{-- <a href="{{ route('admin.changeStatus', [$Image->status, 'product_images', $Image->id]) }}" class="btn btn-{{ $Image->status == 1 ? 'secondary' : 'dark' }} waves-effect" title="تغيير الحالة"> {{ $Image->status == 1 ? 'إخفاء' : 'إظهار' }}</a> --}}
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.productimage.edit', $Image->id) }}" title="تعديل"><i class="fa fa-pencil"></i> تعديل</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{ $Image->id }}delete" title="حذف"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 
@@ -65,13 +74,13 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="icon error animateErrorIcon" style="display: block;"><span class="x-mark animateXMark"><span class="line left"></span><span class="line right"></span></span></div>
-                                        <h4 style="text-align:center;"> ! Confirm to delete this image</h4>
+                                        <h4 style="text-align:center;">تأكيد الحذف</h4>
                                     </div>
                                     <div class="modal-footer" style="text-align:center">
                                         <form action="{{ route('admin.productimage.destroy', $Image->id) }}" method="post">
                                             @csrf
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <button class="btn btn-danger" type="submit" dir="ltr">Delete</button>
+                                            <button class="btn btn-danger" type="submit" dir="ltr">حذف</button>
                                         </form>
                                     </div>
                                 </div>

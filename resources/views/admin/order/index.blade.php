@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{ asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('admin_assets/plugins/custombox/css/custombox.css') }}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -15,7 +16,7 @@
             @elseif(Session::has('danger'))
             <div class="alert alert-danger">{{ Session::get('danger') }}</div>
             @endif
-            <h4 class="page-title">الاوردرات</h4>
+            <h4 class="page-title">الأوردرات</h4>
         </div>
 
     </div>
@@ -48,9 +49,17 @@
                             <td>{{ $order->status === 1 ? 'مؤكد' : 'غير مؤكد' }}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus', [$order->status, 'orders', $order->id]) }}" class="btn btn-{{ $order->status == 1 ? 'info' : 'success' }} waves-effect" title="الحالة"> {{ $order->status == 1 ? 'إلغاء' : 'تأكيد' }}</a>
-                                <a href="{{ route('admin.order.show', $order->id) }}" class="btn btn-inverse waves-effect" title="مشاهدة">مشاهدة</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{ $order->id }}delete" title="حذف">حذف </button>
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.changeStatus', [$order->status, 'orders', $order->id]) }}"><i class="fa fa-toggle-{{ $order->status == 1 ? 'off' : 'on' }}"></i> {{ $order->status == 1 ? 'إلغاء' : 'تأكيد' }}</a>
+                                        <a class="dropdown-item" href="{{ route('admin.order.show', $order->id) }}"><i class="fa fa-eye"></i> مشاهدة</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{ $order->id }}delete"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 

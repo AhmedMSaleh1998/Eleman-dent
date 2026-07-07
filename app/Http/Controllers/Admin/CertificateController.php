@@ -43,7 +43,7 @@ class CertificateController extends BaseController
     public function store(CertificateRequest $request)
     {
         $this->service->store($request);
-        return redirect()->back()->with(['success' => 'Certificate added successfully']);;
+        return redirect()->back()->with(['success' => 'تم إضافة الشهادة بنجاح']);;
     }
 
     /**
@@ -68,7 +68,7 @@ class CertificateController extends BaseController
     public function update(CertificateRequest $request, $id)
     {
         $this->service->update($request,$id);
-        return redirect()->back()->with(['success' => 'Certificate updated successfully ']);
+        return redirect()->back()->with(['success' => 'تم تحديث الشهادة بنجاح']);
     }
 
     /**
@@ -80,6 +80,6 @@ class CertificateController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.certificate.index'))->with(['success' => 'Certificate deleted successfully']);
+        return redirect(route('admin.certificate.index'))->with(['success' => 'تم حذف الشهادة بنجاح']);
     }
 }

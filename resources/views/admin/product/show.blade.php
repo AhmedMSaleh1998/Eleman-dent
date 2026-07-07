@@ -9,9 +9,9 @@
         @elseif(Session::has('danger'))
         <div class="alert alert-danger">{{ Session::get('danger') }}</div>
         @endif
-        <a style="color: #fff;" href="{{route('admin.home')}}">Home</a>
-        <a style="color: #fff;" href="{{route('admin.product.index')}}">/ Products / </a>
-        <a style="color: #36404a;"> Show </a>
+        <a style="color: #fff;" href="{{route('admin.home')}}">الرئيسية</a>
+        <a style="color: #fff;" href="{{route('admin.product.index')}}">/ المنتجات / </a>
+        <a style="color: #36404a;"> عرض </a>
 
         <ul>
             @foreach ($errors->all() as $error)
@@ -29,19 +29,19 @@
                 <tbody>
 
                     <tr>
-                        <td> Main Image</td>
+                        <td>الصورة الرئيسية</td>
                         <td><img src="{{asset('admin_assets/images/products/'.$product->image)}}" class="img-responsive" width="100px" height="100px"></td>
                     </tr>
                     <tr>
-                        <td> Name Ar</td>
+                        <td>الاسم بالعربية</td>
                         <td>{{ $product->translate('ar')->name }}</td>
                     </tr>
                     <tr>
-                        <td>Name En </td>
+                        <td>الاسم بالإنجليزية</td>
                         <td>{{ $product->translate('en')->name }}</td>
                     </tr>
                     <tr>
-    <td>Categories</td>
+    <td>الأقسام</td>
     <td>
         @foreach ($product->categories as $category)
             {{ $category->translate('ar')->name }}
@@ -52,63 +52,63 @@
     </td>
 </tr>
                     <tr>
-                        <td> Title Ar</td>
+                        <td>عنوان الصفحة SEO (عربي)</td>
                         <td>{{ $product->translate('ar')->title }}</td>
                     </tr>
                     <tr>
-                        <td>Title En  </td>
+                        <td>عنوان الصفحة SEO (إنجليزي)</td>
                         <td>{{ $product->translate('en')->title }}</td>
                     </tr>
                     <tr>
-                        <td> Alt Ar</td>
+                        <td>النص البديل للصورة (عربي)</td>
                         <td>{{ $product->translate('ar')->alt }}</td>
                     </tr>
                     <tr>
-                        <td>Alt En  </td>
+                        <td>النص البديل للصورة (إنجليزي)</td>
                         <td>{{ $product->translate('en')->alt }}</td>
                     </tr>
                     <tr>
-                        <td> Description Ar</td>
+                        <td>الوصف (عربي)</td>
                         <td>{{ $product->translate('ar')->description }}</td>
                     </tr>
                     <tr>
-                        <td>Description En  </td>
+                        <td>الوصف (إنجليزي)</td>
                         <td>{{ $product->translate('en')->description }}</td>
                     </tr>
-                   
+
                     <tr>
-                        <td> Description Meta Ar</td>
+                        <td>وصف الميتا SEO (عربي)</td>
                         <td>{{ $product->translate('ar')->description_meta }}</td>
                     </tr>
                     <tr>
-                        <td>Description Meta En  </td>
+                        <td>وصف الميتا SEO (إنجليزي)</td>
                         <td>{{ $product->translate('en')->description_meta }}</td>
                     </tr><tr>
-                        <td> Keyword Ar</td>
+                        <td>الكلمات المفتاحية (عربي)</td>
                         <td>{{ $product->translate('ar')->keywords }}</td>
                     </tr>
                     <tr>
-                        <td>Keyword En  </td>
+                        <td>الكلمات المفتاحية (إنجليزي)</td>
                         <td>{{ $product->translate('en')->keywords }}</td>
                     </tr><tr>
-                        <td> Keyword Meta Ar</td>
+                        <td>كلمات الميتا المفتاحية (عربي)</td>
                         <td>{{ $product->translate('ar')->keywords_meta }}</td>
                     </tr>
                     <tr>
-                        <td>Keyword Meta En  </td>
+                        <td>كلمات الميتا المفتاحية (إنجليزي)</td>
                         <td>{{ $product->translate('en')->keywords_meta }}</td>
                     </tr>
                     <tr>
-                        <td>Quantity</td>
+                        <td>الكمية</td>
                         <td>{{ $product->quantity }}</td>
                     </tr>
                     <tr>
-                        <td>Top product</td>
-                        <td>{{ $product->is_top_product ? 'Yes' : 'No' }}</td>
+                        <td>منتج مميز</td>
+                        <td>{{ $product->is_top_product ? 'نعم' : 'لا' }}</td>
                     </tr>
                     <tr>
-                        <td>status</td>
-                        <td>{{$product->status == 1 ? 'Active' : ' Inactive'}}</td>
+                        <td>الحالة</td>
+                        <td>{{$product->status == 1 ? 'ظاهر' : 'مخفي'}}</td>
                     </tr>
                 </tbody>
             </table>

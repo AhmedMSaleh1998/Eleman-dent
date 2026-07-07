@@ -10,9 +10,9 @@
     <div class="row">
         <div class="main-title-00">
 
-            <a style="color: #fff;" href="{{ route('admin.home') }}">Home</a>
-            <a style="color: #fff;" href="{{ route('admin.banner.index') }}">/ Banners / </a>
-            <a style="color: #36404a;"> Show </a>
+            <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
+            <a style="color: #fff;" href="{{ route('admin.banner.index') }}">/ البانرز / </a>
+            <a style="color: #36404a;"> عرض </a>
 
             <ul>
                 @foreach ($errors->all() as $error)

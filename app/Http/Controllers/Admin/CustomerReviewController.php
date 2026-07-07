@@ -36,7 +36,7 @@ class CustomerReviewController extends BaseController
     public function store(CustomerReviewRequest $request)
     {
         $this->service->store($request);
-        return redirect()->back()->with(['success' => 'Event added successfully']);;
+        return redirect()->back()->with(['success' => 'تم إضافة الرأي بنجاح']);;
     }
 
     /**
@@ -63,7 +63,7 @@ class CustomerReviewController extends BaseController
     public function update(CustomerReviewRequest $request, $id)
     {
         $this->service->update($request, $id);
-        return redirect()->back()->with(['success' => 'Review updated successfully']);
+        return redirect()->back()->with(['success' => 'تم تعديل الرأي بنجاح']);
     }
 
     /**
@@ -72,6 +72,6 @@ class CustomerReviewController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.review.index'))->with(['success' => 'Review deleted successfully']);
+        return redirect(route('admin.review.index'))->with(['success' => 'تم حذف الرأي بنجاح']);
     }
 }

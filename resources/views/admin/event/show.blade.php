@@ -9,9 +9,9 @@
             @elseif(Session::has('danger'))
                 <div class="alert alert-danger">{{ Session::get('danger') }}</div>
             @endif
-            <a style="color: #fff;" href="{{ route('admin.home') }}">Home</a>
-            <a style="color: #fff;" href="{{ route('admin.event.index') }}">/ Events / </a>
-            <a style="color: #36404a;"> Show </a>
+            <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
+            <a style="color: #fff;" href="{{ route('admin.event.index') }}">/ الأحداث / </a>
+            <a style="color: #36404a;"> عرض </a>
 
             <ul>
                 @foreach ($errors->all() as $error)
@@ -29,45 +29,45 @@
                     <tbody>
 
                         <tr>
-                            <td> Main Image</td>
+                            <td>الصورة الرئيسية</td>
                             <td><img src="{{ asset('admin_assets/images/events/' . $event->image) }}" class="img-responsive"
                                     width="100px" height="100px"></td>
                         </tr>
                         <tr>
-                            <td> Name Ar</td>
+                            <td>الاسم (عربي)</td>
                             <td>{{ $event->translate('ar')->name }}</td>
                         </tr>
                         <tr>
-                            <td>Name En </td>
+                            <td>الاسم (إنجليزي)</td>
                             <td>{{ $event->translate('en')->name }}</td>
                         </tr>
 
                         <tr>
-                            <td> Description Ar</td>
+                            <td>الوصف (عربي)</td>
                             <td>{{ $event->translate('ar')->description }}</td>
                         </tr>
                         <tr>
-                            <td>Description En </td>
+                            <td>الوصف (إنجليزي)</td>
                             <td>{{ $event->translate('en')->description }}</td>
                         </tr>
 
                         <tr>
-                            <td> Location Ar</td>
+                            <td>المكان (عربي)</td>
                             <td>{{ $event->translate('ar')->location }}</td>
                         </tr>
                         <tr>
-                            <td>Location En </td>
+                            <td>المكان (إنجليزي)</td>
                             <td>{{ $event->translate('en')->location }}</td>
 
                         <tr>
 
                         <tr>
-                            <td>Date </td>
+                            <td>التاريخ</td>
                             <td>{{ $event->date }}</td>
 
                         <tr>
-                            <td>status</td>
-                            <td>{{ $event->status == 1 ? 'Active' : ' Inactive' }}</td>
+                            <td>الحالة</td>
+                            <td>{{ $event->status == 1 ? 'ظاهر' : 'مخفي' }}</td>
                         </tr>
 
 

@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('admin_assets/plugins/custombox/css/custombox.css')}}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -17,7 +18,7 @@
     <div class="col-sm-12">
         <div class="main-title-00">
             
-            <h4 class="page-title">Events</h4>
+            <h4 class="page-title">الأحداث</h4>
         </div>
 
     </div>
@@ -31,7 +32,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.event.create') }}" class="btn btn-default waves-effect">Add event +</a>
+                        <a href="{{ route('admin.event.create') }}" class="btn btn-default waves-effect">+ إضافة حدث</a>
                     </div>
                 </div>
             </div>
@@ -41,11 +42,11 @@
 
                     <thead>
                         <tr>
-                            <th data-field="Image" data-align="center">Image</th>
-                            <th data-field="Name Arabic" data-align="center">Name Arabic</th>
-                            <th data-field="Name English" data-align="center">Name English</th>
-                            <th data-field="Status" data-align="center">Status</th>
-                            <th data-field="Control" data-align="center">Control</th>
+                            <th data-field="Image" data-align="center">الصورة</th>
+                            <th data-field="Name Arabic" data-align="center">الاسم بالعربية</th>
+                            <th data-field="Name English" data-align="center">الاسم بالإنجليزية</th>
+                            <th data-field="Status" data-align="center">الحالة</th>
+                            <th data-field="Control" data-align="center">التحكم</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,14 +56,22 @@
                             <td><img src="{{asset('admin_assets/images/events/'.$event->image)}}" class="img-responsive" width="100px" height="100px"></td>
                             <td>{{$event->translate('ar')->name}}</td>
                             <td>{{$event->translate('en')->name}}</td>
-                            <td>{{$event->status === 1 ? 'Shown' : 'Hidden'}}</td>
+                            <td>{{$event->status === 1 ? 'ظاهر' : 'مخفي'}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus',[$event->status,'events',$event->id]) }}" class="btn btn-{{$event->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="Status"> {{$event->status == 1 ? 'Hide' : 'Show'}}</a>
-                                <a href="{{ route('admin.event.edit',$event->id) }}" class="btn btn-success waves-effect" title="Edit">Edit</a>
-                                <a href="{{ route('admin.event.show',$event->id) }}" class="btn btn-inverse waves-effect" title="Show">Show</a>
-                                <a href="{{ route('admin.eventimage.index',$event->id) }}" class="btn btn-dark waves-effect" title="Event Images">Images </a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$event->id}}delete" title="Delete">Delete </button>
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.event.edit',$event->id) }}" title="تعديل"><i class="fa fa-pencil"></i> تعديل</a>
+                                        <a class="dropdown-item" href="{{ route('admin.event.show',$event->id) }}" title="عرض"><i class="fa fa-eye"></i> عرض</a>
+                                        <a class="dropdown-item" href="{{ route('admin.eventimage.index',$event->id) }}" title="صور الحدث"><i class="fa fa-picture-o"></i> صور الحدث</a>
+                                        <a class="dropdown-item" href="{{ route('admin.changeStatus',[$event->status,'events',$event->id]) }}" title="تغيير الحالة"><i class="fa {{$event->status == 1 ? 'fa-eye-slash' : 'fa-eye'}}"></i> {{$event->status == 1 ? 'إخفاء' : 'إظهار'}}</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{$event->id}}delete" title="حذف"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 
@@ -74,13 +83,13 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="icon error animateErrorIcon" style="display: block;"><span class="x-mark animateXMark"><span class="line left"></span><span class="line right"></span></span></div>
-                                        <h4 style="text-align:center;">Confirm delete this event</h4>
+                                        <h4 style="text-align:center;">تأكيد الحذف</h4>
                                     </div>
                                     <div class="modal-footer" style="text-align:center">
                                         <form action="{{ route('admin.event.destroy',$event->id) }}" method="POST">
                                             {{csrf_field()}}
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <button class="btn btn-danger" type="submit" dir="ltr">Delete</button>
+                                            <button class="btn btn-danger" type="submit" dir="ltr">حذف</button>
                                         </form>
                                     </div>
                                 </div><!-- /.modal-content -->

@@ -43,7 +43,7 @@ class CityController extends BaseController
     public function store(CityRequest $request)
     {
         $this->service->store($request);
-        return redirect()->back()->with(['success' => 'City Added Successfully']);
+        return redirect()->back()->with(['success' => 'تم إضافة المدينة بنجاح']);
     }
 
     /**
@@ -68,7 +68,7 @@ class CityController extends BaseController
     public function update(CityRequest $request, $id)
     {
         $city = $this->service->update($request, $id);
-        return redirect()->back()->with(['success' => 'City Edited Successfully']);
+        return redirect()->back()->with(['success' => 'تم تحديث المدينة بنجاح']);
     }
 
     /**
@@ -80,6 +80,6 @@ class CityController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.city.index'))->with(['success' => 'City Deleted Successfully']);
+        return redirect(route('admin.city.index'))->with(['success' => 'تم حذف المدينة بنجاح']);
     }
 }

@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('admin_assets/plugins/custombox/css/custombox.css')}}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -16,7 +17,7 @@
             @elseif(Session::has('danger'))
             <div class="alert alert-danger">{{ Session::get('danger') }}</div>
             @endif
-            <h4 class="page-title">Cities</h4>
+            <h4 class="page-title">المدن</h4>
         </div>
 
     </div>
@@ -30,7 +31,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.city.create') }}" class="btn btn-default waves-effect">Add City +</a>
+                        <a href="{{ route('admin.city.create') }}" class="btn btn-default waves-effect">+ إضافة مدينة</a>
                     </div>
                 </div>
             </div>
@@ -40,11 +41,11 @@
 
                     <thead>
                         <tr>
-                            <th data-field="Name Ar" data-align="center">Name Ar</th>
-                            <th data-field="Name En" data-align="center">Name En</th>
-                            <th data-field="Shipping fees" data-align="center">Shipping fees</th>
-                            <th data-field="Status" data-align="center">Status</th>
-                            <th data-field="Control" data-align="center">Control</th>
+                            <th data-field="Name Ar" data-align="center">الاسم بالعربية</th>
+                            <th data-field="Name En" data-align="center">الاسم بالإنجليزية</th>
+                            <th data-field="Shipping fees" data-align="center">مصاريف الشحن</th>
+                            <th data-field="Status" data-align="center">الحالة</th>
+                            <th data-field="Control" data-align="center">التحكم</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,12 +55,20 @@
                             <td>{{$city->translate('ar')->name}}</td>
                             <td>{{$city->translate('en')->name}}</td>
                             <td>{{$city->shipping_fess}}</td>
-                            <td>{{$city->status === 1 ? 'Shown' : 'hidden'}}</td>
+                            <td>{{ $city->status === 1 ? 'ظاهرة' : 'مخفية' }}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus',[$city->status,'cities',$city->id]) }}" class="btn btn-{{$city->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="Status"> {{$city->status == 1 ? 'Hide' : 'Show'}}</a>
-                                <a href="{{ route('admin.city.edit',$city->id) }}" class="btn btn-success waves-effect" title="Edit">Edit</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$city->id}}delete" title="Delete">Delete </button>
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.city.edit',$city->id) }}"><i class="fa fa-pencil"></i> تعديل</a>
+                                        <a class="dropdown-item" href="{{ route('admin.changeStatus',[$city->status,'cities',$city->id]) }}"><i class="fa fa-eye{{ $city->status == 1 ? '-slash' : '' }}"></i> {{ $city->status == 1 ? 'إخفاء' : 'إظهار' }}</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{$city->id}}delete"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 
@@ -71,13 +80,13 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="icon error animateErrorIcon" style="display: block;"><span class="x-mark animateXMark"><span class="line left"></span><span class="line right"></span></span></div>
-                                        <h4 style="text-align:center;">Confirm Delete</h4>
+                                        <h4 style="text-align:center;">تأكيد الحذف</h4>
                                     </div>
                                     <div class="modal-footer" style="text-align:center">
                                         <form action="{{ route('admin.city.destroy',$city->id) }}" method="POST">
                                             {{csrf_field()}}
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <button class="btn btn-danger" type="submit" dir="ltr">Delete</button>
+                                            <button class="btn btn-danger" type="submit" dir="ltr">حذف</button>
                                         </form>
                                     </div>
                                 </div><!-- /.modal-content -->

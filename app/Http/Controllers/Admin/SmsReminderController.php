@@ -43,7 +43,7 @@ class SmsReminderController extends BaseController
     public function store(SmsReminderRequest $request)
     {
         $this->service->store($request->validated());
-        return redirect()->back()->with(['success' => 'تم إضافة تذكير رسائل بنجاح']);
+        return redirect()->back()->with(['success' => 'تمت إضافة رسالة التذكير بنجاح']);
     }
 
     /**
@@ -68,7 +68,7 @@ class SmsReminderController extends BaseController
     public function update(SmsReminderRequest $request, $id)
     {
         $category = $this->service->update($request, $id);
-        return redirect()->back()->with(['success' => 'تم تعديل تذكير رسائل بنجاح']);
+        return redirect()->back()->with(['success' => 'تم تعديل رسالة التذكير بنجاح']);
     }
 
     /**
@@ -80,6 +80,6 @@ class SmsReminderController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.smsreminder.index'))->with(['success' => 'تم حذف تذكير رسائل بنجاح']);
+        return redirect(route('admin.smsreminder.index'))->with(['success' => 'تم حذف رسالة التذكير بنجاح']);
     }
 }

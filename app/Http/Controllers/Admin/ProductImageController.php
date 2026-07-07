@@ -45,7 +45,7 @@ class ProductImageController extends BaseController
         /* $productImage = $request->validated();
         $productImage['image'] = uploadImage($productImage['image'], 'products'); */
         $this->service->store($request);
-        return redirect()->back()->with(['success' => 'Product Image added successfully']);
+        return redirect()->back()->with(['success' => 'تم إضافة صورة المنتج بنجاح']);
     }
 
     /**
@@ -84,7 +84,7 @@ class ProductImageController extends BaseController
         /* $product = $request->validated();
         $product['image'] = uploadImage($product['image'], 'products', 'product_images', $id); */
         $this->service->update($request, $id);
-        return redirect()->back()->with(['success' => 'Product Image updated successfully']);
+        return redirect()->back()->with(['success' => 'تم تعديل صورة المنتج بنجاح']);
     }
 
     /**
@@ -96,6 +96,6 @@ class ProductImageController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect()->back()->with(['success' => 'Product Image deleted successfully']);
+        return redirect()->back()->with(['success' => 'تم حذف صورة المنتج بنجاح']);
     }
 }

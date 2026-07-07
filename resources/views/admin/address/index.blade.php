@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('admin_assets/plugins/custombox/css/custombox.css')}}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -57,10 +58,18 @@
                             <td>{{$address->status === 1 ? 'مفعل' : 'غير مفعل'}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus',[$address->status,'addresses',$address->id]) }}" class="btn btn-{{$address->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="الحالة"> {{$address->status == 1 ? 'إبطال' : 'تفعيل'}}</a>
-                                <a href="{{ route('admin.address.edit',$address->id) }}" class="btn btn-success waves-effect" title="تعديل">تعديل</a>
-                                <a href="{{ route('admin.address.show',$address->id) }}" class="btn btn-info waves-effect" title="مشاهدة">مشاهدة</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$address->id}}delete" title="حذف">حذف </button>
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.address.edit', $address->id) }}"><i class="fa fa-pencil"></i> تعديل</a>
+                                        <a class="dropdown-item" href="{{ route('admin.address.show', $address->id) }}"><i class="fa fa-eye"></i> عرض</a>
+                                        <a class="dropdown-item" href="{{ route('admin.changeStatus', [$address->status, 'addresses', $address->id]) }}"><i class="fa fa-toggle-{{ $address->status == 1 ? 'off' : 'on' }}"></i> {{ $address->status == 1 ? 'إبطال' : 'تفعيل' }}</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{ $address->id }}delete"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 

@@ -23,7 +23,7 @@
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <h4 class="header-title m-t-0 m-b-20"> الاوردر رقم {{ $order->id }}</h4>
+            <h4 class="header-title m-t-0 m-b-20"> الأوردر رقم {{ $order->id }}</h4>
 
             <table class="table table-bordered table-striped">
                 <tbody>
@@ -79,11 +79,11 @@
                     <tr>
                         <td>حالات الطلب</td>
                         <td>
-                            <a href="{{ route('admin.order.status', [$order->id,0]) }}" class="btn btn-warning waves-effect" title="قيد الانتظار">قيد الأنتظار</a>
+                            <a href="{{ route('admin.order.status', [$order->id,0]) }}" class="btn btn-warning waves-effect" title="قيد الانتظار">قيد الانتظار</a>
                             <a href="{{ route('admin.order.status', [$order->id,1]) }}" class="btn btn-success waves-effect" title="الموافقة">الموافقة</a>
                             <a href="{{ route('admin.order.status', [$order->id,2]) }}" class="btn btn-danger waves-effect" title="الرفض">الرفض</a>
-                            <a href="{{ route('admin.order.status', [$order->id,3]) }}" class="btn btn-primary waves-effect" title="جارى التحضير">جارى التحضير</a>
-                            <a href="{{ route('admin.order.status', [$order->id,4]) }}" class="btn btn-info waves-effect" title="جارى التوصيل">جارى التوصيل</a>
+                            <a href="{{ route('admin.order.status', [$order->id,3]) }}" class="btn btn-primary waves-effect" title="جاري التحضير">جاري التحضير</a>
+                            <a href="{{ route('admin.order.status', [$order->id,4]) }}" class="btn btn-info waves-effect" title="جاري التوصيل">جاري التوصيل</a>
                             <a href="{{ route('admin.order.status', [$order->id,5]) }}" class="btn btn-inverse waves-effect" title="تم التوصيل">تم التوصيل</a>
                         </td>
                     </tr>
@@ -102,7 +102,7 @@
                         <td>اسم المنتج</td>
                         <td>الكمية</td>
                         <td>السعر</td>
-                        <td>الاجمالي</td>
+                        <td>الإجمالي</td>
                     </tr>
                 </thead>
                 <tbody>

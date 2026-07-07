@@ -10,6 +10,7 @@
 <link href="{{ asset('admin_assets/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('admin_assets/plugins/custombox/css/custombox.css') }}" rel="stylesheet">
+@include('admin._form_styles')
 @endsection
 
 @section('content')
@@ -21,10 +22,10 @@
 @endif
 <div class="row">
     <div class="main-title-00">
-      
-        <a style="color: #fff;" href="{{ route('admin.home') }}">Home</a>
-        <a style="color: #fff;" href="{{ route('admin.productimage.index',$productImage->product_id) }}">/ Product Images/ </a>
-        <a style="color: #36404a;"> Edit </a>
+
+        <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
+        <a style="color: #fff;" href="{{ route('admin.productimage.index',$productImage->product_id) }}">/ صور المنتج / </a>
+        <a style="color: #36404a;"> تعديل </a>
 
         <ul>
             @foreach ($errors->all() as $error)
@@ -36,40 +37,47 @@
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <h4 class="header-title m-t-0 m-b-20"> Edit Product Image </h4>
-            {{ Form::model($productImage,['method' => 'PUT', 'action' => ['App\Http\Controllers\Admin\ProductImageController@update', $productImage->id], 'files' => true]) }}
-            <table class="table table-bordered table-striped">
-                <tbody>
-                    <tr>
-                        <td>image</td>
-                        <input type="hidden" name="product_id" value="{{ $productImage->product_id }}">
-                        <td>
-                            <input type="file" class="filestyle" data-placeholder="No file" data-iconname="fa fa-cloud-upload" name="image" >
-                            @if ($errors->has('image'))
-                            <span class="alert alert-danger">
-                                <strong>{{ $errors->first('image') }}</strong>
-                            </span>
-                            @endif
+            <h4 class="header-title m-t-0 m-b-20" style="text-align:center;">تعديل صورة المنتج</h4>
 
-                        </td>
-                        <tr>
-                            <td> Alt  </td>
-                            <td><input type="text" class="form-control" name="alt" 
-                                    value="{{ $productImage->alt }}"></td>
-                            @if ($errors->has('alt'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('alt') }}</strong>
-                                </span>
+            <div class="ff-wrap">
+                <p class="ff-note">الصورة اختيارية — اتركها فارغة للاحتفاظ بالصورة الحالية.</p>
+
+                {{ Form::model($productImage,['method' => 'PUT', 'action' => ['App\Http\Controllers\Admin\ProductImageController@update', $productImage->id], 'files' => true]) }}
+                <input type="hidden" name="product_id" value="{{ $productImage->product_id }}">
+
+                {{-- الصورة --}}
+                <div class="ff-card">
+                    <div class="ff-card__head"><i class="fa fa-image"></i> صورة المنتج</div>
+                    <div class="ff-grid">
+                        <div class="ff-field ff-field--full">
+                            <label>الصورة
+                                <span class="opt">(اختياري — اتركها فارغة للاحتفاظ بالصورة الحالية)</span></label>
+                            <input type="file" class="filestyle" data-placeholder="لم يتم اختيار ملف"
+                                data-iconname="fa fa-cloud-upload" name="image">
+                            <img class="ff-current-img"
+                                src="{{ asset('admin_assets/images/products/' . $productImage->image) }}"
+                                onerror="this.style.display='none'">
+                            @if ($errors->has('image'))
+                                <span class="ff-error">{{ $errors->first('image') }}</span>
                             @endif
-                        </tr>
-                    </tr>
-                    <tr>
-                        <td style="width:25%"></td>
-                        <td><button type="submit" class="btn btn-default waves-effect waves-light form-control">Save</button></td>
-                    </tr>
-                </tbody>
-            </table>
-            {!! Form::close() !!}
+                        </div>
+                        <div class="ff-field ff-field--full">
+                            <label>النص البديل للصورة (Alt) <span class="opt">(اختياري — مهم للـ SEO)</span></label>
+                            <input type="text" class="ff-input" name="alt"
+                                value="{{ old('alt', $productImage->alt) }}" placeholder="وصف قصير للصورة">
+                            @if ($errors->has('alt'))
+                                <span class="ff-error">{{ $errors->first('alt') }}</span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ff-actions">
+                    <button type="submit" class="ff-submit">حفظ التعديلات</button>
+                </div>
+
+                {!! Form::close() !!}
+            </div>
 
         </div>
     </div>

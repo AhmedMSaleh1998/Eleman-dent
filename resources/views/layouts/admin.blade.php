@@ -109,13 +109,13 @@
 
                             <!-- logout-->
 
-                            <a class="dropdown-item notify-item" href="{{ url('logout') }}" onclick="event.preventDefault();
+                            <a class="dropdown-item notify-item" href="{{ route('logout') }}" onclick="event.preventDefault();
 
                                                  document.getElementById('logout-form').submit();">
 
                                 <i class="zmdi zmdi-power"></i> <span>تسجيل خروج</span>
 
-                                <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
 
                                     {{ csrf_field() }}
 

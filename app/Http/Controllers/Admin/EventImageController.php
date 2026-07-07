@@ -43,7 +43,7 @@ class EventImageController extends BaseController
     public function store(EventImageRequest $request)
     {
         $this->service->store($request);
-        return redirect()->back()->with(['success' => 'Event Image added successfully']);
+        return redirect()->back()->with(['success' => 'تم إضافة صورة الحدث بنجاح']);
     }
 
     /**
@@ -80,7 +80,7 @@ class EventImageController extends BaseController
     public function update(UpdateEventImageRequest $request, $id)
     {
         $this->service->update($request, $id);
-        return redirect()->back()->with(['success' => 'Event Image updated successfully']);
+        return redirect()->back()->with(['success' => 'تم تعديل صورة الحدث بنجاح']);
     }
 
     /**
@@ -92,6 +92,6 @@ class EventImageController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect()->back()->with(['success' => 'Event Image deleted successfully']);
+        return redirect()->back()->with(['success' => 'تم حذف صورة الحدث بنجاح']);
     }
 }

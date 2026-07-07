@@ -11,7 +11,7 @@
             @endif
             <a style="color: #fff;" href="{{route('admin.home')}}">الرئيسية</a>
             <a style="color: #fff;" href="{{route('admin.user.index')}}">/ المستخدمين / </a>
-            <a style="color: #36404a;"> مشاهدة </a>
+            <a style="color: #36404a;"> عرض </a>
 
             <ul>
                 @foreach ($errors->all() as $error)
@@ -23,22 +23,22 @@
     <div class="row">
         <div class="col-12">
             <div class="card-box">
-                <h4 class="header-title m-t-0 m-b-20">{{$user->name_ar}}</h4>
+                <h4 class="header-title m-t-0 m-b-20" style="text-align:center;">بيانات المستخدم</h4>
 
                 <table class="table table-bordered table-striped">
                     <tbody>
                         <tr>
-                            <td>الصورة الرئيسية</td>
+                            <td>الصورة الشخصية</td>
                             <td>
-                            {!! $user->image ? '<img src="' . asset('admin_assets/images/users/' . $user->image) . '" class="img-responsive" width="100px" height="100px">' : 'No Image' !!}
+                            {!! $user->image ? '<img src="' . asset('admin_assets/images/users/' . $user->image) . '" class="img-responsive" width="100px" height="100px">' : 'لا توجد صورة' !!}
                         </td>
                         </tr>
                         <tr>
-                            <td>الاسم الاول</td>
+                            <td>الاسم الأول</td>
                             <td>{{ $user->first_name }}</td>
                         </tr>
                         <tr>
-                            <td>الاسم الاخير</td>
+                            <td>الاسم الأخير</td>
                             <td>{{ $user->last_name }}</td>
                         </tr>
                         <tr>
@@ -51,7 +51,7 @@
                         </tr>
                         <tr>
                             <td>الحالة</td>
-                            <td>{{$user->status == 1 ? 'مفعل' : 'لم يفعل'}}</td>
+                            <td>{{ $user->status == 1 ? 'فعال' : 'غير فعال' }}</td>
                         </tr>
                     </tbody>
                 </table>

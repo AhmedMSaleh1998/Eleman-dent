@@ -10,64 +10,71 @@
 <link href="{{ asset('admin_assets/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('admin_assets/plugins/custombox/css/custombox.css') }}" rel="stylesheet">
+@include('admin._form_styles')
 @endsection
 
 @section('content')
-<!-- Page-Title -->
-<div class="row">
-    <div class="main-title-00">
-        @if (Session::has('success'))
-        <div class="alert alert-success">{{ Session::get('success') }}</div>
-        @elseif(Session::has('danger'))
-        <div class="alert alert-danger">{{ Session::get('danger') }}</div>
-        @endif
-        <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
-        <a style="color: #fff;" href="{{ route('admin.delivertime.index') }}">/ أوقات التوصيل / </a>
-        <a style="color: #36404a;"> إضافة </a>
+    <!-- Page-Title -->
+    @if (Session::has('success'))
+        <div class="alert alert-success text-center">{{ Session::get('success') }}</div>
+    @elseif(Session::has('danger'))
+        <div class="alert alert-danger text-center">{{ Session::get('danger') }}</div>
+    @endif
+    <div class="row">
+        <div class="main-title-00">
 
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-</div>
-<div class="row">
-    <div class="col-12">
-        <div class="card-box">
-            <h4 class="header-title m-t-0 m-b-20">اضافه وقت توصيل</h4>
+            <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
+            <a style="color: #fff;" href="{{ route('admin.delivertime.index') }}">/ مواعيد التوصيل / </a>
+            <a style="color: #36404a;"> إضافة </a>
 
-            <table class="table table-bordered table-striped">
-                {{Form::open(['method'=>'POST','action' => ['App\Http\Controllers\Admin\DeliverTimeController@store'], 'files' => true])}}
-                @csrf
-                <tbody>
-                    <tr>
-                        <td>من</td>
-                        <td><input type="time" class="form-control" name="from" required value="{{ old('from') }}"></td>
-                        @if ($errors->has('from'))
-                        <span class="alert alert-danger">
-                            <strong>{{ $errors->first('from') }}</strong>
-                        </span>
-                        @endif
-                    </tr>
-                    <tr>
-                        <td>إلي</td>
-                        <td><input type="time" class="form-control" name="to" required value="{{ old('to') }}"></td>
-                        @if ($errors->has('to'))
-                        <span class="alert alert-danger">
-                            <strong>{{ $errors->first('to') }}</strong>
-                        </span>
-                        @endif
-                    </tr>
-                    <tr>
-                        <td style="width:25%"></td>
-                        <td><button type="submit" class="btn btn-default waves-effect waves-light form-control">حفظ</button></td>
-                    </tr>
-                </tbody>
-                {{-- </form> --}}
-                {!! Form::close() !!}
-            </table>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
-    </div><!-- end col -->
-</div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card-box">
+                <h4 class="header-title m-t-0 m-b-20" style="text-align:center;">إضافة موعد توصيل جديد</h4>
+
+                <div class="ff-wrap">
+                    <p class="ff-note">الحقول المعلمة بعلامة <span style="color:#e74c3c; font-weight:bold;">*</span>
+                        إجبارية ولا يمكن الحفظ بدونها.</p>
+
+                    {{ Form::open(['method' => 'POST', 'action' => ['App\Http\Controllers\Admin\DeliverTimeController@store'], 'files' => true]) }}
+                    @csrf
+
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-clock-o"></i> فترة التوصيل</div>
+                        <div class="ff-grid">
+                            <div class="ff-field">
+                                <label>من الساعة <span class="req">*</span></label>
+                                <input type="time" class="ff-input" name="from" required dir="ltr"
+                                    value="{{ old('from') }}">
+                                @if ($errors->has('from'))
+                                    <span class="ff-error">{{ $errors->first('from') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>إلى الساعة <span class="req">*</span></label>
+                                <input type="time" class="ff-input" name="to" required dir="ltr"
+                                    value="{{ old('to') }}">
+                                @if ($errors->has('to'))
+                                    <span class="ff-error">{{ $errors->first('to') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ff-actions">
+                        <button type="submit" class="ff-submit">حفظ</button>
+                    </div>
+
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div><!-- end col -->
+    </div>
 @endsection

@@ -44,7 +44,7 @@ class BrandController extends BaseController
     {
         try{
             $this->service->store($request);
-            return redirect()->back()->with(['success' => 'Brand added successfully']);
+            return redirect()->back()->with(['success' => 'تم إضافة البرند بنجاح']);
         }catch(\Exception $e){
             dd($e);
         }
@@ -74,7 +74,7 @@ class BrandController extends BaseController
     {
 
         $this->service->update($request, $id);
-        return redirect()->back()->with(['success' => 'Brand updated successfully ']);
+        return redirect()->back()->with(['success' => 'تم تحديث البرند بنجاح']);
     }
 
     /**
@@ -86,6 +86,6 @@ class BrandController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.brand.index'))->with(['success' => 'Brand deleted successfully']);
+        return redirect(route('admin.brand.index'))->with(['success' => 'تم حذف البرند بنجاح']);
     }
 }

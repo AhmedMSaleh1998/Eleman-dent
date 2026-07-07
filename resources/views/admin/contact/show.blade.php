@@ -10,8 +10,8 @@
         <div class="alert alert-danger">{{ Session::get('danger') }}</div>
         @endif
         <a style="color: #fff;" href="{{route('admin.home')}}">الرئيسية</a>
-        <a style="color: #fff;" href="{{route('admin.contact.index')}}">/ طلبات التواصل / </a>
-        <a style="color: #36404a;"> مشاهدة </a>
+        <a style="color: #fff;" href="{{route('admin.contact.index')}}">/ رسائل التواصل / </a>
+        <a style="color: #36404a;"> عرض </a>
 
         <ul>
             @foreach ($errors->all() as $error)
@@ -23,7 +23,7 @@
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <h4 class="header-title m-t-0 m-b-20">مشاهدة طلب تواصل</h4>
+            <h4 class="header-title m-t-0 m-b-20">عرض رسالة التواصل</h4>
 
             <table class="table table-bordered table-striped">
                 <tbody>
@@ -34,7 +34,7 @@
                     </tr>
 
                     <tr>
-                        <td>البريد الالكترونى</td>
+                        <td>البريد الإلكتروني</td>
                         <td>{{$contact->email}}</td>
                     </tr>
 
@@ -49,7 +49,7 @@
                     </tr>
 
                     <tr>
-                        <td>تاريخ الطلب</td>
+                        <td>تاريخ الإرسال</td>
                         <td>{{$contact->created_at}}</td>
                     </tr>
                 </tbody>

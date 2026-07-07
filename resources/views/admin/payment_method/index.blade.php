@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('admin_assets/plugins/custombox/css/custombox.css')}}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -30,7 +31,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.payment.create') }}" class="btn btn-default waves-effect">اضافه طريقة دفع +</a>
+                        <a href="{{ route('admin.payment.create') }}" class="btn btn-default waves-effect">+ إضافة طريقة دفع</a>
                     </div>
                 </div>
             </div>
@@ -40,8 +41,8 @@
 
                     <thead>
                         <tr>
-                            <th data-field="اسم عربي" data-align="center">اسم عربي</th>
-                            <th data-field=" اسم انجليزي" data-align="center">اسم انجليزي</th>
+                            <th data-field="اسم عربي" data-align="center">الاسم بالعربية</th>
+                            <th data-field=" اسم انجليزي" data-align="center">الاسم بالإنجليزية</th>
                             <th data-field="الحالة" data-align="center">الحالة</th>
                             <th data-field="التحكم" data-align="center">التحكم</th>
                         </tr>
@@ -52,12 +53,20 @@
                         <tr>
                             <td>{{ $paymentmethod->translate('ar')->name }}</td>
                             <td>{{ $paymentmethod->translate('en')->name }}</td>
-                            <td>{{$paymentmethod->status === 1 ? 'مفعل' : 'غير مفعل'}}</td>
+                            <td>{{$paymentmethod->status === 1 ? 'فعال' : 'غير فعال'}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus',[$paymentmethod->status,'payments',$paymentmethod->id]) }}" class="btn btn-{{$paymentmethod->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="الحالة"> {{$paymentmethod->status == 1 ? 'إبطال' : 'تفعيل'}}</a>
-                                <a href="{{ route('admin.payment.edit',$paymentmethod->id) }}" class="btn btn-success waves-effect" title="تعديل">تعديل</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$paymentmethod->id}}delete" title="حذف">حذف </button>
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.changeStatus',[$paymentmethod->status,'payments',$paymentmethod->id]) }}"><i class="fa fa-toggle-{{$paymentmethod->status == 1 ? 'off' : 'on'}}"></i> {{$paymentmethod->status == 1 ? 'تعطيل' : 'تفعيل'}}</a>
+                                        <a class="dropdown-item" href="{{ route('admin.payment.edit',$paymentmethod->id) }}"><i class="fa fa-pencil"></i> تعديل</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{$paymentmethod->id}}delete"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 

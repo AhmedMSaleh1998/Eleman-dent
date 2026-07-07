@@ -20,8 +20,11 @@ class CategoryService extends BaseService
     {
         $input = $request->validated();
         $input['image'] = uploadImage($input['image'], 'categories');
+        // البانر في فولدر منفصل عشان أسماء الملفات بالـ time() ما تتضاربش مع اللوجو
+        $banner = isset($input['banner']) ? uploadImage($input['banner'], 'categories/banners') : null;
         Category::create([
             'image' => $input['image'],
+            'banner' => $banner,
             'parent_id' => $input['parent_id'] ?? null,
             'en' => [
                 'name' => $input['name_en'],
@@ -53,8 +56,12 @@ class CategoryService extends BaseService
         if ($request->hasFile('image')) {
             $image = uploadImage($request['image'], 'categories', 'categories', $id);
         }
+        if ($request->hasFile('banner')) {
+            $banner = uploadImage($request['banner'], 'categories/banners');
+        }
         $category->update([
             'image' => $image ?? $category->image,
+            'banner' => $banner ?? $category->banner,
             'parent_id' => $request['parent_id'] ?? null,
             'en' => [
                 'name' => $request['name_en'],

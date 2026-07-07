@@ -11,7 +11,7 @@
         @endif
         <a style="color: #fff;" href="{{route('admin.home')}}">الرئيسية</a>
         <a style="color: #fff;" href="{{route('admin.coupon.index')}}">/ الكوبونات / </a>
-        <a style="color: #36404a;"> مشاهدة </a>
+        <a style="color: #36404a;"> عرض </a>
 
         <ul>
             @foreach ($errors->all() as $error)
@@ -23,6 +23,7 @@
 <div class="row">
     <div class="col-12">
         <div class="card-box">
+            <h4 class="header-title m-t-0 m-b-20" style="text-align:center;">بيانات الكوبون: {{ $coupon->name }}</h4>
 
             <table class="table table-bordered table-striped">
                 <tbody>
@@ -35,28 +36,28 @@
                         <td>{{ $coupon->code }}</td>
                     </tr>
                     <tr>
-                        <td>القيمة</td>
+                        <td>قيمة الخصم</td>
                         <td>{{ $coupon->value }}</td>
                     </tr>
                     <tr>
-                        <td>النوع</td>
+                        <td>نوع الخصم</td>
                         <td>{{ $coupon->type == 1 ? 'قيمة ثابتة': 'نسبة مئوية' }}</td>
                     </tr>
                     <tr>
-                        <td>مرات الاستخدام المتاحة</td>
+                        <td>عدد مرات الاستخدام المتاحة</td>
                         <td>{{ $coupon->uses }}</td>
                     </tr>
                     <tr>
-                        <td>متاح منذ</td>
+                        <td>متاح من تاريخ</td>
                         <td>{{ $coupon->valid_from }}</td>
                     </tr>
                     <tr>
-                        <td>متاح حتي </td>
+                        <td>متاح حتى تاريخ</td>
                         <td>{{ $coupon->valid_to }}</td>
                     </tr>
                     <tr>
                         <td>الحالة</td>
-                        <td>{{$coupon->status == 1 ? 'مفعل' : 'لم يفعل'}}</td>
+                        <td>{{$coupon->status == 1 ? 'فعال' : 'غير فعال'}}</td>
                     </tr>
                 </tbody>
             </table>

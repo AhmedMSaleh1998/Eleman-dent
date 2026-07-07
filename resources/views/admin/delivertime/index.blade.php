@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('admin_assets/plugins/custombox/css/custombox.css')}}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -16,7 +17,7 @@
             @elseif(Session::has('danger'))
             <div class="alert alert-danger">{{ Session::get('danger') }}</div>
             @endif
-            <h4 class="page-title">أوقات التوصيل</h4>
+            <h4 class="page-title">مواعيد التوصيل</h4>
         </div>
 
     </div>
@@ -30,7 +31,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.delivertime.create') }}" class="btn btn-default waves-effect">اضافه وقت توصيل +</a>
+                        <a href="{{ route('admin.delivertime.create') }}" class="btn btn-default waves-effect">+ إضافة موعد توصيل</a>
                     </div>
                 </div>
             </div>
@@ -40,8 +41,8 @@
 
                     <thead>
                         <tr>
-                            <th data-field="من" data-align="center">من</th>
-                            <th data-field="إلي" data-align="center">إلي</th>
+                            <th data-field="من" data-align="center">من الساعة</th>
+                            <th data-field="إلي" data-align="center">إلى الساعة</th>
                             <th data-field="الحالة" data-align="center">الحالة</th>
                             <th data-field="التحكم" data-align="center">التحكم</th>
                         </tr>
@@ -52,12 +53,20 @@
                         <tr>
                             <td>{{ date('g:i a', strtotime($delivertime->from)) }}</td>
                             <td> {{ date('g:i a', strtotime($delivertime->to)) }}</td>
-                            <td>{{$delivertime->status === 1 ? 'مفعل' : 'غير مفعل'}}</td>
+                            <td>{{$delivertime->status === 1 ? 'فعال' : 'غير فعال'}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus',[$delivertime->status,'delivery_times',$delivertime->id]) }}" class="btn btn-{{$delivertime->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="الحالة"> {{$delivertime->status == 1 ? 'إبطال' : 'تفعيل'}}</a>
-                                <a href="{{ route('admin.delivertime.edit',$delivertime->id) }}" class="btn btn-success waves-effect" title="تعديل">تعديل</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$delivertime->id}}delete" title="حذف">حذف </button>
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.changeStatus',[$delivertime->status,'delivery_times',$delivertime->id]) }}"><i class="fa fa-toggle-{{$delivertime->status == 1 ? 'off' : 'on'}}"></i> {{$delivertime->status == 1 ? 'تعطيل' : 'تفعيل'}}</a>
+                                        <a class="dropdown-item" href="{{ route('admin.delivertime.edit',$delivertime->id) }}"><i class="fa fa-pencil"></i> تعديل</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{$delivertime->id}}delete"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 

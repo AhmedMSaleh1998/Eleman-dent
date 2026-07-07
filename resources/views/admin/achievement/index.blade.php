@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('admin_assets/plugins/custombox/css/custombox.css')}}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -17,7 +18,7 @@
     <div class="col-sm-12">
         <div class="main-title-00">
             
-            <h4 class="page-title">Achievements</h4>
+            <h4 class="page-title">الانجازات</h4>
         </div>
 
     </div>
@@ -31,7 +32,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.achievement.create') }}" class="btn btn-default waves-effect">Add Achievement +</a>
+                        <a href="{{ route('admin.achievement.create') }}" class="btn btn-default waves-effect">+ إضافة انجاز</a>
                     </div>
                 </div>
             </div>
@@ -41,11 +42,11 @@
 
                     <thead>
                         <tr>
-                            <th data-field="Image" data-align="center">Image</th>
-                            <th data-field="Name Arabic" data-align="center">Name Arabic</th>
-                            <th data-field="Name English" data-align="center">Name English</th>
-                            <th data-field="Value" data-align="center">Value</th>
-                            <th data-field="Control" data-align="center">Control</th>
+                            <th data-field="Image" data-align="center">الصورة</th>
+                            <th data-field="Name Arabic" data-align="center">الاسم بالعربية</th>
+                            <th data-field="Name English" data-align="center">الاسم بالإنجليزية</th>
+                            <th data-field="Value" data-align="center">القيمة</th>
+                            <th data-field="Control" data-align="center">التحكم</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,8 +60,16 @@
                             <td>{{$achievement->value}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.achievement.edit',$achievement->id) }}" class="btn btn-success waves-effect" title="Edit">Edit</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$achievement->id}}delete" title="Delete">Delete </button>
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.achievement.edit',$achievement->id) }}"><i class="fa fa-pencil"></i> تعديل</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{$achievement->id}}delete"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 
@@ -72,13 +81,13 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="icon error animateErrorIcon" style="display: block;"><span class="x-mark animateXMark"><span class="line left"></span><span class="line right"></span></span></div>
-                                        <h4 style="text-align:center;">Confirm delete this achievement</h4>
+                                        <h4 style="text-align:center;">تأكيد الحذف</h4>
                                     </div>
                                     <div class="modal-footer" style="text-align:center">
                                         <form action="{{ route('admin.achievement.destroy',$achievement->id) }}" method="POST">
                                             {{csrf_field()}}
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <button class="btn btn-danger" type="submit" dir="ltr">Delete</button>
+                                            <button class="btn btn-danger" type="submit" dir="ltr">حذف</button>
                                         </form>
                                     </div>
                                 </div><!-- /.modal-content -->

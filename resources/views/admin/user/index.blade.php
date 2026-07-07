@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{ asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('admin_assets/plugins/custombox/css/custombox.css') }}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -29,8 +30,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.user.create') }}" class="btn btn-default waves-effect">اضافه مستخدم
-                            +</a>
+                        <a href="{{ route('admin.user.create') }}" class="btn btn-default waves-effect">+ إضافة مستخدم</a>
                     </div>
                 </div>
             </div>
@@ -40,8 +40,8 @@
 
                     <thead>
                         <tr>
-                            <th data-field="اسم المشروع عربي" data-align="center">اسم </th>
-                            <th data-field="الايميل" data-align="center"> الايميل</th>
+                            <th data-field="اسم المشروع عربي" data-align="center">البريد الإلكتروني</th>
+                            <th data-field="الايميل" data-align="center">الاسم</th>
                             <th data-field="اسم المشروع انجليزي" data-align="center">الهاتف</th>
                             <th data-field="الحالة" data-align="center">الحالة</th>
                             <th data-field="التحكم" data-align="center">التحكم</th>
@@ -54,13 +54,21 @@
                             <td>{{ $user->email}}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->phone }}</td>
-                            <td>{{ $user->status === 1 ? 'مفعل' : 'غير مفعل' }}</td>
+                            <td>{{ $user->status === 1 ? 'فعال' : 'غير فعال' }}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus', [$user->status, 'users', $user->id]) }}" class="btn btn-{{ $user->status == 1 ? 'secondary' : 'dark' }} waves-effect" title="الحالة"> {{ $user->status == 1 ? 'إبطال' : 'تفعيل' }}</a>
-                                <a href="{{ route('admin.user.edit', $user->id) }}" class="btn btn-success waves-effect" title="تعديل">تعديل</a>
-                                <a href="{{ route('admin.address.index', $user->id) }}" class="btn btn-info waves-effect" title="العناوين">العناوين</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{ $user->id }}delete" title="حذف">حذف </button>
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.changeStatus', [$user->status, 'users', $user->id]) }}"><i class="fa fa-toggle-{{ $user->status == 1 ? 'off' : 'on' }}"></i> {{ $user->status == 1 ? 'إلغاء التفعيل' : 'تفعيل' }}</a>
+                                        <a class="dropdown-item" href="{{ route('admin.user.edit', $user->id) }}"><i class="fa fa-pencil"></i> تعديل</a>
+                                        <a class="dropdown-item" href="{{ route('admin.address.index', $user->id) }}"><i class="fa fa-map-marker"></i> العناوين</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{ $user->id }}delete"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 

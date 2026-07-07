@@ -43,7 +43,7 @@ class BannerController extends BaseController
     public function store(BannerRequest $request)
     {
         $this->service->store($request);
-        return redirect()->back()->with(['success' => 'Banner added successfully']);;
+        return redirect()->back()->with(['success' => 'تم إضافة البانر بنجاح']);;
     }
 
     /**
@@ -68,7 +68,7 @@ class BannerController extends BaseController
     public function update(BannerRequest $request, $id)
     {
         $this->service->update($request,$id);
-        return redirect()->back()->with(['success' => 'Banner updated successfully ']);
+        return redirect()->back()->with(['success' => 'تم تحديث البانر بنجاح']);
     }
 
     /**
@@ -80,6 +80,6 @@ class BannerController extends BaseController
     public function destroy($id)
     {
         $this->service->destroy($id);
-        return redirect(route('admin.banner.index'))->with(['success' => 'Banner deleted successfully']);
+        return redirect(route('admin.banner.index'))->with(['success' => 'تم حذف البانر بنجاح']);
     }
 }

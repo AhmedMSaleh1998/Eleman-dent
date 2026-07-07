@@ -12,6 +12,7 @@
     <link href="{{ asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('admin_assets/plugins/custombox/css/custombox.css') }}" rel="stylesheet">
+    @include('admin._form_styles')
 @endsection
 
 @section('content')
@@ -24,120 +25,130 @@
     <div class="row">
         <div class="main-title-00">
 
-            <a style="color: #fff;" href="{{ route('admin.home') }}">Home</a>
-            <a style="color: #fff;" href="{{ route('admin.event.index') }}">/ Event / </a>
-            <a style="color: #36404a;"> Edit </a>
+            <a style="color: #fff;" href="{{ route('admin.home') }}">الرئيسية</a>
+            <a style="color: #fff;" href="{{ route('admin.event.index') }}">/ الأحداث / </a>
+            <a style="color: #36404a;"> تعديل </a>
 
-          
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <div class="card-box">
-                <h4 class="header-title m-t-0 m-b-20">Edit Event </h4>
+                <h4 class="header-title m-t-0 m-b-20" style="text-align:center;">
+                    تعديل الحدث: {{ optional($event->translate('ar'))->name }}
+                </h4>
 
-                <table class="table table-bordered table-striped">
+                <div class="ff-wrap">
+                    <p class="ff-note">الحقول المعلمة بعلامة <span style="color:#e74c3c; font-weight:bold;">*</span>
+                        إجبارية ولا يمكن الحفظ بدونها — الصورة اختيارية.</p>
+
                     {{ Form::model($event, ['method' => 'PATCH', 'action' => ['App\Http\Controllers\Admin\EventController@update', $event->id], 'files' => true]) }}
-                    <tbody>
-                        <tr>
-                            <td>Image</td>
-                            <td>
-                                <input type="file" class="filestyle" data-placeholder="No file"
+
+                    {{-- الصورة --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-image"></i> صورة الحدث</div>
+                        <div class="ff-grid">
+                            <div class="ff-field ff-field--full">
+                                <label>الصورة
+                                    <span class="opt">(اختياري — اتركها فارغة للاحتفاظ بالصورة الحالية)</span></label>
+                                <input type="file" class="filestyle" data-placeholder="لم يتم اختيار ملف"
                                     data-iconname="fa fa-cloud-upload" name="image">
-                                <img src="{{ asset('admin_assets/images/events/' . $event->image) }}"
-                                    class="img-responsive" width="100px" height="100px">
+                                <img class="ff-current-img"
+                                    src="{{ asset('admin_assets/images/events/' . $event->image) }}"
+                                    onerror="this.style.display='none'">
                                 @if ($errors->has('image'))
-                                    <span class="alert alert-danger">
-                                        <strong>{{ $errors->first('image') }}</strong>
-                                    </span>
+                                    <span class="ff-error">{{ $errors->first('image') }}</span>
                                 @endif
+                            </div>
+                        </div>
+                    </div>
 
-                            </td>
-                        </tr>
+                    {{-- الاسم --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-tag"></i> اسم الحدث</div>
+                        <div class="ff-grid">
+                            <div class="ff-field">
+                                <label>الاسم (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="name_ar" required
+                                    value="{{ old('name_ar', $event->translate('ar')->name) }}">
+                                @if ($errors->has('name_ar'))
+                                    <span class="ff-error">{{ $errors->first('name_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>الاسم (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="name_en" required dir="ltr"
+                                    value="{{ old('name_en', $event->translate('en')->name) }}">
+                                @if ($errors->has('name_en'))
+                                    <span class="ff-error">{{ $errors->first('name_en') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
 
-                        <tr>
-                            <td>Name Arabic </td>
-                            <td><input type="text" class="form-control" name="name_ar" required
-                                    value="{{ $event->translate('ar')->name }}"></td>
-                            @if ($errors->has('name_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('name_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
+                    {{-- الوصف --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-align-right"></i> الوصف</div>
+                        <div class="ff-grid">
+                            <div class="ff-field ff-field--full">
+                                <label>الوصف (عربي) <span class="req">*</span></label>
+                                <textarea class="ff-input" name="description_ar" rows="3" required>{{ old('description_ar', $event->translate('ar')->description) }}</textarea>
+                                @if ($errors->has('description_ar'))
+                                    <span class="ff-error">{{ $errors->first('description_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field ff-field--full">
+                                <label>الوصف (إنجليزي) <span class="req">*</span></label>
+                                <textarea class="ff-input" name="description_en" rows="3" required dir="ltr">{{ old('description_en', $event->translate('en')->description) }}</textarea>
+                                @if ($errors->has('description_en'))
+                                    <span class="ff-error">{{ $errors->first('description_en') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
 
-                        <tr>
-                            <td>Name English </td>
-                            <td><input type="text" class="form-control" name="name_en" required
-                                    value="{{ $event->translate('en')->name }}"></td>
-                            @if ($errors->has('name_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('name_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
+                    {{-- المكان والتاريخ --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-map-marker"></i> المكان والتاريخ</div>
+                        <div class="ff-grid">
+                            <div class="ff-field">
+                                <label>المكان (عربي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="location_ar" required
+                                    value="{{ old('location_ar', $event->translate('ar')->location) }}">
+                                @if ($errors->has('location_ar'))
+                                    <span class="ff-error">{{ $errors->first('location_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>المكان (إنجليزي) <span class="req">*</span></label>
+                                <input type="text" class="ff-input" name="location_en" required dir="ltr"
+                                    value="{{ old('location_en', $event->translate('en')->location) }}">
+                                @if ($errors->has('location_en'))
+                                    <span class="ff-error">{{ $errors->first('location_en') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label for="date">التاريخ <span class="req">*</span></label>
+                                <input type="date" class="ff-input" id="date" name="date" required dir="ltr"
+                                    value="{{ old('date', $event->date) }}">
+                                @if ($errors->has('date'))
+                                    <span class="ff-error">{{ $errors->first('date') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
 
-                        <tr>
-                            <td> Description Arabic </td>
-                            <td><input type="text" class="form-control" name="description_ar" required
-                                    value="{{ $event->translate('ar')->description }}"></td>
-                            @if ($errors->has('description_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('description_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
+                    <div class="ff-actions">
+                        <button type="submit" class="ff-submit">حفظ</button>
+                    </div>
 
-                        <tr>
-                            <td> Description English </td>
-                            <td><input type="text" class="form-control" name="description_en" required
-                                    value="{{ $event->translate('en')->description }}"></td>
-                            @if ($errors->has('description_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('description_en') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-
-                        <tr>
-                            <td> Location Arabic </td>
-                            <td><input type="text" class="form-control" name="location_ar" required
-                                    value="{{ $event->translate('ar')->location }}"></td>
-                            @if ($errors->has('location_ar'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('location_ar') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-
-                        <tr>
-                            <td> Location English </td>
-                            <td><input type="text" class="form-control" name="location_en" 
-                                    value="{{ $event->translate('en')->location }}"></td>
-                            @if ($errors->has('location_en'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('location_en')}}</strong>
-                                </span>
-                            @endif
-                        </tr>
-
-                        <tr>
-                            <td for="date">Select a Date:</label></td>
-                            <td> <input type="date" id="date" name="date" value="{{ $event->date }}"></td>
-                            @if ($errors->has('date'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('date') }}</strong>
-                                </span>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td style="width:25%"></td>
-                            <td><button type="submit"
-                                    class="btn btn-default waves-effect waves-light form-control">Save</button></td>
-                        </tr>
-                    </tbody>
                     {!! Form::close() !!}
-                </table>
+                </div>
             </div>
         </div><!-- end col -->
     </div>

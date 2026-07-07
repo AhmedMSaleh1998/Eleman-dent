@@ -3,6 +3,7 @@
 @section('styles')
 <link href="{{asset('admin_assets/plugins/bootstrap-table/css/bootstrap-table.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('admin_assets/plugins/custombox/css/custombox.css')}}" rel="stylesheet">
+@include('admin._actions_styles')
 @stop
 
 @section('content')
@@ -16,7 +17,7 @@
             @elseif(Session::has('danger'))
             <div class="alert alert-danger">{{ Session::get('danger') }}</div>
             @endif
-            <h4 class="page-title">الانواع</h4>
+            <h4 class="page-title">الأنواع</h4>
         </div>
 
     </div>
@@ -30,7 +31,7 @@
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
                         <!-- Responsive modal -->
-                        <a href="{{ route('admin.type.create') }}" class="btn btn-default waves-effect">اضافه نوع +</a>
+                        <a href="{{ route('admin.type.create') }}" class="btn btn-default waves-effect">+ إضافة نوع</a>
                     </div>
                 </div>
             </div>
@@ -40,7 +41,7 @@
 
                     <thead>
                         <tr>
-                            <th data-field="اسم" data-align="center">اسم</th>
+                            <th data-field="اسم" data-align="center">الاسم</th>
                             <th data-field="الحالة" data-align="center">الحالة</th>
                             <th data-field="التحكم" data-align="center">التحكم</th>
                         </tr>
@@ -50,12 +51,20 @@
                         @foreach($types as $type)
                         <tr>
                             <td>{{$type->name_ar}}</td>
-                            <td>{{$type->status === 1 ? 'مفعل' : 'غير مفعل'}}</td>
+                            <td>{{$type->status === 1 ? 'فعال' : 'غير فعال'}}</td>
 
                             <td class="actions">
-                                <a href="{{ route('admin.changeStatus',[$type->status,'types',$type->id]) }}" class="btn btn-{{$type->status == 1 ? 'secondary' : 'dark'}} waves-effect" title="الحالة"> {{$type->status == 1 ? 'إبطال' : 'تفعيل'}}</a>
-                                <a href="{{ route('admin.type.edit',$type->id) }}" class="btn btn-success waves-effect" title="تعديل">تعديل</a>
-                                <button type="button" class="btn btn-danger waves-effect" data-toggle="modal" data-target="#{{$type->id}}delete" title="حذف">حذف </button>
+                                <div class="dropdown action-dd">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        الإجراءات <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{{ route('admin.changeStatus',[$type->status,'types',$type->id]) }}"><i class="fa fa-toggle-{{$type->status == 1 ? 'off' : 'on'}}"></i> {{$type->status == 1 ? 'تعطيل' : 'تفعيل'}}</a>
+                                        <a class="dropdown-item" href="{{ route('admin.type.edit',$type->id) }}"><i class="fa fa-pencil"></i> تعديل</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{$type->id}}delete"><i class="fa fa-trash"></i> حذف</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 

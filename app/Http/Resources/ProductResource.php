@@ -15,6 +15,9 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
+        // القسم من عمود category_id، ولو فاضي نرجع لأول قسم في جدول الربط
+        $category = $this->category ?: $this->categories->first();
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -33,10 +36,14 @@ class ProductResource extends JsonResource
             'keywords' => $this->keywords ?? '',
             'keywords_meta' => $this->keywords_meta ?? '',
             // شكل مختصر — الـ CategoryResource الكاملة كانت بترجّع منتجات القسم كلها مع كل منتج
-            'category' => $this->category ? [
-                'id' => $this->category->id,
-                'name' => $this->category->name,
-                'parent_id' => $this->category->parent_id,
+            'category' => $category ? [
+                'id' => $category->id,
+                'name' => $category->name,
+                'parent_id' => $category->parent_id,
+            ] : null,
+            'brand' => $this->brand ? [
+                'id' => $this->brand->id,
+                'name' => $this->brand->name,
             ] : null,
             'video_url' => $this->video_url,
         ];

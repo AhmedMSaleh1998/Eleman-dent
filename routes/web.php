@@ -19,6 +19,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin' , 'middleware' => 'aut
         Route::resource('banner', 'BannerController');
         Route::resource('brand', 'BrandController');
         Route::resource('category', 'CategoryController');
+        Route::post('product/bulk-move-category', 'ProductController@bulkMoveCategory')->name('product.bulkMoveCategory');
         Route::resource('product', 'ProductController');
         Route::resource('event', 'EventController');
         Route::resource('achievement', 'AchievementController');

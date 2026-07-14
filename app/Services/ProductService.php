@@ -42,12 +42,12 @@ class ProductService extends BaseService
     public function getAllProducts($request)
     {
         if (empty($request)) {
-            $data = $this->repository->query()->active()->orderBy('seq', 'asc')->get();
+            $data = $this->repository->query()->active()->with(['brand', 'category', 'categories'])->orderBy('seq', 'asc')->get();
         } else {
 
             $input = $request->all();
 
-            $data = $this->repository->query()->active();
+            $data = $this->repository->query()->active()->with(['brand', 'category', 'categories']);
             
             if (isset($input['filter']['category_id'])) {
                 $data = $data->where('category_id', $input['filter']['category_id']);
@@ -66,6 +66,47 @@ class ProductService extends BaseService
         return ProductResource::collection($data)->response()->getData();
     }
     
+    // قائمة المنتجات في لوحة التحكم مع فلترة اختيارية بالقسم/الماركة
+    public function getAdminList($request)
+    {
+        $query = $this->repository->query()->with(['brand', 'category', 'categories', 'translations']);
+
+        if ($request->filled('category_id')) {
+            $categoryId = $request->input('category_id');
+            // القسم ممكن يكون متسجل في عمود category_id أو في جدول الربط categories
+            $query->where(function ($q) use ($categoryId) {
+                $q->where('category_id', $categoryId)
+                    ->orWhereHas('categories', function ($q2) use ($categoryId) {
+                        $q2->where('categories.id', $categoryId);
+                    });
+            });
+        }
+
+        if ($request->filled('brand_id')) {
+            $query->where('brand_id', $request->input('brand_id'));
+        }
+
+        return $query->orderBy('seq', 'asc')->get();
+    }
+
+    public function bulkMoveCategory($request)
+    {
+        $ids = array_filter(explode(',', (string) $request->input('product_ids')));
+        $categoryId = $request->input('category_id');
+
+        if (empty($ids) || empty($categoryId)) {
+            return 0;
+        }
+
+        $products = Product::whereIn('id', $ids)->get();
+        foreach ($products as $product) {
+            $product->update(['category_id' => $categoryId]);
+            $product->categories()->sync([$categoryId]);
+        }
+
+        return $products->count();
+    }
+
     public function getFormData()
     {
         return [

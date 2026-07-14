@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Services\ProductService;
+use Illuminate\Http\Request;
 
 class ProductController extends BaseController
 {
@@ -19,10 +20,23 @@ class ProductController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = $this->service->getAll();
-        return view('admin.product.index', compact('products'));
+        $products = $this->service->getAdminList($request);
+        $data = $this->service->getFormData();
+        return view('admin.product.index', compact('products', 'data'));
+    }
+
+    /**
+     * Move selected products to another category at once.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function bulkMoveCategory(Request $request)
+    {
+        $count = $this->service->bulkMoveCategory($request);
+        return redirect()->route('admin.product.index')->with(['success' => 'تم نقل ' . $count . ' منتج إلى القسم المحدد بنجاح']);
     }
 
     /**

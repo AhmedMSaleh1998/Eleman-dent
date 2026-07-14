@@ -20,6 +20,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin' , 'middleware' => 'aut
         Route::resource('brand', 'BrandController');
         Route::resource('category', 'CategoryController');
         Route::post('product/bulk-move-category', 'ProductController@bulkMoveCategory')->name('product.bulkMoveCategory');
+        Route::post('product/{id}/update-seq', 'ProductController@updateSeq')->name('product.updateSeq');
         Route::resource('product', 'ProductController');
         Route::resource('event', 'EventController');
         Route::resource('achievement', 'AchievementController');

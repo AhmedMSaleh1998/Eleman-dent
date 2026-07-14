@@ -90,6 +90,38 @@
     #products-table td.bs-checkbox {
         vertical-align: middle;
     }
+
+    /* تعديل الترتيب السريع */
+    .seq-input {
+        width: 72px;
+        height: 32px;
+        padding: 2px 6px;
+        text-align: center;
+        font-size: 13px;
+        border: 1px solid #d8dfe6;
+        border-radius: 6px;
+        background: #fff;
+        transition: border-color .15s, box-shadow .15s, opacity .15s;
+    }
+
+    .seq-input:focus {
+        outline: none;
+        border-color: #26a69a;
+    }
+
+    .seq-input.is-saving {
+        opacity: .55;
+    }
+
+    .seq-input.is-saved {
+        border-color: #26a69a;
+        box-shadow: 0 0 0 2px rgba(38, 166, 154, .2);
+    }
+
+    .seq-input.is-error {
+        border-color: #e74c3c;
+        box-shadow: 0 0 0 2px rgba(231, 76, 60, .18);
+    }
 </style>
 @stop
 
@@ -208,7 +240,11 @@
                             <td>{{ $product->brand ? optional($product->brand->translate('ar'))->name : '-' }}</td>
                             <td>{{$product->price}}</td>
                             <td>{{$product->quantity}}</td>
-                            <td>{{$product->seq}}</td>
+                            <td>
+                                <input type="number" class="seq-input" min="0" value="{{ $product->seq }}"
+                                    data-id="{{ $product->id }}" data-original="{{ $product->seq }}"
+                                    title="غيّر الرقم وسيتم الحفظ تلقائياً">
+                            </td>
                             <td>{{$product->is_top_product ? 'نعم' : 'لا'}}</td>
                             <td>{{$product->status === 1 ? 'ظاهر' : 'مخفي'}}</td>
 
@@ -286,6 +322,55 @@
 
         $table.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table post-body.bs.table', refreshBulkState);
         refreshBulkState();
+
+        // نص واضح لزر إظهار/إخفاء تقسيم الصفحات بدل الأيقونة
+        function labelPaginationSwitch() {
+            var paginated = $table.bootstrapTable('getOptions').pagination;
+            $table.closest('.bootstrap-table').find('button[name="paginationSwitch"]')
+                .html(paginated ? '<i class="fa fa-list"></i> عرض الكل' : '<i class="fa fa-columns"></i> تقسيم لصفحات')
+                .attr('title', paginated ? 'عرض كل المنتجات في صفحة واحدة' : 'الرجوع للتقسيم على صفحات');
+        }
+        labelPaginationSwitch();
+        $(document).on('click', 'button[name="paginationSwitch"]', function () {
+            setTimeout(labelPaginationSwitch, 0);
+        });
+
+        // تعديل الترتيب السريع من القائمة
+        $table.on('change', '.seq-input', function () {
+            var $input = $(this);
+            var id = $input.data('id');
+            var original = String($input.data('original'));
+            var seq = $input.val();
+
+            if (seq === '' || +seq < 0) {
+                $input.val(original);
+                return;
+            }
+            if (String(+seq) === original) return;
+
+            $input.addClass('is-saving').prop('disabled', true);
+            $.post("{{ route('admin.product.updateSeq', ':id') }}".replace(':id', id), {
+                _token: '{{ csrf_token() }}',
+                seq: seq
+            }).done(function () {
+                $input.data('original', String(+seq));
+                $input.attr('value', seq).attr('data-original', seq);
+                $input.removeClass('is-error').addClass('is-saved');
+                setTimeout(function () { $input.removeClass('is-saved'); }, 1200);
+                // تحديث نسخة الجدول الداخلية عشان القيمة الجديدة تفضل بعد التنقل بين الصفحات
+                try {
+                    var index = $input.closest('tr').data('index');
+                    $table.bootstrapTable('updateCell', { index: index, field: 'Order', value: $input.closest('td').html(), reinit: false });
+                } catch (err) { /* لو النسخة القديمة مش بتدعمها مش مشكلة */ }
+            }).fail(function () {
+                $input.val(original);
+                $input.addClass('is-error');
+                setTimeout(function () { $input.removeClass('is-error'); }, 2000);
+                alert('حصل خطأ أثناء حفظ الترتيب، حاول مرة أخرى');
+            }).always(function () {
+                $input.removeClass('is-saving').prop('disabled', false).focus();
+            });
+        });
 
         $('#bulk-move-form').on('submit', function (e) {
             var ids = getSelectedIds();

@@ -107,6 +107,14 @@ class ProductService extends BaseService
         return $products->count();
     }
 
+    // تحديث سريع لترتيب المنتج من قائمة لوحة التحكم
+    public function updateSeq($id, $seq)
+    {
+        $product = Product::findOrFail($id);
+        $product->update(['seq' => $seq]);
+        return $product;
+    }
+
     public function getFormData()
     {
         return [

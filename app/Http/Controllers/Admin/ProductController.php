@@ -40,6 +40,20 @@ class ProductController extends BaseController
     }
 
     /**
+     * Quick inline update for the product display order.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateSeq(Request $request, $id)
+    {
+        $validated = $request->validate(['seq' => 'required|integer|min:0']);
+        $this->service->updateSeq($id, $validated['seq']);
+        return response()->json(['success' => true, 'seq' => (int) $validated['seq']]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

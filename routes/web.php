@@ -21,6 +21,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin' , 'middleware' => 'aut
         Route::resource('category', 'CategoryController');
         Route::post('product/bulk-move-category', 'ProductController@bulkMoveCategory')->name('product.bulkMoveCategory');
         Route::post('product/{id}/update-seq', 'ProductController@updateSeq')->name('product.updateSeq');
+        Route::post('product/{id}/update-field', 'ProductController@updateField')->name('product.updateField');
+        Route::post('product/reorder', 'ProductController@reorder')->name('product.reorder');
         Route::resource('product', 'ProductController');
         Route::resource('event', 'EventController');
         Route::resource('achievement', 'AchievementController');

@@ -54,6 +54,40 @@ class ProductController extends BaseController
     }
 
     /**
+     * Quick inline update for the product price or quantity.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateField(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'field' => 'required|in:price,quantity',
+            'value' => 'required|numeric|min:0',
+        ]);
+        $this->service->updateField($id, $validated['field'], $validated['value']);
+        return response()->json(['success' => true, 'field' => $validated['field'], 'value' => $validated['value']]);
+    }
+
+    /**
+     * Persist a new display order (seq) after drag & drop reordering.
+     * Receives product ids in their new order and stores seq = position.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function reorder(Request $request)
+    {
+        $validated = $request->validate([
+            'ids'   => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+        $this->service->reorderProducts($validated['ids']);
+        return response()->json(['success' => true]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

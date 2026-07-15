@@ -91,8 +91,9 @@
         vertical-align: middle;
     }
 
-    /* تعديل الترتيب السريع */
-    .seq-input {
+    /* تعديل الترتيب / السعر / الكمية السريع */
+    .seq-input,
+    .field-input {
         width: 72px;
         height: 32px;
         padding: 2px 6px;
@@ -104,23 +105,83 @@
         transition: border-color .15s, box-shadow .15s, opacity .15s;
     }
 
-    .seq-input:focus {
+    .field-input--price {
+        width: 96px;
+    }
+
+    .seq-input:focus,
+    .field-input:focus {
         outline: none;
         border-color: #26a69a;
     }
 
-    .seq-input.is-saving {
+    .seq-input.is-saving,
+    .field-input.is-saving {
         opacity: .55;
     }
 
-    .seq-input.is-saved {
+    .seq-input.is-saved,
+    .field-input.is-saved {
         border-color: #26a69a;
         box-shadow: 0 0 0 2px rgba(38, 166, 154, .2);
     }
 
-    .seq-input.is-error {
+    .seq-input.is-error,
+    .field-input.is-error {
         border-color: #e74c3c;
         box-shadow: 0 0 0 2px rgba(231, 76, 60, .18);
+    }
+
+    /* مقبض السحب لإعادة الترتيب */
+    .order-cell {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .drag-handle {
+        cursor: grab;
+        color: #9aa5b1;
+        padding: 6px 4px;
+        font-size: 15px;
+        transition: color .15s;
+    }
+
+    .drag-handle:hover {
+        color: #26a69a;
+    }
+
+    .drag-handle:active {
+        cursor: grabbing;
+    }
+
+    /* شكل الصف أثناء السحب */
+    tr.row-dragging {
+        display: table;
+        background: #fffdf3;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, .12);
+    }
+
+    tr.row-drop-placeholder td {
+        background: #eef7f5;
+        height: 44px;
+    }
+
+    #products-table tbody tr.row-saving {
+        opacity: .55;
+    }
+
+    /* أزرار التبديل السريع (منتج مميز / الحالة) */
+    .toggle-btn {
+        min-width: 62px;
+        border-radius: 6px;
+        font-weight: 700;
+        transition: opacity .15s;
+    }
+
+    .toggle-btn.is-loading {
+        opacity: .55;
+        pointer-events: none;
     }
 </style>
 @stop
@@ -201,7 +262,7 @@
             </div>
 
             <div class="table-responsive">
-                <table id="products-table" data-toggle="table" data-search="true" data-show-columns="true" data-sort-name="id" data-page-list="[8, 16, 32, 100, All]" data-page-size="8" data-pagination="true" data-show-pagination-switch="true" data-maintain-selected="true" class="table-bordered ">
+                <table id="products-table" data-toggle="table" data-search="true" data-show-columns="true" data-page-list="[8, 16, 32, 100, All]" data-page-size="8" data-pagination="true" data-show-pagination-switch="true" data-maintain-selected="true" class="table-bordered ">
 
                     <thead>
                         <tr>
@@ -238,15 +299,40 @@
                             <td>{{$product->translate('ar')->name}}</td>
                             <td>{{ $categoryNames->implode('، ') ?: '-' }}</td>
                             <td>{{ $product->brand ? optional($product->brand->translate('ar'))->name : '-' }}</td>
-                            <td>{{$product->price}}</td>
-                            <td>{{$product->quantity}}</td>
                             <td>
-                                <input type="number" class="seq-input" min="0" value="{{ $product->seq }}"
-                                    data-id="{{ $product->id }}" data-original="{{ $product->seq }}"
-                                    title="غيّر الرقم وسيتم الحفظ تلقائياً">
+                                <input type="number" class="field-input field-input--price" min="0" step="any" value="{{ $product->price }}"
+                                    data-id="{{ $product->id }}" data-field="price" data-original="{{ $product->price }}"
+                                    title="غيّر السعر وسيتم الحفظ تلقائياً">
                             </td>
-                            <td>{{$product->is_top_product ? 'نعم' : 'لا'}}</td>
-                            <td>{{$product->status === 1 ? 'ظاهر' : 'مخفي'}}</td>
+                            <td>
+                                <input type="number" class="field-input" min="0" step="1" value="{{ $product->quantity }}"
+                                    data-id="{{ $product->id }}" data-field="quantity" data-original="{{ $product->quantity }}"
+                                    title="غيّر الكمية وسيتم الحفظ تلقائياً">
+                            </td>
+                            <td>
+                                <span class="order-cell">
+                                    <i class="fa fa-arrows drag-handle" title="اسحب لإعادة الترتيب"></i>
+                                    <input type="number" class="seq-input" min="0" value="{{ $product->seq }}"
+                                        data-id="{{ $product->id }}" data-original="{{ $product->seq }}"
+                                        title="غيّر الرقم وسيتم الحفظ تلقائياً">
+                                </span>
+                            </td>
+                            <td>
+                                <button type="button"
+                                    class="btn btn-xs toggle-btn toggle-top {{ $product->is_top_product ? 'btn-success' : 'btn-default' }}"
+                                    data-id="{{ $product->id }}"
+                                    title="اضغط للتبديل">
+                                    {{ $product->is_top_product ? 'نعم' : 'لا' }}
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button"
+                                    class="btn btn-xs toggle-btn toggle-status {{ $product->status === 1 ? 'btn-success' : 'btn-danger' }}"
+                                    data-id="{{ $product->id }}"
+                                    title="اضغط للتبديل">
+                                    {{ $product->status === 1 ? 'ظاهر' : 'مخفي' }}
+                                </button>
+                            </td>
 
                             <td class="actions">
                                 <div class="dropdown action-dd">
@@ -303,6 +389,7 @@
 @section('scripts')
 <script src="{{asset('admin_assets/plugins/bootstrap-table/js/bootstrap-table.js')}}"></script>
 <script src="{{asset('admin_assets/pages/jquery.bs-table.js')}}"></script>
+<script src="{{asset('admin_assets/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
 <!-- Modal-Effect -->
 <script src="{{asset('admin_assets/plugins/custombox/js/custombox.min.js')}}"></script>
 <script src="{{asset('admin_assets/plugins/custombox/js/legacy.min.js')}}"></script>
@@ -371,6 +458,155 @@
                 $input.removeClass('is-saving').prop('disabled', false).focus();
             });
         });
+
+        // تعديل السعر / الكمية السريع من القائمة
+        var fieldColumns = { price: 'Price', quantity: 'Quantity' };
+        $table.on('change', '.field-input', function () {
+            var $input = $(this);
+            var id = $input.data('id');
+            var field = $input.data('field');
+            var original = String($input.data('original'));
+            var value = $input.val();
+
+            if (value === '' || +value < 0 || isNaN(+value)) {
+                $input.val(original);
+                return;
+            }
+            if (String(+value) === String(+original)) return;
+
+            $input.addClass('is-saving').prop('disabled', true);
+            $.post("{{ route('admin.product.updateField', ':id') }}".replace(':id', id), {
+                _token: '{{ csrf_token() }}',
+                field: field,
+                value: value
+            }).done(function () {
+                $input.data('original', value);
+                $input.attr('value', value).attr('data-original', value);
+                $input.removeClass('is-error').addClass('is-saved');
+                setTimeout(function () { $input.removeClass('is-saved'); }, 1200);
+                // تحديث نسخة الجدول الداخلية عشان القيمة الجديدة تفضل بعد التنقل بين الصفحات
+                try {
+                    var index = $input.closest('tr').data('index');
+                    $table.bootstrapTable('updateCell', { index: index, field: fieldColumns[field], value: $input.closest('td').html(), reinit: false });
+                } catch (err) { /* لو النسخة القديمة مش بتدعمها مش مشكلة */ }
+            }).fail(function () {
+                $input.val(original);
+                $input.addClass('is-error');
+                setTimeout(function () { $input.removeClass('is-error'); }, 2000);
+                alert('حصل خطأ أثناء الحفظ، حاول مرة أخرى');
+            }).always(function () {
+                $input.removeClass('is-saving').prop('disabled', false).focus();
+            });
+        });
+
+        // زر تبديل "منتج مميز" مباشرة من القائمة
+        $table.on('click', '.toggle-top', function () {
+            var $btn = $(this);
+            var id = $btn.data('id');
+            var url = "{{ route('admin.product.topProduct', ':id') }}".replace(':id', id);
+            $btn.addClass('is-loading');
+            $.get(url).done(function (res) {
+                var on = res.is_top_product == 1;
+                $btn.text(on ? 'نعم' : 'لا')
+                    .toggleClass('btn-success', on)
+                    .toggleClass('btn-default', !on);
+            }).fail(function () {
+                alert('حصل خطأ، حاول مرة أخرى');
+            }).always(function () {
+                $btn.removeClass('is-loading');
+            });
+        });
+
+        // زر تبديل "الحالة" (ظاهر / مخفي) مباشرة من القائمة
+        $table.on('click', '.toggle-status', function () {
+            var $btn = $(this);
+            var id = $btn.data('id');
+            // القيمة الأولى في الرابط لا تهم لأن الخادم يقرأ الحالة الحالية ويعكسها
+            var url = "{{ route('admin.changeStatus', ['0', 'products', ':id']) }}".replace(':id', id);
+            $btn.addClass('is-loading');
+            $.get(url).done(function (res) {
+                var on = res.status == 1;
+                $btn.text(on ? 'ظاهر' : 'مخفي')
+                    .toggleClass('btn-success', on)
+                    .toggleClass('btn-danger', !on);
+            }).fail(function () {
+                alert('حصل خطأ، حاول مرة أخرى');
+            }).always(function () {
+                $btn.removeClass('is-loading');
+            });
+        });
+
+        // إعادة الترتيب بالسحب والإفلات — نحدّث seq لكل المنتجات حسب الترتيب الجديد
+        var reorderUrl = "{{ route('admin.product.reorder') }}";
+        var csrfToken = '{{ csrf_token() }}';
+
+        function fixDragWidths(e, ui) {
+            ui.children().each(function () { $(this).width($(this).width()); });
+            return ui;
+        }
+
+        function enableRowSorting() {
+            var $tbody = $table.children('tbody');
+            if (!$tbody.length) return;
+            if ($tbody.hasClass('ui-sortable')) {
+                $tbody.sortable('refresh');
+                return;
+            }
+            $tbody.sortable({
+                items: '> tr',
+                handle: '.drag-handle',
+                axis: 'y',
+                cursor: 'grabbing',
+                helper: fixDragWidths,
+                placeholder: 'row-drop-placeholder',
+                forcePlaceholderSize: true,
+                tolerance: 'pointer',
+                start: function (e, ui) {
+                    ui.item.addClass('row-dragging');
+                    ui.placeholder.html('<td colspan="99"></td>');
+                },
+                stop: function (e, ui) {
+                    ui.item.removeClass('row-dragging');
+                },
+                update: onRowReorder
+            });
+        }
+
+        function onRowReorder() {
+            var $rows = $table.children('tbody').children('tr');
+            if ($rows.length < 2) return;
+
+            // ترتيب المنتجات الظاهرة في الصفحة الحالية بعد السحب
+            var pageIds = [];
+            var slots = [];
+            $rows.each(function () {
+                pageIds.push(String($(this).find('.seq-input').data('id')));
+                slots.push(parseInt($(this).attr('data-index'), 10));
+            });
+            // المواضع (فهارس) التي تشغلها هذه الصفحة داخل القائمة الكاملة
+            var sortedSlots = slots.slice().sort(function (a, b) { return a - b; });
+
+            // القائمة الكاملة (كل الصفحات) بترتيبها الحالي ثم نضع صفوف الصفحة في مواضعها الجديدة
+            var data = $table.bootstrapTable('getData');
+            var fullIds = data.map(function (r) { return String(r.Id); });
+            for (var i = 0; i < sortedSlots.length; i++) {
+                fullIds[sortedSlots[i]] = pageIds[i];
+            }
+
+            $rows.addClass('row-saving');
+            $.post(reorderUrl, { _token: csrfToken, ids: fullIds })
+                .done(function () {
+                    // نعيد التحميل عشان الترتيب و أرقام seq تتطابق مع قاعدة البيانات
+                    window.location.reload();
+                })
+                .fail(function () {
+                    alert('حصل خطأ أثناء حفظ الترتيب، سيتم استرجاع الترتيب السابق');
+                    window.location.reload();
+                });
+        }
+
+        enableRowSorting();
+        $table.on('post-body.bs.table', enableRowSorting);
 
         $('#bulk-move-form').on('submit', function (e) {
             var ids = getSelectedIds();

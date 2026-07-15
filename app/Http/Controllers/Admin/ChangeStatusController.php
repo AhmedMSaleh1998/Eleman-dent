@@ -8,22 +8,36 @@ use Illuminate\Http\Request;
 
 class ChangeStatusController extends Controller
 {
-    public function status($status, $db, $id)
+    public function status(Request $request, $status, $db, $id)
     {
-        $status == 0 ? $status = 1 : $status = 0;
-        DB::table($db)->where('id', $id)->update(['status' => $status]);
+        // نقرأ الحالة الحالية من قاعدة البيانات ونعكسها (أدق من الاعتماد على القيمة القادمة في الرابط)
+        $current = DB::table($db)->where('id', $id)->value('status');
+        $newValue = $current ? 0 : 1;
+        DB::table($db)->where('id', $id)->update(['status' => $newValue]);
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'status' => $newValue]);
+        }
+
         return redirect()->back()->with(['success' => 'Status changed successfully']);
     }
 
-    public function topProduct($id)
+    public function topProduct(Request $request, $id)
     {
         $current = DB::table('products')->where('id', $id)->value('is_top_product');
         if ($current === null) {
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'Product not found'], 404);
+            }
             return redirect()->back()->with(['danger' => 'Product not found']);
         }
 
         $newValue = $current ? 0 : 1;
         DB::table('products')->where('id', $id)->update(['is_top_product' => $newValue]);
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'is_top_product' => $newValue]);
+        }
 
         $message = $newValue ? 'Product added to top products' : 'Product removed from top products';
         return redirect()->back()->with(['success' => $message]);

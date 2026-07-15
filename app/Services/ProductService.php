@@ -115,6 +115,22 @@ class ProductService extends BaseService
         return $product;
     }
 
+    // تحديث سريع لسعر أو كمية المنتج من قائمة لوحة التحكم
+    public function updateField($id, $field, $value)
+    {
+        $product = Product::findOrFail($id);
+        $product->update([$field => $value]);
+        return $product;
+    }
+
+    // إعادة ترتيب المنتجات بالسحب والإفلات — نخزّن seq حسب الترتيب الجديد
+    public function reorderProducts(array $ids)
+    {
+        foreach (array_values($ids) as $index => $id) {
+            Product::where('id', $id)->update(['seq' => $index + 1]);
+        }
+    }
+
     public function getFormData()
     {
         return [

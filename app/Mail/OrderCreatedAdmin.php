@@ -22,20 +22,13 @@ class OrderCreatedAdmin extends Mailable
         $this->user = $user;
     }
 
-    public function build()
-    {
-        return $this
-            ->subject('New Order Created On Your Website')
-            ->markdown('emails.subscribers');
-    }
-
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Order',
+            subject: 'طلب جديد على الموقع — إيمان دنتال',
         );
     }
 
@@ -45,7 +38,7 @@ class OrderCreatedAdmin extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.orderCreatedAdmin',
+            view: 'emails.orderCreatedAdmin',
         );
     }
 

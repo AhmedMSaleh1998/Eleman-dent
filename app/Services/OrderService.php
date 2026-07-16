@@ -13,6 +13,7 @@ use App\Repositories\CouponRepository;
 use Illuminate\Http\Request;
 use App\Mail\OrderCreatedAdmin;
 use App\Mail\OrderCreatedUser;
+use App\Mail\OrderStatusChanged;
 use Illuminate\Support\Facades\Mail;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -67,14 +68,17 @@ class OrderService extends BaseService
                 'total'         => $total,
                 'shipping'      => $address->city->shipping_fees,
             ]);
-            
-            Mail::to('info@elemandental.com')->send(new OrderCreatedAdmin($user));
-            Mail::to($order->user->email)->send(new OrderCreatedUser($user));
-            
+
             $this->basketRepository->multipleUpdate($baskets->pluck('id'), ['order_id' => $order->id]);
-    
+
             DB::commit(); // Commit the transaction
-    
+
+            // إشعارات الطلب بالإيميل خدمة مستقلة — بعد تأكيد الطلب، ولو الميل مش شغّال الطلب بيفضل متسجّل
+            safeSendMail(function () use ($user, $order) {
+                Mail::to('info@elemandental.com')->send(new OrderCreatedAdmin($user));
+                Mail::to($order->user->email)->send(new OrderCreatedUser($user));
+            }, 'order created notification');
+
             return $order;
         } catch (\Exception $e) {
             DB::rollback(); // Rollback the transaction if an exception occurs
@@ -110,5 +114,13 @@ class OrderService extends BaseService
         $order = $this->repository->show($id);
         $order->status = $status;
         $order->update();
+
+        // إشعار العميل بتغيير حالة الطلب بالإيميل — خدمة مستقلة (لو الميل مش شغّال ما توقفش تحديث الحالة)
+        $order->load(['user', 'address.city']);
+        if ($order->user && $order->user->email) {
+            safeSendMail(function () use ($order, $status) {
+                Mail::to($order->user->email)->send(new OrderStatusChanged($order, $status));
+            }, 'order status changed to ' . $status);
+        }
     }
 }

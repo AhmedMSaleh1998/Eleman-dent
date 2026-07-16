@@ -57,7 +57,12 @@ class User extends Authenticatable
 
     public function orders()
     {
-        return $this->hasMany('App\Models\User');
+        return $this->hasMany('App\Models\Order');
+    }
+
+    public function favourites()
+    {
+        return $this->hasMany('App\Models\FavouriteProduct');
     }
 
     public function cartitems()

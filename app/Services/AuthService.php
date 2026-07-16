@@ -56,20 +56,21 @@ class AuthService extends BaseService
         $data = $request->validated();
         $code = substr(time(), 6);
         $data['code'] = $code;
-        DB::beginTransaction();
+
+        // إنشاء المستخدم أولاً — مستقل تماماً عن خدمة الميل
         $user = $this->repository->create($data);
+
         $mailData = [
             'email' => $request->email,
             'code' => $data['code'],
         ];
 
-        if(Mail::to($request->email)->send(new Register($mailData))){
+        // إرسال إيميل التفعيل خدمة مستقلة — لو الميل مش شغّال التسجيل بيكمّل عادي
+        safeSendMail(function () use ($request, $mailData) {
+            Mail::to($request->email)->send(new Register($mailData));
             Mail::to('info@elemandental.com')->send(new trackRegister($mailData));
-        DB::commit();
-        }else{
-        DB::rollback();
-        }
-       
+        }, 'user register verification code');
+
         if($user){
             return new UserResource($user);
         }
@@ -102,16 +103,15 @@ class AuthService extends BaseService
             $code = substr(time(), 6);
             $user->code = $code;
             $user->save();
-            DB::beginTransaction();
             $mailData = [
                 'email' => $request->email,
                 'code' => $code,
             ];
-            if(Mail::to($request->email)->send(new Register($mailData))){
-            DB::commit();
-            }else{
-            DB::rollback();
-            }
+            // إرسال كود الاستعادة خدمة مستقلة — لو الميل مش شغّال العملية بتكمّل
+            safeSendMail(function () use ($request, $mailData) {
+                Mail::to($request->email)->send(new Register($mailData));
+            }, 'forget password code');
+
             return $code;
         }else{
             throw new Exception('Wrong Email');

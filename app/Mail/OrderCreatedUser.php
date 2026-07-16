@@ -22,20 +22,13 @@ class OrderCreatedUser extends Mailable
         $this->user = $user;
     }
 
-    public function build()
-    {
-        return $this
-            ->subject('New Order Created')
-            ->markdown('emails.subscribers');
-    }
-
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Order',
+            subject: 'تم استلام طلبك — إيمان دنتال',
         );
     }
 
@@ -45,7 +38,7 @@ class OrderCreatedUser extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.orderCreatedUser',
+            view: 'emails.orderCreatedUser',
         );
     }
 

@@ -22,20 +22,13 @@ class Register extends Mailable
         $this->mailData = $mailData;
     }
 
-    public function build()
-    {
-        return $this
-            ->subject('Thank you for subscribing to elemandental website')
-            ->markdown('emails.subscribers');
-    }
-
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Registeration',
+            subject: 'Your Eleman Dental verification code',
         );
     }
 
@@ -44,8 +37,9 @@ class Register extends Mailable
      */
     public function content(): Content
     {
+        // قالب HTML مخصص بهوية إيمان دنتال بدل قالب Laravel الافتراضي
         return new Content(
-            markdown: 'emails.registers',
+            view: 'emails.registers',
         );
     }
 

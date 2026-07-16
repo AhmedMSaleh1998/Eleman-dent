@@ -29,7 +29,7 @@ class CartItem extends Model
     
     public function total()
     {
-        $total = CartItem::where('user_id', get_current_user())
+        $total = CartItem::where('user_id', getCurrentUser())
         ->whereNull('order_id')
         ->sum(DB::raw('price * quantity'));
 

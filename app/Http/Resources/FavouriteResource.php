@@ -20,7 +20,7 @@ class FavouriteResource extends JsonResource
             'updated_at' => $this->updated_at,
             'product'    => new ProductResource($this->product),
             'user'       => new UserResource($this->user),
-            'status'     => $this->status,
+            'status'     => optional($this->product)->status,
         ];
     }
 }

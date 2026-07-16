@@ -2,6 +2,27 @@
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
+if (!function_exists('safeSendMail')) {
+    /**
+     * إرسال الإيميل كخدمة مستقلة — لو خدمة الميل مش شغّالة ما توقفش باقي العملية.
+     * بترجع true لو اتبعت بنجاح، false لو حصل خطأ (والخطأ بيتسجّل في اللوج بس).
+     *
+     * @param  \Closure  $callback  الكود المسؤول عن الإرسال (Mail::to()->send(...))
+     * @param  string    $context   وصف مختصر للعملية للّوج
+     */
+    function safeSendMail(\Closure $callback, string $context = 'mail'): bool
+    {
+        try {
+            $callback();
+            return true;
+        } catch (\Throwable $e) {
+            Log::warning('Mail sending failed (' . $context . '): ' . $e->getMessage());
+            return false;
+        }
+    }
+}
 
 if (!function_exists('getCurrentUser')) {
     function getCurrentUser()

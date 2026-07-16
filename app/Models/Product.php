@@ -56,6 +56,20 @@ class Product extends Model
         }
     }
 
+    // هل المنتج موجود حالياً في سلة المستخدم (طلب لسه ما تمش) ؟
+    public function in_cart()
+    {
+        $user = getCurrentUser();
+        if ($user) {
+            return DB::table('cart_items')
+                ->where('product_id', $this->id)
+                ->where('user_id', $user)
+                ->whereNull('order_id')
+                ->exists() ? 1 : 0;
+        }
+        return 0;
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class);

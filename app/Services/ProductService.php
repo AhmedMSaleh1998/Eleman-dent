@@ -254,7 +254,7 @@ class ProductService extends BaseService
     public function is_favourite($product_id)
     {
 
-        $data =  DB::table('favourites')->where([
+        $data =  DB::table('favourite_products')->where([
             ['product_id', '=', $product_id],
             ['user_id', '=', getCurrentUser()]
         ])->exists() ? 1 : 0;

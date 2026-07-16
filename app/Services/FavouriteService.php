@@ -47,4 +47,10 @@ class FavouriteService extends BaseService
         $favourite = $this->repository->where('product_id', '=', $product_id)->where('user_id', '=', getCurrentUser())->first();
         return $favourite->delete();
     }
+
+    // مسح كل مفضلات المستخدم الحالي
+    public function destroyAll()
+    {
+        return $this->repository->where('user_id', getCurrentUser())->delete();
+    }
 }

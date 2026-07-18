@@ -10,6 +10,18 @@ class ChangeStatusController extends Controller
 {
     public function status(Request $request, $status, $db, $id)
     {
+        // لا يُسمح للأدمن بتغيير حالة طلب ألغاه العميل بنفسه
+        if ($db === 'orders') {
+            $cancelledByUser = DB::table('orders')->where('id', $id)->value('cancelled_by_user');
+            if ($cancelledByUser) {
+                $message = 'لا يمكن تعديل حالة طلب تم إلغاؤه من قبل العميل';
+                if ($request->ajax()) {
+                    return response()->json(['success' => false, 'message' => $message], 422);
+                }
+                return redirect()->back()->with(['danger' => $message]);
+            }
+        }
+
         // نقرأ الحالة الحالية من قاعدة البيانات ونعكسها (أدق من الاعتماد على القيمة القادمة في الرابط)
         $current = DB::table($db)->where('id', $id)->value('status');
         $newValue = $current ? 0 : 1;

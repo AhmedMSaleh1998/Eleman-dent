@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\OrderDetailsResource;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Product;
@@ -94,12 +95,70 @@ class OrderService extends BaseService
 
     public function orderDetails($id)
     {
-        $order = $this->repository->show($id, $this->with);
-        return $order;
+        $order = Order::with(['cartItem.product', 'payment', 'address.city', 'user'])
+            ->where('id', $id)
+            ->where('user_id', getCurrentUser())
+            ->firstOrFail();
+
+        return new OrderDetailsResource($order);
+    }
+
+    public function cancelOrder($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $order = Order::with('cartItem')
+                ->where('id', $id)
+                ->where('user_id', getCurrentUser())
+                ->firstOrFail();
+
+            if ($order->status == 2) {
+                throw new Exception('لا يمكن إلغاء طلب تم توصيله');
+            }
+
+            if ($order->status == 3) {
+                throw new Exception('تم إلغاء هذا الطلب بالفعل');
+            }
+
+            // إرجاع الكمية للمخزون (عكس ما تم خصمه عند إنشاء الطلب)
+            foreach ($order->cartItem as $item) {
+                $product = Product::find($item->product_id);
+                if ($product) {
+                    $product->quantity += 1;
+                    $product->save();
+                }
+            }
+
+            $order->status = 3;
+            $order->cancelled_by_user = true;
+            $order->update();
+
+            DB::commit();
+
+            // إشعار العميل بإلغاء الطلب بالإيميل — خدمة مستقلة
+            $order->load(['user', 'address.city']);
+            if ($order->user && $order->user->email) {
+                safeSendMail(function () use ($order) {
+                    Mail::to($order->user->email)->send(new OrderStatusChanged($order, 3));
+                }, 'order cancelled by user');
+            }
+
+            return new OrderDetailsResource($order->load('cartItem.product', 'payment', 'address.city'));
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 
     public function updateStatus($id, $status)
     {
+        // لا يُسمح للأدمن بتعديل حالة طلب ألغاه العميل بنفسه
+        $existing = Order::find($id);
+        if ($existing && $existing->cancelled_by_user) {
+            throw new Exception('لا يمكن تعديل حالة طلب تم إلغاؤه من قبل العميل');
+        }
+
         if($status == 2)
         {
            $order = Order::find($id);
@@ -108,9 +167,9 @@ class OrderService extends BaseService
                 $product = Product::find($item->product_id);
                 $product->quantity += $item->quantity;
                 $product->save();
-            } 
+            }
         }
-        
+
         $order = $this->repository->show($id);
         $order->status = $status;
         $order->update();

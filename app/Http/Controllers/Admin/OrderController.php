@@ -41,8 +41,12 @@ class OrderController extends BaseController
 
     public function updateStatus($order_id, $status)
     {
-        $status = $this->service->updateStatus($order_id, $status);
-        return redirect()->back();
+        try {
+            $this->service->updateStatus($order_id, $status);
+            return redirect()->back()->with(['success' => 'تم تحديث حالة الطلب بنجاح']);
+        } catch (\Exception $exception) {
+            return redirect()->back()->with(['danger' => $exception->getMessage()]);
+        }
     }
     /**
      * Remove the specified resource from storage.

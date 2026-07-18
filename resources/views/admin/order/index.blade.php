@@ -46,7 +46,13 @@
                             </td>
                             <td>{{ $order->shipping }}</td>
                             <td>{{ $order->total }}</td>
-                            <td>{{ $order->status === 1 ? 'مؤكد' : 'غير مؤكد' }}</td>
+                            <td>
+                                @if ($order->cancelled_by_user)
+                                <span class="badge badge-danger">ملغي من قبل العميل</span>
+                                @else
+                                {{ $order->statusLabel() }}
+                                @endif
+                            </td>
 
                             <td class="actions">
                                 <div class="dropdown action-dd">
@@ -54,7 +60,9 @@
                                         الإجراءات <i class="fa fa-angle-down"></i>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right">
+                                        @if (!$order->cancelled_by_user)
                                         <a class="dropdown-item" href="{{ route('admin.changeStatus', [$order->status, 'orders', $order->id]) }}"><i class="fa fa-toggle-{{ $order->status == 1 ? 'off' : 'on' }}"></i> {{ $order->status == 1 ? 'إلغاء' : 'تأكيد' }}</a>
+                                        @endif
                                         <a class="dropdown-item" href="{{ route('admin.order.show', $order->id) }}"><i class="fa fa-eye"></i> مشاهدة</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item text-danger" href="javascript:void(0);" data-toggle="modal" data-target="#{{ $order->id }}delete"><i class="fa fa-trash"></i> حذف</a>

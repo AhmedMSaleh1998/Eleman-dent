@@ -46,45 +46,24 @@
                     <tr>
                         <td>الحالة</td>
                         <td>
-                            @switch($order->status)
-                            @case(0)
-                            طلب قيد الانتظار
-                            @break
-
-                            @case(1)
-                            تم تأكيد طلبك
-                            @break
-
-                            @case(2)
-                            تم رفض طلبك
-                            @break
-
-                            @case(3)
-                            يتم تحضير طلبك
-                            @break
-
-                            @case(4)
-                            طلبك في الطريق
-                            @break
-
-                            @case(5)
-                            تم توصيل طلبك
-                            @break
-
-                            @default
-
-                            @endswitch
+                            @if ($order->cancelled_by_user)
+                            <span class="badge badge-danger">ملغي من قبل العميل</span>
+                            @else
+                            {{ $order->statusLabel() }}
+                            @endif
                         </td>
                     </tr>
                     <tr>
                         <td>حالات الطلب</td>
                         <td>
-                            <a href="{{ route('admin.order.status', [$order->id,0]) }}" class="btn btn-warning waves-effect" title="قيد الانتظار">قيد الانتظار</a>
-                            <a href="{{ route('admin.order.status', [$order->id,1]) }}" class="btn btn-success waves-effect" title="الموافقة">الموافقة</a>
-                            <a href="{{ route('admin.order.status', [$order->id,2]) }}" class="btn btn-danger waves-effect" title="الرفض">الرفض</a>
-                            <a href="{{ route('admin.order.status', [$order->id,3]) }}" class="btn btn-primary waves-effect" title="جاري التحضير">جاري التحضير</a>
-                            <a href="{{ route('admin.order.status', [$order->id,4]) }}" class="btn btn-info waves-effect" title="جاري التوصيل">جاري التوصيل</a>
-                            <a href="{{ route('admin.order.status', [$order->id,5]) }}" class="btn btn-inverse waves-effect" title="تم التوصيل">تم التوصيل</a>
+                            @if ($order->cancelled_by_user)
+                            <span class="text-danger">تم إلغاء هذا الطلب من قبل العميل، ولا يمكن تعديل حالته.</span>
+                            @else
+                            <a href="{{ route('admin.order.status', [$order->id,0]) }}" class="btn btn-warning waves-effect" title="قيد المراجعة">قيد المراجعة</a>
+                            <a href="{{ route('admin.order.status', [$order->id,1]) }}" class="btn btn-success waves-effect" title="تأكيد">تأكيد</a>
+                            <a href="{{ route('admin.order.status', [$order->id,2]) }}" class="btn btn-info waves-effect" title="تم التوصيل">تم التوصيل</a>
+                            <a href="{{ route('admin.order.status', [$order->id,3]) }}" class="btn btn-danger waves-effect" title="إلغاء">إلغاء</a>
+                            @endif
                         </td>
                     </tr>
                 </tbody>

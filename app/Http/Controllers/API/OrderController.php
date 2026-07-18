@@ -45,4 +45,14 @@ class OrderController extends BaseController
             return $this->sendError('خطأ.', $exception->getMessage());
         }
     }
+
+    public function cancel($id)
+    {
+        try {
+            $data = $this->service->cancelOrder($id);
+            return $this->sendResponse($data, 'تم إلغاء الطلب بنجاح',200);
+        } catch (Exception $exception) {
+            return $this->sendError('خطأ.', $exception->getMessage());
+        }
+    }
 }

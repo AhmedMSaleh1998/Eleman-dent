@@ -74,6 +74,7 @@ Route::group(['namespace' => 'App\\Http\\Controllers\\API','middleware'=>['api',
         Route::post('order', 'OrderController@order');
         Route::get('myOrders', 'OrderController@my_orders');
         Route::get('order_details/{id}', 'OrderController@order_details');
+        Route::post('order/cancel/{id}', 'OrderController@cancel');
 
         Route::post('product_rate', 'ProductController@rate');
         Route::get('product_favourite/{product_id}', 'ProductController@isFavourite');

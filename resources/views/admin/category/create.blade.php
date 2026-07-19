@@ -89,6 +89,31 @@
                         </div>
                     </div>
 
+                    {{-- الظهور في الصفحة الرئيسية --}}
+                    <div class="ff-card">
+                        <div class="ff-card__head"><i class="fa fa-home"></i> الظهور في الصفحة الرئيسية
+                            <small>يتحكم في شريط "تصفح حسب الفئة" أعلى الصفحة الرئيسية</small>
+                        </div>
+                        <div class="ff-grid">
+                            <div class="ff-field">
+                                <label>
+                                    <input type="checkbox" name="show_in_home" value="1"
+                                        {{ old('show_in_home') ? 'checked' : '' }}>
+                                    إظهار هذا القسم في الصفحة الرئيسية
+                                </label>
+                                <span class="opt">(إذا لم تختر أي قسم، تظهر كل الأقسام الرئيسية حسب الترتيب)</span>
+                            </div>
+                            <div class="ff-field">
+                                <label>ترتيب الظهور <span class="opt">(اختياري — الأصغر يظهر أولاً)</span></label>
+                                <input type="number" min="0" class="ff-input" name="home_order"
+                                    value="{{ old('home_order') }}" placeholder="مثال: 1">
+                                @if ($errors->has('home_order'))
+                                    <span class="ff-error">{{ $errors->first('home_order') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
                     {{-- الاسم --}}
                     <div class="ff-card">
                         <div class="ff-card__head"><i class="fa fa-tag"></i> اسم القسم</div>

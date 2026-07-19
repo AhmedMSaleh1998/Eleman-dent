@@ -18,6 +18,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin' , 'middleware' => 'aut
     Route::group(['as' => 'admin.'], function () {
         Route::resource('banner', 'BannerController');
         Route::resource('brand', 'BrandController');
+        Route::get('category/{id}/toggle-home', 'ChangeStatusController@homeCategory')->name('category.toggleHome');
+        Route::post('category/{id}/home-order', 'CategoryController@updateHomeOrder')->name('category.updateHomeOrder');
         Route::resource('category', 'CategoryController');
         Route::post('product/bulk-move-category', 'ProductController@bulkMoveCategory')->name('product.bulkMoveCategory');
         Route::post('product/{id}/update-seq', 'ProductController@updateSeq')->name('product.updateSeq');

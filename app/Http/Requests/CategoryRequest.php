@@ -59,6 +59,8 @@ class CategoryRequest extends FormRequest
             'description_meta_en'  => 'required',
             'image' => 'nullable|image',
             'banner' => 'nullable|image',
+            'show_in_home' => 'nullable|boolean',
+            'home_order' => 'nullable|integer|min:0',
             'alt_en'          => 'required|string|min:2|max:191',
             'alt_ar'          => 'required|string|min:2|max:191',
         ];

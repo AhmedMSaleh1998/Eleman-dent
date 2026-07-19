@@ -54,4 +54,18 @@ class ChangeStatusController extends Controller
         $message = $newValue ? 'Product added to top products' : 'Product removed from top products';
         return redirect()->back()->with(['success' => $message]);
     }
+
+    public function homeCategory(Request $request, $id)
+    {
+        $current = DB::table('categories')->where('id', $id)->value('show_in_home');
+        if ($current === null && !DB::table('categories')->where('id', $id)->exists()) {
+            return redirect()->back()->with(['danger' => 'القسم غير موجود']);
+        }
+
+        $newValue = $current ? 0 : 1;
+        DB::table('categories')->where('id', $id)->update(['show_in_home' => $newValue]);
+
+        $message = $newValue ? 'تم إظهار القسم في الصفحة الرئيسية' : 'تم إخفاء القسم من الصفحة الرئيسية';
+        return redirect()->back()->with(['success' => $message]);
+    }
 }

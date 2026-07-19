@@ -26,6 +26,8 @@ class CategoryService extends BaseService
             'image' => $input['image'],
             'banner' => $banner,
             'parent_id' => $input['parent_id'] ?? null,
+            'show_in_home' => $request->boolean('show_in_home'),
+            'home_order' => $input['home_order'] ?? null,
             'en' => [
                 'name' => $input['name_en'],
                 'title' => $input['title_en'],
@@ -63,6 +65,8 @@ class CategoryService extends BaseService
             'image' => $image ?? $category->image,
             'banner' => $banner ?? $category->banner,
             'parent_id' => $request['parent_id'] ?? null,
+            'show_in_home' => $request->boolean('show_in_home'),
+            'home_order' => $request['home_order'] ?? null,
             'en' => [
                 'name' => $request['name_en'],
                 'title' => $request['title_en'],

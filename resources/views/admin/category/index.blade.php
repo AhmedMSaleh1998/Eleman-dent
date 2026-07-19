@@ -54,6 +54,7 @@
                                 <th data-field="Name English" data-align="center">الاسم بالإنجليزية</th>
                                 <th data-field="Parent" data-align="center">القسم الأب</th>
                                 <th data-field="Status" data-align="center">الحالة</th>
+                                <th data-field="Home" data-align="center">الرئيسية</th>
                                 <th data-field="Control" data-align="center">التحكم</th>
                             </tr>
                         </thead>
@@ -67,6 +68,29 @@
                                         <td>{{ $category->translate('en')->name }}</td>
                                         <td>{{ $category->parent ? optional($category->parent->translate('ar'))->name : '— رئيسي —' }}</td>
                                         <td>{{ $category->status === 1 ? 'ظاهر' : 'مخفي' }}</td>
+                                        <td class="home-col">
+                                            <div class="home-ctrl">
+                                                <label class="home-switch"
+                                                    title="اضغط لتبديل الظهور في الصفحة الرئيسية">
+                                                    <input type="checkbox" {{ $category->show_in_home ? 'checked' : '' }}
+                                                        onchange="window.location.href='{{ route('admin.category.toggleHome', $category->id) }}'">
+                                                    <span class="home-slider"></span>
+                                                    <span class="home-state {{ $category->show_in_home ? 'is-on' : 'is-off' }}">
+                                                        {{ $category->show_in_home ? 'ظاهر' : 'مخفي' }}
+                                                    </span>
+                                                </label>
+                                                <form action="{{ route('admin.category.updateHomeOrder', $category->id) }}"
+                                                    method="POST" class="home-order-form">
+                                                    @csrf
+                                                    <span class="home-order-label"><i class="fa fa-sort-numeric-asc"></i>
+                                                        الترتيب</span>
+                                                    <input type="number" name="home_order" min="0"
+                                                        value="{{ $category->home_order }}" class="home-order-input"
+                                                        title="الأصغر يظهر أولاً — يُحفظ تلقائياً عند التغيير"
+                                                        onchange="this.form.submit()">
+                                                </form>
+                                            </div>
+                                        </td>
 
                                         <td class="actions">
                                             <div class="dropdown action-dd">
@@ -294,6 +318,120 @@
             display: inline-flex;
             gap: 6px;
             white-space: nowrap;
+        }
+
+        /* ===== عمود الظهور في الصفحة الرئيسية ===== */
+        .home-col {
+            min-width: 150px;
+            vertical-align: middle;
+        }
+
+        .home-ctrl {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* مفتاح التبديل */
+        .home-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0;
+            cursor: pointer;
+            font-weight: 400;
+        }
+
+        .home-switch input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .home-slider {
+            position: relative;
+            flex: 0 0 auto;
+            width: 44px;
+            height: 24px;
+            background: #cfd8dc;
+            border-radius: 999px;
+            transition: background .25s ease;
+        }
+
+        .home-slider::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+            transition: transform .25s ease;
+        }
+
+        .home-switch input:checked+.home-slider {
+            background: #1abc9c;
+        }
+
+        .home-switch input:checked+.home-slider::before {
+            transform: translateX(-20px);
+        }
+
+        .home-state {
+            font-size: 12px;
+            font-weight: 700;
+            min-width: 34px;
+            text-align: right;
+        }
+
+        .home-state.is-on {
+            color: #16a085;
+        }
+
+        .home-state.is-off {
+            color: #9aa7b0;
+        }
+
+        /* حقل الترتيب */
+        .home-order-form {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin: 0;
+            background: #f6f8f9;
+            border: 1px solid #e4e9ec;
+            border-radius: 8px;
+            padding: 4px 8px;
+        }
+
+        .home-order-label {
+            font-size: 11px;
+            color: #7a8791;
+            white-space: nowrap;
+        }
+
+        .home-order-input {
+            width: 52px;
+            height: 30px;
+            text-align: center;
+            border: 1px solid #d3dae0;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #36404a;
+            background: #fff;
+            padding: 0;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .home-order-input:focus {
+            border-color: #1abc9c;
+            box-shadow: 0 0 0 2px rgba(26, 188, 156, .15);
+            outline: none;
         }
     </style>
 

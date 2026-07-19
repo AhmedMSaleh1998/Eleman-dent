@@ -47,9 +47,25 @@ class HomeService extends BaseService
     {
         $data = [];
         $data['banners'] = ListBannerResource::collection(Banner::all())->where('status' , true);
-        $data['categories'] = ListCategoryResource::collection(
-            Category::with('translations')->where('status', true)->whereNull('parent_id')->get()
-        );
+        // الأقسام المختارة يدوياً للظهور في الرئيسية (أي مستوى: رئيسي أو فرعي)
+        $homeCategories = Category::with('translations')
+            ->where('status', true)
+            ->where('show_in_home', true)
+            ->orderByRaw('home_order IS NULL, home_order ASC')
+            ->orderBy('id', 'asc')
+            ->get();
+
+        // لو لم يختر الأدمن أي قسم، نعرض كل الأقسام الرئيسية حسب الترتيب
+        if ($homeCategories->isEmpty()) {
+            $homeCategories = Category::with('translations')
+                ->where('status', true)
+                ->whereNull('parent_id')
+                ->orderByRaw('home_order IS NULL, home_order ASC')
+                ->orderBy('id', 'asc')
+                ->get();
+        }
+
+        $data['categories'] = ListCategoryResource::collection($homeCategories);
         $data['top_products'] = ListProductResource::collection(
             Product::active()
                 ->where('is_top_product', 1)

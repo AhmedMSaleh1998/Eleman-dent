@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Services\CategoryService;
+use Illuminate\Http\Request;
 
 class CategoryController extends BaseController
 {
@@ -92,5 +93,21 @@ class CategoryController extends BaseController
     {
         $this->service->destroy($id);
         return redirect(route('admin.category.index'))->with(['success' => 'تم حذف القسم بنجاح']);
+    }
+
+    /**
+     * تحديث سريع لترتيب ظهور القسم في الصفحة الرئيسية من القائمة مباشرة
+     */
+    public function updateHomeOrder(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'home_order' => 'nullable|integer|min:0',
+        ]);
+
+        Category::where('id', $id)->update([
+            'home_order' => $validated['home_order'] ?? null,
+        ]);
+
+        return redirect()->back()->with(['success' => 'تم تحديث ترتيب الظهور']);
     }
 }

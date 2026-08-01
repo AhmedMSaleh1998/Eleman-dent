@@ -21,10 +21,20 @@ class UpdateEventImageRequest extends FormRequest
      */
     public function rules(): array
     {
+        $isVideo = $this->input('type') === 'video';
+
         return [
-            'image'       => 'nullable',
+            'type'      => 'required|in:image,video',
+            'image'     => $isVideo
+                ? 'nullable|file|mimetypes:video/mp4,video/quicktime,video/webm,video/x-m4v|max:102400'
+                : 'nullable|image|max:10240',
             'event_id'  => 'required|integer',
-            'alt'         => 'nullable'
+            'alt'       => 'nullable|string|max:255',
         ];
+    }
+
+    public function messages(): array
+    {
+        return eventMediaMessages();
     }
 }

@@ -121,6 +121,78 @@
         padding: 6px;
     }
 
+    .ff-hint {
+        display: block;
+        color: #7b8794;
+        font-size: 12.5px;
+        line-height: 1.7;
+        margin-top: 6px;
+    }
+
+    .ff-video-preview {
+        margin-top: 12px;
+        display: block;
+        width: 100%;
+        max-width: 260px;
+        max-height: 320px;
+        border-radius: 10px;
+        background: #000;
+        border: 1px solid #e3e8ee;
+    }
+
+    .ff-current-wrap {
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px dashed #e3e8ee;
+    }
+
+    .ff-typeswitch {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .ff-type {
+        flex: 1 1 160px;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .ff-type input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .ff-type span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 14px 16px;
+        border: 2px solid #e3e8ee;
+        border-radius: 10px;
+        background: #fff;
+        color: #5b6b7c;
+        font-size: 14px;
+        font-weight: 700;
+        transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .ff-type span i {
+        font-size: 17px;
+    }
+
+    .ff-type:hover span {
+        border-color: #b9c6d3;
+    }
+
+    .ff-type.is-active span {
+        border-color: #1abc9c;
+        background: #f2fbf9;
+        color: #12876f;
+    }
+
     .ff-actions {
         text-align: center;
         padding: 6px 0 30px;

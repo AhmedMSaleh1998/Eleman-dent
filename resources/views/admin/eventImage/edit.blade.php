@@ -39,42 +39,20 @@
     <div class="row">
         <div class="col-12">
             <div class="card-box">
-                <h4 class="header-title m-t-0 m-b-20" style="text-align:center;">تعديل صورة الحدث</h4>
+                <h4 class="header-title m-t-0 m-b-20" style="text-align:center;">تعديل ملف الحدث</h4>
 
                 <div class="ff-wrap">
                     <p class="ff-note">الحقول المعلمة بعلامة <span style="color:#e74c3c; font-weight:bold;">*</span>
-                        إجبارية ولا يمكن الحفظ بدونها — الصورة اختيارية.</p>
+                        إجبارية ولا يمكن الحفظ بدونها — رفع ملف جديد اختياري.</p>
 
                     {{ Form::model($eventImage, ['method' => 'PUT', 'action' => ['App\Http\Controllers\Admin\EventImageController@update', $eventImage->id], 'files' => true]) }}
                     <input type="hidden" name="event_id" value="{{ $eventImage->event_id }}">
 
-                    {{-- الصورة --}}
-                    <div class="ff-card">
-                        <div class="ff-card__head"><i class="fa fa-image"></i> صورة الحدث</div>
-                        <div class="ff-grid">
-                            <div class="ff-field ff-field--full">
-                                <label>الصورة
-                                    <span class="opt">(اختياري — اتركها فارغة للاحتفاظ بالصورة الحالية)</span></label>
-                                <input type="file" class="filestyle" data-placeholder="لم يتم اختيار ملف"
-                                    data-iconname="fa fa-cloud-upload" name="image">
-                                <img class="ff-current-img"
-                                    src="{{ asset('admin_assets/images/events/' . $eventImage->image) }}"
-                                    onerror="this.style.display='none'">
-                                @if ($errors->has('image'))
-                                    <span class="ff-error">{{ $errors->first('image') }}</span>
-                                @endif
-                            </div>
-                            <div class="ff-field ff-field--full">
-                                <label>النص البديل للصورة <span class="req">*</span></label>
-                                <input type="text" class="ff-input" name="alt" required
-                                    value="{{ old('alt', $eventImage->alt) }}"
-                                    placeholder="وصف قصير للصورة (مهم للـ SEO)">
-                                @if ($errors->has('alt'))
-                                    <span class="ff-error">{{ $errors->first('alt') }}</span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
+                    @include('admin.eventImage._media_fields', [
+                        'currentType' => old('type', $eventImage->type ?? 'image'),
+                        'currentAlt' => old('alt', $eventImage->alt),
+                        'required' => false,
+                    ])
 
                     <div class="ff-actions">
                         <button type="submit" class="ff-submit">حفظ</button>

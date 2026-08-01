@@ -18,7 +18,7 @@ class EventResource extends JsonResource
             'id' => $this->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'image' => asset('admin_assets/images/events/' . $this->image), 
+            'image' => asset('admin_assets/images/events/' . $this->image),
             'date' => $this->date,
             'status' => $this->status,
             'name' => $this->name,
@@ -26,6 +26,8 @@ class EventResource extends JsonResource
             'description' => $this->description,
             'path' => asset('admin_assets/images/events/'),
             'images' => $this->all_images(),
+            // كل الوسائط (صور + فيديوهات) بروابط كاملة — الفرونت بيعرض المعرض منها
+            'media' => $this->all_media(),
         ];
     }
 }

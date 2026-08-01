@@ -39,7 +39,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card-box">
-                <h4 class="header-title m-t-0 m-b-20" style="text-align:center;">إضافة صورة للحدث</h4>
+                <h4 class="header-title m-t-0 m-b-20" style="text-align:center;">إضافة صورة أو فيديو للحدث</h4>
 
                 <div class="ff-wrap">
                     <p class="ff-note">الحقول المعلمة بعلامة <span style="color:#e74c3c; font-weight:bold;">*</span>
@@ -49,28 +49,12 @@
                     @csrf
                     <input type="hidden" name="event_id" value="{{ $event_id }}">
 
-                    {{-- الصورة --}}
-                    <div class="ff-card">
-                        <div class="ff-card__head"><i class="fa fa-image"></i> صورة الحدث</div>
-                        <div class="ff-grid">
-                            <div class="ff-field ff-field--full">
-                                <label>الصورة <span class="req">*</span></label>
-                                <input type="file" class="filestyle" data-placeholder="لم يتم اختيار ملف"
-                                    data-iconname="fa fa-cloud-upload" name="image" required>
-                                @if ($errors->has('image'))
-                                    <span class="ff-error">{{ $errors->first('image') }}</span>
-                                @endif
-                            </div>
-                            <div class="ff-field ff-field--full">
-                                <label>النص البديل للصورة <span class="req">*</span></label>
-                                <input type="text" class="ff-input" name="alt" required value="{{ old('alt') }}"
-                                    placeholder="وصف قصير للصورة (مهم للـ SEO)">
-                                @if ($errors->has('alt'))
-                                    <span class="ff-error">{{ $errors->first('alt') }}</span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
+                    @include('admin.eventImage._media_fields', [
+                        'currentType' => old('type', 'image'),
+                        'currentAlt' => old('alt'),
+                        'required' => true,
+                        'eventImage' => null,
+                    ])
 
                     <div class="ff-actions">
                         <button type="submit" class="ff-submit">حفظ</button>

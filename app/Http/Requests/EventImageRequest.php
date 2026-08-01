@@ -21,10 +21,21 @@ class EventImageRequest extends FormRequest
      */
     public function rules(): array
     {
+        // الحقل اسمه image في الحالتين لأنه بيتخزن في نفس العمود، والنوع هو اللي بيفرّق
+        $isVideo = $this->input('type') === 'video';
+
         return [
-            'image'       => 'required',
+            'type'      => 'required|in:image,video',
+            'image'     => $isVideo
+                ? 'required|file|mimetypes:video/mp4,video/quicktime,video/webm,video/x-m4v|max:102400'
+                : 'required|image|max:10240',
             'event_id'  => 'required|integer',
-            'alt'         => 'nullable'
+            'alt'       => 'nullable|string|max:255',
         ];
+    }
+
+    public function messages(): array
+    {
+        return eventMediaMessages();
     }
 }

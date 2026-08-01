@@ -17,7 +17,7 @@
             @elseif(Session::has('danger'))
             <div class="alert alert-danger">{{ Session::get('danger') }}</div>
             @endif
-            <h4 class="page-title">صور الأحداث</h4>
+            <h4 class="page-title">صور وفيديوهات الأحداث</h4>
         </div>
 
     </div>
@@ -30,7 +30,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class=" main-btn-00">
-                        <a href="{{ route('admin.eventimage.create', $event_id) }}" class="btn btn-default waves-effect">+ إضافة صورة</a>
+                        <a href="{{ route('admin.eventimage.create', $event_id) }}" class="btn btn-default waves-effect">+ إضافة صورة أو فيديو</a>
                     </div>
                 </div>
             </div>
@@ -40,7 +40,8 @@
 
                     <thead>
                         <tr>
-                            <th data-field="الصورة الرئيسية" data-align="center">الصورة</th>
+                            <th data-field="الملف" data-align="center">الملف</th>
+                            <th data-field="type" data-align="center">النوع</th>
                             <th data-field="alt" data-align="center">النص البديل للصورة</th>
                             <th data-field="التحكم" data-align="center">التحكم</th>
                         </tr>
@@ -48,8 +49,21 @@
                     <tbody>
                         @foreach ($eventImage as $Image)
                         <tr>
-                            <td><img src="{{ asset('admin_assets/images/events/' . $Image->image) }}" class="img-responsive" width="100px" height="100px"></td>
-                            <td>{{ $Image->alt ?? 'لا يوجد'}}</td>
+                            <td>
+                                @if ($Image->type === 'video')
+                                <video src="{{ $Image->url }}" width="100" height="100" controls preload="metadata" style="background:#000;border-radius:6px;"></video>
+                                @else
+                                <img src="{{ $Image->url }}" class="img-responsive" width="100px" height="100px">
+                                @endif
+                            </td>
+                            <td>
+                                @if ($Image->type === 'video')
+                                <span class="label label-info"><i class="fa fa-video-camera"></i> فيديو</span>
+                                @else
+                                <span class="label label-default"><i class="fa fa-image"></i> صورة</span>
+                                @endif
+                            </td>
+                            <td>{{ $Image->alt ?: 'لا يوجد'}}</td>
 
                             <td class="actions">
                                 <div class="dropdown action-dd">

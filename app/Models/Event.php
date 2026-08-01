@@ -21,8 +21,40 @@ class Event extends Model
 
     public function all_images()
     {
-        $images[] = $this->eventImage->pluck('image')->prepend($this->image);
+        // الصور بس — الفيديوهات ليها all_media()
+        $images[] = $this->eventImage->where('type', '!=', 'video')->pluck('image')->prepend($this->image);
         return $images;
+    }
+
+    /**
+     * كل وسائط الحدث (الصورة الرئيسية + معرض الصور والفيديوهات) بروابط كاملة
+     * وبالترتيب اللي هيتعرض بيه في الموقع.
+     */
+    public function all_media()
+    {
+        $media = [];
+
+        if ($this->image) {
+            $media[] = [
+                'type' => 'image',
+                'url'  => asset('admin_assets/images/events/' . $this->image),
+                'alt'  => $this->name,
+            ];
+        }
+
+        foreach ($this->eventImage as $item) {
+            if (!$item->image) {
+                continue;
+            }
+
+            $media[] = [
+                'type' => $item->type === 'video' ? 'video' : 'image',
+                'url'  => $item->url,
+                'alt'  => $item->alt ?: $this->name,
+            ];
+        }
+
+        return $media;
     }
 
 }

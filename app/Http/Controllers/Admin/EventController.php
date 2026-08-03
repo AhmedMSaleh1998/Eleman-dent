@@ -43,7 +43,13 @@ class EventController extends BaseController
     public function store(EventRequest $request)
     {
         $this->service->store($request);
-        return redirect()->back()->with(['success' => 'تم إضافة الحدث بنجاح']);;
+
+        if ($request->expectsJson()) {
+            session()->flash('success', 'تم إضافة الحدث بنجاح');
+            return response()->json(['redirect' => route('admin.event.index')]);
+        }
+
+        return redirect()->back()->with(['success' => 'تم إضافة الحدث بنجاح']);
     }
 
      /**
@@ -81,6 +87,12 @@ class EventController extends BaseController
     public function update(EventRequest $request, $id)
     {
         $this->service->update($request, $id);
+
+        if ($request->expectsJson()) {
+            session()->flash('success', 'تم تعديل الحدث بنجاح');
+            return response()->json(['redirect' => route('admin.event.index')]);
+        }
+
         return redirect()->back()->with(['success' => 'تم تعديل الحدث بنجاح']);
     }
 

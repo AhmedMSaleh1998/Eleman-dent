@@ -12,7 +12,15 @@ class Event extends Model
     protected $table = 'events';
     public $timestamps = true;
     public $translatedAttributes = ['name',  'description'];
-    protected $fillable = array('image', 'date','status','location_one' , 'location_two' , 'src_one' , 'src_two');
+    protected $fillable = array('image', 'video', 'date','status','location_one' , 'location_two' , 'src_one' , 'src_two');
+
+    // بيتضاف تلقائياً في أي JSON للحدث عشان الفرونت ياخد رابط الفيديو كامل جاهز
+    protected $appends = ['video_url'];
+
+    public function getVideoUrlAttribute()
+    {
+        return $this->video ? asset('admin_assets/videos/events/' . $this->video) : null;
+    }
 
     public function eventImage()
     {
@@ -38,6 +46,15 @@ class Event extends Model
             $media[] = [
                 'type' => 'image',
                 'url'  => asset('admin_assets/images/events/' . $this->image),
+                'alt'  => $this->name,
+            ];
+        }
+
+        // الوسيط الرئيسي لو فيديو — يظهر في معرض صفحة التفاصيل زي فيديوهات المعرض
+        if ($this->video) {
+            $media[] = [
+                'type' => 'video',
+                'url'  => $this->video_url,
                 'alt'  => $this->name,
             ];
         }

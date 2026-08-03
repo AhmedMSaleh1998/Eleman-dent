@@ -48,20 +48,8 @@
                     {{ Form::open(['method' => 'POST', 'action' => ['App\Http\Controllers\Admin\EventController@store'], 'files' => true]) }}
                     @csrf
 
-                    {{-- الصورة --}}
-                    <div class="ff-card">
-                        <div class="ff-card__head"><i class="fa fa-image"></i> صورة الحدث</div>
-                        <div class="ff-grid">
-                            <div class="ff-field ff-field--full">
-                                <label>الصورة <span class="req">*</span></label>
-                                <input type="file" class="filestyle" data-placeholder="لم يتم اختيار ملف"
-                                    data-iconname="fa fa-cloud-upload" name="image" required>
-                                @if ($errors->has('image'))
-                                    <span class="ff-error">{{ $errors->first('image') }}</span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
+                    {{-- الوسيط الرئيسي: صورة أو فيديو --}}
+                    @include('admin.event._media_field', ['event' => null, 'required' => true])
 
                     {{-- الاسم --}}
                     <div class="ff-card">

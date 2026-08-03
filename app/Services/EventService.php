@@ -41,9 +41,19 @@ class EventService extends BaseService
     public function store($request)
     {
         $input = $request->validated();
-        $input['image'] = uploadImage($input['image'], 'events');
+
+        // الوسيط الرئيسي للحدث: صورة أو فيديو — واحد بس مش الاتنين
+        $image = null;
+        $video = null;
+        if ($input['media_type'] === 'video' && $request->hasFile('video')) {
+            $video = uploadVideo($request->file('video'), 'events');
+        } elseif ($request->hasFile('image')) {
+            $image = uploadImage($request->file('image'), 'events');
+        }
+
         Event::create([
-            'image' => $input['image'],
+            'image' => $image,
+            'video' => $video,
             'date' => $input['date'],
 
             'en' => [
@@ -64,11 +74,26 @@ class EventService extends BaseService
     {
         $event = $this->show($id);
 
-        if ($request->hasFile('image')) {
+        // الوسيط الرئيسي: صورة أو فيديو — واحد بس. رفع نوع جديد بيستبدل القديم
+        // ويمسح ملفه من السيرفر. من غير ملف جديد بنسيب الحالي زي ما هو.
+        $image = $event->image;
+        $video = $event->video;
+
+        if ($request->input('media_type') === 'video' && $request->hasFile('video')) {
+            deleteUploadedFile($event->video ? public_path('admin_assets/videos/events/' . $event->video) : null);
+            deleteUploadedFile($event->image ? public_path('admin_assets/images/events/' . $event->image) : null);
+            $video = uploadVideo($request->file('video'), 'events');
+            $image = null;
+        } elseif ($request->input('media_type') === 'image' && $request->hasFile('image')) {
+            // uploadImage بتمسح الصورة القديمة بنفسها لما نبعتلها الجدول والـ id
             $image = uploadImage($request['image'], 'events', 'events', $id);
+            deleteUploadedFile($event->video ? public_path('admin_assets/videos/events/' . $event->video) : null);
+            $video = null;
         }
+
         $event->update([
-            'image' => $image ?? $event->image,
+            'image' => $image,
+            'video' => $video,
             'date' => $request['date'],
 
             'en' => [

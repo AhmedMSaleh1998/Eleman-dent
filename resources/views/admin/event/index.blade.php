@@ -42,7 +42,6 @@
 
                     <thead>
                         <tr>
-                            <th data-field="Image" data-align="center">الصورة</th>
                             <th data-field="Name Arabic" data-align="center">الاسم بالعربية</th>
                             <th data-field="Name English" data-align="center">الاسم بالإنجليزية</th>
                             <th data-field="Status" data-align="center">الحالة</th>
@@ -53,7 +52,6 @@
                         @if(isset($events))
                         @foreach($events as $event)
                         <tr>
-                            <td><img src="{{asset('admin_assets/images/events/'.$event->image)}}" class="img-responsive" width="100px" height="100px"></td>
                             <td>{{$event->translate('ar')->name}}</td>
                             <td>{{$event->translate('en')->name}}</td>
                             <td>{{$event->status === 1 ? 'ظاهر' : 'مخفي'}}</td>

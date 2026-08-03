@@ -79,6 +79,14 @@
     </div>
 </div>
 
+{{-- شريط تقدم الرفع — يظهر أثناء رفع الملف بالخلفية بدل ما الصفحة تعلّق --}}
+<div id="upload-progress" style="display:none; margin:14px 0;">
+    <div style="background:#eef1f4; border-radius:8px; height:12px; overflow:hidden;">
+        <div id="upload-progress-bar" style="width:0; height:100%; background:#1abc9c; transition:width .2s;"></div>
+    </div>
+    <p id="upload-progress-text" style="margin:6px 0 0; font-size:13px; color:#36404a; text-align:center;">جاري الرفع...</p>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         (function() {
@@ -199,6 +207,103 @@
             });
 
             applyType();
+
+            // ============================================================
+            // رفع الملف بالخلفية (AJAX) مع شريط تقدم
+            // بدل الإرسال العادي اللي بيسيب الصفحة معلّقة طول مدة الرفع
+            // ============================================================
+            var form = input.closest('form');
+            var progressWrap = document.getElementById('upload-progress');
+            var progressBar = document.getElementById('upload-progress-bar');
+            var progressText = document.getElementById('upload-progress-text');
+            var submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+            var submitOriginal = submitBtn ? submitBtn.textContent : 'حفظ';
+            var uploading = false;
+
+            // تحذير قبل إغلاق الصفحة أثناء الرفع عشان الرفع ميتقطعش بالغلط
+            window.addEventListener('beforeunload', function(ev) {
+                if (uploading) {
+                    ev.preventDefault();
+                    ev.returnValue = '';
+                }
+            });
+
+            function resetUploadUi() {
+                uploading = false;
+                progressWrap.style.display = 'none';
+                progressBar.style.width = '0';
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = submitOriginal;
+                }
+            }
+
+            function failUpload(msg) {
+                resetUploadUi();
+                hint.textContent = msg;
+                hint.classList.add('ff-error');
+                hint.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            if (form) form.addEventListener('submit', function(e) {
+                var file = input.files && input.files[0];
+                // بدون ملف جديد (شاشة التعديل مثلاً) الإرسال العادي كافي وسريع
+                if (!file) return;
+                e.preventDefault();
+                if (uploading) return;
+                uploading = true;
+
+                var typeLabel = currentType() === 'video' ? 'الفيديو' : 'الصورة';
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', form.getAttribute('action'));
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.setRequestHeader('Accept', 'application/json');
+
+                progressWrap.style.display = 'block';
+                progressText.textContent = 'جاري رفع ' + typeLabel + '...';
+                hint.classList.remove('ff-error');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'جاري الرفع...';
+                }
+
+                xhr.upload.onprogress = function(ev) {
+                    if (!ev.lengthComputable) return;
+                    var pct = Math.round((ev.loaded / ev.total) * 100);
+                    progressBar.style.width = pct + '%';
+                    progressText.textContent = pct >= 100 ?
+                        'تم رفع ' + typeLabel + ' — جاري الحفظ...' :
+                        'جاري رفع ' + typeLabel + '... ' + pct + '% — من فضلك لا تغلق الصفحة';
+                };
+
+                xhr.onload = function() {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        uploading = false;
+                        progressBar.style.width = '100%';
+                        progressText.textContent = 'تم الحفظ بنجاح ✓';
+                        var res = {};
+                        try { res = JSON.parse(xhr.responseText); } catch (err) {}
+                        window.location.href = res.redirect || xhr.responseURL || window.location.href;
+                    } else if (xhr.status === 422) {
+                        // أخطاء الفاليديشن بترجع JSON بسبب هيدر Accept
+                        var msg = 'برجاء مراجعة البيانات المدخلة.';
+                        try {
+                            var errs = JSON.parse(xhr.responseText).errors;
+                            msg = Object.keys(errs).map(function(k) { return errs[k][0]; }).join(' — ');
+                        } catch (err) {}
+                        failUpload(msg);
+                    } else if (xhr.status === 413) {
+                        failUpload('الملف أكبر من الحد المسموح به على السيرفر. اضغط الملف وحاول مرة أخرى.');
+                    } else {
+                        failUpload('حصل خطأ أثناء الرفع (' + xhr.status + '). حاول مرة أخرى.');
+                    }
+                };
+                xhr.onerror = function() {
+                    failUpload('انقطع الاتصال أثناء الرفع. تأكد من الإنترنت وحاول مرة أخرى.');
+                };
+
+                xhr.send(new FormData(form));
+            });
         })();
     });
 </script>

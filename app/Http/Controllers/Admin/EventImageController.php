@@ -43,6 +43,12 @@ class EventImageController extends BaseController
     public function store(EventImageRequest $request)
     {
         $this->service->store($request);
+
+        if ($request->expectsJson()) {
+            session()->flash('success', 'تم إضافة صورة الحدث بنجاح');
+            return response()->json(['redirect' => route('admin.eventimage.index', $request->event_id)]);
+        }
+
         return redirect()->back()->with(['success' => 'تم إضافة صورة الحدث بنجاح']);
     }
 
@@ -80,6 +86,12 @@ class EventImageController extends BaseController
     public function update(UpdateEventImageRequest $request, $id)
     {
         $this->service->update($request, $id);
+
+        if ($request->expectsJson()) {
+            session()->flash('success', 'تم تعديل صورة الحدث بنجاح');
+            return response()->json(['redirect' => route('admin.eventimage.index', $request->event_id)]);
+        }
+
         return redirect()->back()->with(['success' => 'تم تعديل صورة الحدث بنجاح']);
     }
 

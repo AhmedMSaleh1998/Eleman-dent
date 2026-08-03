@@ -20,6 +20,7 @@ class EventService extends BaseService
     {
         $eventsByYear = Event::selectRaw('YEAR(events.date) as year, events.*, event_translations.name, event_translations.location, event_translations.description')
         ->join('event_translations', 'events.id', '=', 'event_translations.event_id')
+        ->where('event_translations.locale', app()->getLocale())
         ->get()
         ->groupBy('year');
 

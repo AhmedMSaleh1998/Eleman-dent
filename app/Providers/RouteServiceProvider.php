@@ -31,6 +31,12 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
+            // خريطة الموقع بدون prefix حتى تكون على /sitemap.xml مباشرة —
+            // يستهلكها بروكسي sitemap.php على دومين الفرونت
+            Route::middleware('web')
+                ->get('sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])
+                ->name('sitemap');
+
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));

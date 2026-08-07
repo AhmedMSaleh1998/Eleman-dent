@@ -134,6 +134,22 @@
                                     <span class="ff-error">{{ $errors->first('seq') }}</span>
                                 @endif
                             </div>
+                            <div class="ff-field">
+                                <label>الضمان (عربي) <span class="opt">(اختياري — يُخفى من الموقع إذا تُرك فارغاً)</span></label>
+                                <input type="text" class="ff-input" name="warranty_ar"
+                                    value="{{ old('warranty_ar') }}" placeholder="مثال: ضمان سنتان">
+                                @if ($errors->has('warranty_ar'))
+                                    <span class="ff-error">{{ $errors->first('warranty_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>الضمان (إنجليزي) <span class="opt">(اختياري)</span></label>
+                                <input type="text" class="ff-input" name="warranty_en" dir="ltr"
+                                    value="{{ old('warranty_en') }}" placeholder="e.g. 2 Years Warranty">
+                                @if ($errors->has('warranty_en'))
+                                    <span class="ff-error">{{ $errors->first('warranty_en') }}</span>
+                                @endif
+                            </div>
                         </div>
                     </div>
 

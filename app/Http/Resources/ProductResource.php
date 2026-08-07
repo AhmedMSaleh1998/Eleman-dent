@@ -22,6 +22,7 @@ class ProductResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description ?? '',
+            'warranty' => $this->warranty ?: null,
             'image' => asset('admin_assets/images/products/' . $this->image), 
             'pdf' => $this->pdf !== null ? asset('admin_assets/images/product_pdfs/' . $this->pdf) : null, 
             'price' => $this->price ?? 0,

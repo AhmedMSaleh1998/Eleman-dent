@@ -15,7 +15,7 @@ class Product extends Model
     protected $casts = [
         'is_top_product' => 'boolean',
     ];
-    public $translatedAttributes = ['name','alt', 'keywords', 'keywords_meta', 'title', 'description', 'description_meta'];
+    public $translatedAttributes = ['name','alt', 'warranty', 'keywords', 'keywords_meta', 'title', 'description', 'description_meta'];
 
     public function scopeActive($query)
     {

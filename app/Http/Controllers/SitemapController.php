@@ -16,7 +16,8 @@ class SitemapController extends Controller
      */
     public function index()
     {
-        $xml = Cache::remember('sitemap.xml', 3600, fn () => $this->build());
+        // v2: تمت إضافة صور المنتجات — تغيير المفتاح يجدد الكاش تلقائياً بعد الرفع
+        $xml = Cache::remember('sitemap.xml.v2', 3600, fn () => $this->build());
 
         return response($xml, 200)->header('Content-Type', 'application/xml; charset=UTF-8');
     }
@@ -40,18 +41,29 @@ class SitemapController extends Controller
             ];
         }
 
-        $products = Product::active()->with('translations')->orderBy('seq')->get();
+        $products = Product::active()->with(['translations', 'productImage'])->orderBy('seq')->get();
         foreach ($products as $product) {
             $slug = $this->slug($product, 'name') ?: (string) $product->id;
+
+            // صور المنتج تدخل الخريطة حتى تظهر في بحث الصور (مصدر زيارات مهم للمعدات)
+            $images = [];
+            if ($product->image) {
+                $images[] = asset('admin_assets/images/products/' . $product->image);
+            }
+            foreach ($product->productImage as $extra) {
+                $images[] = asset('admin_assets/images/products/' . $extra->image);
+            }
+
             $urls[] = [
                 'loc' => self::SITE_URL . '/products/' . rawurlencode($slug),
                 'lastmod' => optional($product->updated_at)->toDateString(),
                 'priority' => '0.9',
+                'images' => array_slice(array_values(array_unique($images)), 0, 10),
             ];
         }
 
         $out = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-        $out .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+        $out .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">' . "\n";
         foreach ($urls as $url) {
             $out .= "  <url>\n";
             $out .= '    <loc>' . htmlspecialchars($url['loc'], ENT_XML1) . "</loc>\n";
@@ -59,6 +71,11 @@ class SitemapController extends Controller
                 $out .= '    <lastmod>' . $url['lastmod'] . "</lastmod>\n";
             }
             $out .= '    <priority>' . $url['priority'] . "</priority>\n";
+            foreach ($url['images'] ?? [] as $image) {
+                $out .= "    <image:image>\n";
+                $out .= '      <image:loc>' . htmlspecialchars($image, ENT_XML1) . "</image:loc>\n";
+                $out .= "    </image:image>\n";
+            }
             $out .= "  </url>\n";
         }
         $out .= '</urlset>';

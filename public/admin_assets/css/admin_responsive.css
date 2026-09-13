@@ -22,9 +22,53 @@
     overflow-x: auto;
 }
 
+/* شريط تمرير دائم الظهور للجداول — بدل overlay المخفي فلا يبدو الجدول مقصوصًا */
+.table-scroll-x::-webkit-scrollbar,
+.fixed-table-body::-webkit-scrollbar {
+    height: 10px;
+}
+
+.table-scroll-x::-webkit-scrollbar-track,
+.fixed-table-body::-webkit-scrollbar-track {
+    background: #eef1f4;
+    border-radius: 6px;
+}
+
+.table-scroll-x::-webkit-scrollbar-thumb,
+.fixed-table-body::-webkit-scrollbar-thumb {
+    background: #98a6ad;
+    border-radius: 6px;
+}
+
+.table-scroll-x::-webkit-scrollbar-thumb:hover,
+.fixed-table-body::-webkit-scrollbar-thumb:hover {
+    background: #5fbeaa;
+}
+
+.table-scroll-x,
+.fixed-table-body {
+    scrollbar-width: thin;
+    scrollbar-color: #98a6ad #eef1f4;
+}
+
 /* خلفية إغلاق القائمة الجانبية (تظهر فقط على الشاشات الصغيرة عند فتح القائمة) */
 .mobile-menu-backdrop {
     display: none;
+}
+
+/* ===== ديسكتوب ولابتوب (991px فأكثر) ===== */
+/* الثيم كان يثبّت المحتوى على 83% فيهدر مساحة ويخنق الجداول على لابتوبات 13-14 إنش.
+   هنا يُحسب العرض بدقة بجانب القائمة (240px)، ويتمدد عند طيّها لوضع الأيقونات (70px). */
+@media (min-width: 991px) {
+    .content-page {
+        width: calc(100% - 250px) !important;
+        margin-left: 0 !important;
+    }
+
+    #wrapper.enlarged .content-page {
+        width: calc(100% - 80px) !important;
+        margin-left: 0 !important;
+    }
 }
 
 /* ===== تابلت وموبايل ===== */

@@ -51,6 +51,27 @@
     scrollbar-color: #98a6ad #eef1f4;
 }
 
+/*
+ * عمود الإجراءات (آخر عمود = أقصى اليسار في RTL) مثبّت دائم الظهور:
+ * مهما ضاقت الشاشة أو زاد الزوم يبقى ظاهرًا والجدول يتمرر تحته.
+ */
+.table-scroll-x > table > thead > tr > th:last-child,
+.table-scroll-x > table > tbody > tr > td:last-child,
+.fixed-table-body > table > thead > tr > th:last-child,
+.fixed-table-body > table > tbody > tr > td:last-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: #ffffff;
+    box-shadow: 6px 0 10px -6px rgba(0, 0, 0, 0.25);
+}
+
+.table-scroll-x > table > thead > tr > th:last-child,
+.fixed-table-body > table > thead > tr > th:last-child {
+    background: #eef1f4;
+    z-index: 3;
+}
+
 /* خلفية إغلاق القائمة الجانبية (تظهر فقط على الشاشات الصغيرة عند فتح القائمة) */
 .mobile-menu-backdrop {
     display: none;

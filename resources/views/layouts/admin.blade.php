@@ -40,8 +40,10 @@
 
     @yield('styles')
 
-    {{-- طبقة التجاوب — تُحمَّل أخيرًا لتتغلب على أي ستايلات ثابتة --}}
-    <link href="{{ asset('admin_assets/css/admin_responsive.css') }}" rel="stylesheet" type="text/css" />
+    {{-- طبقة التجاوب — تُحمَّل أخيرًا لتتغلب على أي ستايلات ثابتة.
+         ?v= يتغير مع كل تعديل للملف فيجبر متصفحات الزوار على جلب النسخة الجديدة فورًا
+         (الاستضافة تكيّش الملفات الثابتة 7 أيام) --}}
+    <link href="{{ asset('admin_assets/css/admin_responsive.css') }}?v={{ @filemtime(public_path('admin_assets/css/admin_responsive.css')) ?: 1 }}" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -428,7 +430,7 @@
 
     @yield('scripts')
 
-    <script src="{{ asset('admin_assets/js/admin_responsive.js') }}"></script>
+    <script src="{{ asset('admin_assets/js/admin_responsive.js') }}?v={{ @filemtime(public_path('admin_assets/js/admin_responsive.js')) ?: 1 }}"></script>
 
 </body>
 

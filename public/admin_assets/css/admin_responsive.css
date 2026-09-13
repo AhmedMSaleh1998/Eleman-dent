@@ -1,0 +1,218 @@
+/*
+ * طبقة التجاوب للوحة التحكم (RTL)
+ * الثيم الأصلي عُدّل يدويًا للاتجاه العربي (float:left; width:83%)
+ * لكن قواعد الموبايل بقيت للاتجاه الإنجليزي، فتعطّل التجاوب بالكامل.
+ * هذا الملف يُحمَّل أخيرًا ليصحح ذلك على كل صفحات اللوحة.
+ * يعمل مع admin_responsive.js (غلاف تمرير الجداول + خلفية إغلاق القائمة).
+ */
+
+/* ===== غلاف تمرير أفقي للجداول — كل المقاسات ===== */
+.table-scroll-x {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+}
+
+.table-scroll-x > table {
+    margin-bottom: 0;
+}
+
+/* جداول إضافة bootstrap-table */
+.fixed-table-body {
+    overflow-x: auto;
+}
+
+/* خلفية إغلاق القائمة الجانبية (تظهر فقط على الشاشات الصغيرة عند فتح القائمة) */
+.mobile-menu-backdrop {
+    display: none;
+}
+
+/* ===== تابلت وموبايل ===== */
+@media (max-width: 990px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    /* المحتوى بعرض كامل بدل 83% */
+    .content-page,
+    #wrapper.enlarged .content-page {
+        width: 100% !important;
+        float: none !important;
+        margin: 0 !important;
+    }
+
+    .content-page > .content {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .content-page .container-fluid {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    /*
+     * القائمة الجانبية: درج ثابت على يمين الشاشة.
+     * على الشاشات الصغيرة يضيف الثيم class "enlarged" تلقائيًا (= مغلقة)،
+     * وزر القائمة في الهيدر يزيلها (= مفتوحة).
+     */
+    .left.side-menu,
+    #wrapper.enlarged .left.side-menu,
+    body.fixed-left .side-menu.left,
+    body.fixed-left-void .side-menu.left {
+        position: fixed !important;
+        top: 70px;
+        bottom: 0 !important;
+        right: 0;
+        left: auto;
+        width: 240px !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding-bottom: 30px !important;
+        overflow-y: auto !important;
+        z-index: 1030;
+        transition: transform 0.25s ease;
+    }
+
+    /* مغلقة: تنزلق خارج الحافة اليمنى */
+    #wrapper.enlarged .left.side-menu {
+        transform: translateX(260px);
+    }
+
+    /* مفتوحة: تعود لمكانها مع ظل */
+    #wrapper:not(.enlarged) .left.side-menu {
+        transform: translateX(0);
+        box-shadow: -6px 0 18px rgba(0, 0, 0, 0.25);
+    }
+
+    /* إبطال وضع "الأيقونات المصغرة" الخاص بسطح المكتب داخل الدرج */
+    #wrapper.enlarged .left.side-menu #sidebar-menu > ul > li > a {
+        padding: 12px 20px;
+        text-align: right;
+    }
+
+    #wrapper.enlarged .menu-title,
+    #wrapper.enlarged .menu-arrow,
+    #wrapper.enlarged #sidebar-menu span {
+        display: inline !important;
+    }
+
+    /* إبطال ارتفاع slimscroll المثبت inline */
+    .sidebar-inner.slimscrollleft {
+        height: auto !important;
+        overflow: auto !important;
+    }
+
+    .slimScrollDiv {
+        height: auto !important;
+    }
+
+    /* الخلفية المعتمة عند فتح القائمة */
+    #wrapper:not(.enlarged) .mobile-menu-backdrop {
+        display: block;
+        position: fixed;
+        top: 70px;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.35);
+        z-index: 1025;
+    }
+
+    /* الفوتر بعرض كامل */
+    .footer {
+        left: 0 !important;
+        right: 0 !important;
+    }
+
+    /* عناصر لا يجب أن تتجاوز عرض الشاشة */
+    .content-page img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .content-page input,
+    .content-page select,
+    .content-page textarea {
+        max-width: 100%;
+    }
+
+    .card-box {
+        padding: 14px;
+    }
+
+    /* محرر TinyMCE والقوائم المتقدمة */
+    .mce-tinymce,
+    .mce-container,
+    .mce-container iframe {
+        max-width: 100% !important;
+    }
+
+    .select2-container,
+    .ms-container,
+    .bootstrap-tagsinput {
+        width: 100% !important;
+        max-width: 100%;
+    }
+}
+
+/* ===== موبايل ===== */
+@media (max-width: 767px) {
+    /* الهيدر: الشعار النصي في سطر واحد بارتفاع ثابت حتى لا يتمدد فوق المحتوى */
+    #wrapper.enlarged .topbar .topbar-left,
+    body .topbar .topbar-left {
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: 60vw !important;
+        height: 70px;
+        overflow: hidden;
+        padding: 0 10px;
+    }
+
+    .logo {
+        font-size: 14px;
+        letter-spacing: 0;
+        white-space: nowrap;
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* الثيم يخفي نص الشعار في وضع enlarged — نعيده على الموبايل */
+    #wrapper.enlarged .topbar .topbar-left .logo span {
+        display: inline !important;
+        opacity: 1 !important;
+    }
+
+    #wrapper.enlarged .topbar .topbar-left .logo .icon-c-logo {
+        display: none !important;
+    }
+
+    .content-page > .content {
+        margin-top: 70px;
+    }
+
+    /* صناديق العناوين والأزرار العلوية تلتف بدل التمدد */
+    .page-title-box .btn,
+    .page-title-box .breadcrumb {
+        white-space: normal;
+    }
+}
+
+@media (max-width: 419px) {
+    /* الثيم يجبر عرض 70px ويظهر أيقونة غير موجودة — نبقي النص */
+    body .topbar .topbar-left,
+    .topbar-left {
+        width: auto !important;
+        max-width: 62vw !important;
+    }
+
+    .logo .icon-c-logo {
+        display: none !important;
+    }
+
+    .logo span {
+        display: inline !important;
+    }
+}

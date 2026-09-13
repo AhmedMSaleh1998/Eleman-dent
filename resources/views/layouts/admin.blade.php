@@ -40,6 +40,9 @@
 
     @yield('styles')
 
+    {{-- طبقة التجاوب — تُحمَّل أخيرًا لتتغلب على أي ستايلات ثابتة --}}
+    <link href="{{ asset('admin_assets/css/admin_responsive.css') }}" rel="stylesheet" type="text/css" />
+
 </head>
 
 <body class="fixed-left">
@@ -424,6 +427,8 @@
     </script>
 
     @yield('scripts')
+
+    <script src="{{ asset('admin_assets/js/admin_responsive.js') }}"></script>
 
 </body>
 

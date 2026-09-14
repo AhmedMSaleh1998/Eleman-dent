@@ -23,7 +23,8 @@ class EventImageService extends BaseService
     public function store($request)
     {
         $eventImage = $request->validated();
-        $eventImage['image'] = $this->upload($request->file('image'), $eventImage['type']);
+        unset($eventImage['video_token']);
+        $eventImage['image'] = $this->resolveUpload($request, $eventImage['type']);
         $this->repository->create($eventImage);
     }
 
@@ -31,11 +32,13 @@ class EventImageService extends BaseService
     {
         $record = $this->repository->find($id);
         $eventImage = $request->validated();
+        unset($eventImage['video_token']);
 
-        if ($request->hasFile('image')) {
+        $newFile = $this->resolveUpload($request, $eventImage['type']);
+        if ($newFile) {
             // بنمسح الملف القديم بنفسنا لأن النوع ممكن يكون اتغيّر (صورة ← فيديو) والمجلد بيختلف
             deleteUploadedFile($record->file_path);
-            $eventImage['image'] = $this->upload($request->file('image'), $eventImage['type']);
+            $eventImage['image'] = $newFile;
         } else {
             // من غير ملف جديد يفضل الملف والنوع القديم زي ما هما
             unset($eventImage['image']);
@@ -43,6 +46,25 @@ class EventImageService extends BaseService
         }
 
         $this->repository->update($id, $eventImage);
+    }
+
+    /**
+     * استلام الملف الجديد: مرفوع مباشرة في الطلب، أو فيديو كبير وصل
+     * قطعًا عبر UploadChunkController ومعنا توكنه.
+     *
+     * @return string|null اسم الملف الجديد أو null لو مفيش ملف جديد
+     */
+    private function resolveUpload($request, $type)
+    {
+        if ($request->hasFile('image')) {
+            return $this->upload($request->file('image'), $type);
+        }
+
+        if ($type === 'video' && $request->filled('video_token')) {
+            return takeMergedVideo($request->input('video_token'), 'events');
+        }
+
+        return null;
     }
 
     public function destroy($id)

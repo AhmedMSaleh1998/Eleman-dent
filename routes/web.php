@@ -26,6 +26,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin' , 'middleware' => 'aut
         Route::post('product/{id}/update-field', 'ProductController@updateField')->name('product.updateField');
         Route::post('product/reorder', 'ProductController@reorder')->name('product.reorder');
         Route::resource('product', 'ProductController');
+        Route::post('upload-video-chunk', 'UploadChunkController@store')->name('upload.videoChunk');
         Route::resource('event', 'EventController');
         Route::resource('achievement', 'AchievementController');
         Route::resource('color', 'ColorController');

@@ -25,12 +25,14 @@ class EventImageRequest extends FormRequest
         $isVideo = $this->input('type') === 'video';
 
         return [
-            'type'      => 'required|in:image,video',
-            'image'     => $isVideo
-                ? 'required|file|mimetypes:video/mp4,video/quicktime,video/webm,video/x-m4v|max:102400'
+            'type'         => 'required|in:image,video',
+            'image'        => $isVideo
+                ? 'required_without:video_token|nullable|file|mimetypes:video/mp4,video/quicktime,video/webm,video/x-m4v|max:102400'
                 : 'required|image|max:10240',
-            'event_id'  => 'required|integer',
-            'alt'       => 'nullable|string|max:255',
+            // الفيديوهات الكبيرة بتترفع قطع عبر UploadChunkController وبيوصل هنا توكن بدل الملف
+            'video_token'  => 'nullable|regex:/^[a-f0-9]{32}$/',
+            'event_id'     => 'required|integer',
+            'alt'          => 'nullable|string|max:255',
         ];
     }
 

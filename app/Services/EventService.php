@@ -47,6 +47,9 @@ class EventService extends BaseService
         $video = null;
         if ($input['media_type'] === 'video' && $request->hasFile('video')) {
             $video = uploadVideo($request->file('video'), 'events');
+        } elseif ($input['media_type'] === 'video' && $request->filled('video_token')) {
+            // الفيديوهات الكبيرة بتوصل قطع عبر UploadChunkController وهنا بنستلم الملف المدموج
+            $video = takeMergedVideo($request->input('video_token'), 'events');
         } elseif ($request->hasFile('image')) {
             $image = uploadImage($request->file('image'), 'events');
         }
@@ -79,11 +82,17 @@ class EventService extends BaseService
         $image = $event->image;
         $video = $event->video;
 
-        if ($request->input('media_type') === 'video' && $request->hasFile('video')) {
-            deleteUploadedFile($event->video ? public_path('admin_assets/videos/events/' . $event->video) : null);
-            deleteUploadedFile($event->image ? public_path('admin_assets/images/events/' . $event->image) : null);
-            $video = uploadVideo($request->file('video'), 'events');
-            $image = null;
+        if ($request->input('media_type') === 'video' && ($request->hasFile('video') || $request->filled('video_token'))) {
+            $newVideo = $request->hasFile('video')
+                ? uploadVideo($request->file('video'), 'events')
+                : takeMergedVideo($request->input('video_token'), 'events');
+
+            if ($newVideo) {
+                deleteUploadedFile($event->video ? public_path('admin_assets/videos/events/' . $event->video) : null);
+                deleteUploadedFile($event->image ? public_path('admin_assets/images/events/' . $event->image) : null);
+                $video = $newVideo;
+                $image = null;
+            }
         } elseif ($request->input('media_type') === 'image' && $request->hasFile('image')) {
             // uploadImage بتمسح الصورة القديمة بنفسها لما نبعتلها الجدول والـ id
             $image = uploadImage($request['image'], 'events', 'events', $id);

@@ -31,8 +31,10 @@ class EventRequest extends FormRequest
             'name_ar'           => 'required',
             'name_en'           => 'required',
             'media_type'        => 'required|in:image,video',
-            'image'             => ($creating ? 'required_without:video|' : '') . 'nullable|image',
-            'video'             => ($creating ? 'required_without:image|' : '') . 'nullable|file|mimetypes:video/mp4,video/quicktime,video/webm|max:102400',
+            'image'             => ($creating ? 'required_without_all:video,video_token|' : '') . 'nullable|image',
+            'video'             => ($creating ? 'required_without_all:image,video_token|' : '') . 'nullable|file|mimetypes:video/mp4,video/quicktime,video/webm|max:102400',
+            // الفيديوهات الكبيرة بتترفع قطع عبر UploadChunkController وبيوصل هنا توكن بدل الملف
+            'video_token'       => 'nullable|regex:/^[a-f0-9]{32}$/',
             'description_ar'  => 'required',
             'description_en'  => 'required',
             'location_ar'          => 'required|string',
@@ -47,8 +49,8 @@ class EventRequest extends FormRequest
         return [
             'media_type.required'    => 'اختر نوع الملف: صورة أو فيديو.',
             'media_type.in'          => 'نوع الملف لازم يكون صورة أو فيديو.',
-            'image.required_without' => 'ارفع صورة أو فيديو للحدث.',
-            'video.required_without' => 'ارفع صورة أو فيديو للحدث.',
+            'image.required_without_all' => 'ارفع صورة أو فيديو للحدث.',
+            'video.required_without_all' => 'ارفع صورة أو فيديو للحدث.',
             'image.image'            => 'ملف الصورة غير صالح — ارفع JPG أو PNG أو WebP.',
             'video.mimetypes'        => 'صيغة الفيديو غير مدعومة — ارفع MP4 أو MOV أو WebM.',
             'video.max'              => 'حجم الفيديو أكبر من الحد المسموح (100 ميجابايت).',

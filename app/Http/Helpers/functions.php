@@ -66,6 +66,47 @@ if (!function_exists('uploadVideo')) {
     }
 }
 
+if (!function_exists('takeMergedVideo')) {
+    /**
+     * نقل فيديو مرفوع بنظام القطع (chunked upload) من مجلد التجميع
+     * في storage إلى وجهته النهائية، بنفس نمط تسمية uploadVideo.
+     *
+     * @param  string|null  $token  معرف الرفع (32 hex من UploadChunkController)
+     * @param  string  $path  اسم المجلد داخل videos (مثال: events)
+     * @return string|null  اسم الملف الجديد أو null لو التوكن غير صالح
+     */
+    function takeMergedVideo($token, $path)
+    {
+        if (!preg_match('/^[a-f0-9]{32}$/', (string) $token)) {
+            return null;
+        }
+
+        $merged = storage_path('app/video_chunks/' . $token . '/merged.bin');
+        if (!is_file($merged)) {
+            return null;
+        }
+
+        $extensions = [
+            'video/mp4'       => 'mp4',
+            'video/quicktime' => 'mov',
+            'video/webm'      => 'webm',
+            'video/x-m4v'     => 'm4v',
+        ];
+        $ext = $extensions[mime_content_type($merged)] ?? 'mp4';
+
+        $name = time() . '_' . uniqid() . '.' . $ext;
+        $dest = public_path('admin_assets/videos/' . $path);
+        if (!is_dir($dest)) {
+            @mkdir($dest, 0755, true);
+        }
+        rename($merged, $dest . '/' . $name);
+
+        @rmdir(storage_path('app/video_chunks/' . $token));
+
+        return $name;
+    }
+}
+
 if (!function_exists('deleteUploadedFile')) {
     /**
      * حذف ملف مرفوع من على السيرفر لو موجود (من غير ما يلمس قاعدة البيانات).

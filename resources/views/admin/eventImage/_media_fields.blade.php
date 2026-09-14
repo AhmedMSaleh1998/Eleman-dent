@@ -245,27 +245,27 @@
                 hint.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
 
-            if (form) form.addEventListener('submit', function(e) {
-                var file = input.files && input.files[0];
-                // بدون ملف جديد (شاشة التعديل مثلاً) الإرسال العادي كافي وسريع
-                if (!file) return;
-                e.preventDefault();
-                if (uploading) return;
-                uploading = true;
+            // ============================================================
+            // الفيديوهات بتترفع مجزأة (chunked): قطع صغيرة كل واحدة طلب
+            // قصير مستقل، فمفيش مهلة سيرفر/CDN تقدر تقطع الرفع الطويل.
+            // الصور بترفع بالطريقة العادية لأنها صغيرة وسريعة.
+            // ============================================================
+            var CHUNK_SIZE = 4 * 1024 * 1024; // 4MB
+            var CHUNK_URL = '{{ route('admin.upload.videoChunk') }}';
 
-                var typeLabel = currentType() === 'video' ? 'الفيديو' : 'الصورة';
+            function randomHex32() {
+                var bytes = new Uint8Array(16);
+                (window.crypto || window.msCrypto).getRandomValues(bytes);
+                return Array.prototype.map.call(bytes, function(b) {
+                    return ('0' + b.toString(16)).slice(-2);
+                }).join('');
+            }
+
+            function submitFormAjax(typeLabel, beforeSend) {
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', form.getAttribute('action'));
                 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                 xhr.setRequestHeader('Accept', 'application/json');
-
-                progressWrap.style.display = 'block';
-                progressText.textContent = 'جاري رفع ' + typeLabel + '...';
-                hint.classList.remove('ff-error');
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.textContent = 'جاري الرفع...';
-                }
 
                 xhr.upload.onprogress = function(ev) {
                     if (!ev.lengthComputable) return;
@@ -302,7 +302,106 @@
                     failUpload('انقطع الاتصال أثناء الرفع. تأكد من الإنترنت وحاول مرة أخرى.');
                 };
 
+                if (beforeSend) beforeSend();
                 xhr.send(new FormData(form));
+            }
+
+            if (form) form.addEventListener('submit', function(e) {
+                var file = input.files && input.files[0];
+                // بدون ملف جديد (شاشة التعديل مثلاً) الإرسال العادي كافي وسريع
+                if (!file) return;
+                e.preventDefault();
+                if (uploading) return;
+                uploading = true;
+
+                var typeLabel = currentType() === 'video' ? 'الفيديو' : 'الصورة';
+                progressWrap.style.display = 'block';
+                progressText.textContent = 'جاري رفع ' + typeLabel + '...';
+                hint.classList.remove('ff-error');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'جاري الرفع...';
+                }
+
+                // الصور: رفع عادي في طلب واحد
+                if (currentType() !== 'video') {
+                    return submitFormAjax(typeLabel, null);
+                }
+
+                // الفيديو: رفع مجزأ
+                var csrfInput = form.querySelector('input[name="_token"]');
+                var csrf = csrfInput ? csrfInput.value : '';
+                var uploadId = randomHex32();
+                var total = Math.ceil(file.size / CHUNK_SIZE);
+
+                function setProgress(loadedBytes) {
+                    var pct = Math.min(99, Math.round((loadedBytes / file.size) * 100));
+                    progressBar.style.width = pct + '%';
+                    progressText.textContent = 'جاري رفع الفيديو... ' + pct + '% — من فضلك لا تغلق الصفحة';
+                }
+
+                function sendChunk(i, attempt) {
+                    var start = i * CHUNK_SIZE;
+                    var blob = file.slice(start, Math.min(start + CHUNK_SIZE, file.size));
+                    var fd = new FormData();
+                    fd.append('_token', csrf);
+                    fd.append('upload_id', uploadId);
+                    fd.append('index', i);
+                    fd.append('total', total);
+                    fd.append('chunk', blob, 'chunk.bin');
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', CHUNK_URL);
+                    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                    xhr.setRequestHeader('Accept', 'application/json');
+                    xhr.timeout = 120000;
+
+                    xhr.upload.onprogress = function(ev) {
+                        if (ev.lengthComputable) setProgress(start + ev.loaded);
+                    };
+
+                    function retryOrFail(msg) {
+                        if (attempt < 3) {
+                            progressText.textContent = 'تقطّع الاتصال — إعادة محاولة الجزء ' + (i + 1) + ' من ' + total + '...';
+                            setTimeout(function() { sendChunk(i, attempt + 1); }, 2000 * attempt);
+                        } else {
+                            failUpload(msg + ' حاول مرة أخرى.');
+                        }
+                    }
+
+                    xhr.onload = function() {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            var res = {};
+                            try { res = JSON.parse(xhr.responseText); } catch (err) {}
+                            if (res.done && res.token) {
+                                // نبعت الفورم من غير ملف الفيديو — التوكن بديله
+                                input.disabled = true;
+                                var hidden = document.createElement('input');
+                                hidden.type = 'hidden';
+                                hidden.name = 'video_token';
+                                hidden.value = res.token;
+                                form.appendChild(hidden);
+                                return submitFormAjax(typeLabel, null);
+                            }
+                            if (i + 1 < total) return sendChunk(i + 1, 1);
+                            failUpload('اكتمل الرفع لكن فشل تجميع الفيديو. حاول مرة أخرى.');
+                        } else if (xhr.status === 422) {
+                            var msg = 'ملف الفيديو مرفوض.';
+                            try { msg = JSON.parse(xhr.responseText).message || msg; } catch (err) {}
+                            failUpload(msg);
+                        } else if (xhr.status === 419) {
+                            failUpload('انتهت الجلسة — حدّث الصفحة وسجّل الدخول ثم حاول مرة أخرى.');
+                        } else {
+                            retryOrFail('حصل خطأ أثناء الرفع (' + xhr.status + ').');
+                        }
+                    };
+                    xhr.onerror = function() { retryOrFail('انقطع الاتصال أثناء الرفع.'); };
+                    xhr.ontimeout = function() { retryOrFail('الاتصال بطيء جدًا.'); };
+
+                    xhr.send(fd);
+                }
+
+                sendChunk(0, 1);
             });
         })();
     });

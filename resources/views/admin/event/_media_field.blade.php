@@ -264,6 +264,22 @@
                 hint.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
 
+            // ============================================================
+            // رفع مجزأ (chunked): الفيديو بيتقطع قطع صغيرة كل واحدة طلب
+            // قصير مستقل، فمفيش مهلة سيرفر/CDN تقدر تقطع الرفع الطويل،
+            // والقطعة اللي تفشل بتتعاد لوحدها من غير ما الرفع يبدأ من الأول.
+            // ============================================================
+            var CHUNK_SIZE = 4 * 1024 * 1024; // 4MB
+            var CHUNK_URL = '{{ route('admin.upload.videoChunk') }}';
+
+            function randomHex32() {
+                var bytes = new Uint8Array(16);
+                (window.crypto || window.msCrypto).getRandomValues(bytes);
+                return Array.prototype.map.call(bytes, function(b) {
+                    return ('0' + b.toString(16)).slice(-2);
+                }).join('');
+            }
+
             if (form) form.addEventListener('submit', function(e) {
                 var file = videoInput.files && videoInput.files[0];
                 // بدون فيديو (صورة أو مفيش ملف جديد) الإرسال العادي كافي وسريع
@@ -278,12 +294,6 @@
                 }
 
                 uploading = true;
-
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', form.getAttribute('action'));
-                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-                xhr.setRequestHeader('Accept', 'application/json');
-
                 progressWrap.style.display = 'block';
                 progressText.textContent = 'جاري رفع الفيديو...';
                 hint.classList.remove('ff-error');
@@ -292,42 +302,123 @@
                     submitBtn.textContent = 'جاري الرفع...';
                 }
 
-                xhr.upload.onprogress = function(ev) {
-                    if (!ev.lengthComputable) return;
-                    var pct = Math.round((ev.loaded / ev.total) * 100);
+                var csrfInput = form.querySelector('input[name="_token"]');
+                var csrf = csrfInput ? csrfInput.value : '';
+                var uploadId = randomHex32();
+                var total = Math.ceil(file.size / CHUNK_SIZE);
+
+                function setProgress(loadedBytes) {
+                    var pct = Math.min(99, Math.round((loadedBytes / file.size) * 100));
                     progressBar.style.width = pct + '%';
-                    progressText.textContent = pct >= 100 ?
-                        'تم رفع الفيديو — جاري الحفظ...' :
-                        'جاري رفع الفيديو... ' + pct + '% — من فضلك لا تغلق الصفحة';
-                };
+                    progressText.textContent = 'جاري رفع الفيديو... ' + pct + '% — من فضلك لا تغلق الصفحة';
+                }
 
-                xhr.onload = function() {
-                    if (xhr.status >= 200 && xhr.status < 300) {
-                        uploading = false;
-                        progressBar.style.width = '100%';
-                        progressText.textContent = 'تم الحفظ بنجاح ✓';
-                        var res = {};
-                        try { res = JSON.parse(xhr.responseText); } catch (err) {}
-                        window.location.href = res.redirect || xhr.responseURL || window.location.href;
-                    } else if (xhr.status === 422) {
-                        // أخطاء الفاليديشن بترجع JSON بسبب هيدر Accept
-                        var msg = 'برجاء مراجعة البيانات المدخلة.';
-                        try {
-                            var errs = JSON.parse(xhr.responseText).errors;
-                            msg = Object.keys(errs).map(function(k) { return errs[k][0]; }).join(' — ');
-                        } catch (err) {}
-                        failUpload(msg);
-                    } else if (xhr.status === 413) {
-                        failUpload('الفيديو أكبر من الحد المسموح به على السيرفر. اضغط الفيديو وحاول مرة أخرى.');
-                    } else {
-                        failUpload('حصل خطأ أثناء الرفع (' + xhr.status + '). حاول مرة أخرى.');
+                function sendChunk(i, attempt) {
+                    var start = i * CHUNK_SIZE;
+                    var blob = file.slice(start, Math.min(start + CHUNK_SIZE, file.size));
+                    var fd = new FormData();
+                    fd.append('_token', csrf);
+                    fd.append('upload_id', uploadId);
+                    fd.append('index', i);
+                    fd.append('total', total);
+                    fd.append('chunk', blob, 'chunk.bin');
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', CHUNK_URL);
+                    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                    xhr.setRequestHeader('Accept', 'application/json');
+                    xhr.timeout = 120000; // دقيقتين للقطعة الواحدة (4MB) — أكثر من كافي
+
+                    xhr.upload.onprogress = function(ev) {
+                        if (ev.lengthComputable) setProgress(start + ev.loaded);
+                    };
+
+                    function retryOrFail(msg) {
+                        if (attempt < 3) {
+                            progressText.textContent = 'تقطّع الاتصال — إعادة محاولة الجزء ' + (i + 1) + ' من ' + total + '...';
+                            setTimeout(function() { sendChunk(i, attempt + 1); }, 2000 * attempt);
+                        } else {
+                            failUpload(msg + ' حاول مرة أخرى.');
+                        }
                     }
-                };
-                xhr.onerror = function() {
-                    failUpload('انقطع الاتصال أثناء الرفع. تأكد من الإنترنت وحاول مرة أخرى.');
-                };
 
-                xhr.send(new FormData(form));
+                    xhr.onload = function() {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            var res = {};
+                            try { res = JSON.parse(xhr.responseText); } catch (err) {}
+                            if (res.done && res.token) return submitWithToken(res.token);
+                            if (i + 1 < total) return sendChunk(i + 1, 1);
+                            failUpload('اكتمل الرفع لكن فشل تجميع الفيديو. حاول مرة أخرى.');
+                        } else if (xhr.status === 422) {
+                            var msg = 'ملف الفيديو مرفوض.';
+                            try {
+                                var res422 = JSON.parse(xhr.responseText);
+                                msg = res422.message || msg;
+                            } catch (err) {}
+                            failUpload(msg);
+                        } else if (xhr.status === 419) {
+                            failUpload('انتهت الجلسة — حدّث الصفحة وسجّل الدخول ثم حاول مرة أخرى.');
+                        } else {
+                            retryOrFail('حصل خطأ أثناء الرفع (' + xhr.status + ').');
+                        }
+                    };
+                    xhr.onerror = function() { retryOrFail('انقطع الاتصال أثناء الرفع.'); };
+                    xhr.ontimeout = function() { retryOrFail('الاتصال بطيء جدًا.'); };
+
+                    xhr.send(fd);
+                }
+
+                // بعد اكتمال كل القطع: نبعت الفورم نفسه من غير ملف الفيديو
+                // (بياناته نصية خفيفة) ومعاه توكن الفيديو المتجمع على السيرفر
+                function submitWithToken(token) {
+                    progressBar.style.width = '100%';
+                    progressText.textContent = 'تم رفع الفيديو — جاري الحفظ...';
+
+                    videoInput.disabled = true;
+                    var hidden = document.createElement('input');
+                    hidden.type = 'hidden';
+                    hidden.name = 'video_token';
+                    hidden.value = token;
+                    form.appendChild(hidden);
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', form.getAttribute('action'));
+                    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                    xhr.setRequestHeader('Accept', 'application/json');
+
+                    xhr.onload = function() {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            uploading = false;
+                            progressText.textContent = 'تم الحفظ بنجاح ✓';
+                            var res = {};
+                            try { res = JSON.parse(xhr.responseText); } catch (err) {}
+                            window.location.href = res.redirect || xhr.responseURL || window.location.href;
+                        } else if (xhr.status === 422) {
+                            // أخطاء الفاليديشن بترجع JSON بسبب هيدر Accept
+                            var msg = 'برجاء مراجعة البيانات المدخلة.';
+                            try {
+                                var errs = JSON.parse(xhr.responseText).errors;
+                                msg = Object.keys(errs).map(function(k) { return errs[k][0]; }).join(' — ');
+                            } catch (err) {}
+                            videoInput.disabled = false;
+                            hidden.remove();
+                            failUpload(msg);
+                        } else {
+                            videoInput.disabled = false;
+                            hidden.remove();
+                            failUpload('حصل خطأ أثناء الحفظ (' + xhr.status + '). حاول مرة أخرى.');
+                        }
+                    };
+                    xhr.onerror = function() {
+                        videoInput.disabled = false;
+                        hidden.remove();
+                        failUpload('انقطع الاتصال أثناء الحفظ. تأكد من الإنترنت وحاول مرة أخرى.');
+                    };
+
+                    xhr.send(new FormData(form));
+                }
+
+                sendChunk(0, 1);
             });
         })();
     });

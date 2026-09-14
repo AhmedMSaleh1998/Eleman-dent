@@ -18,17 +18,14 @@ class EventService extends BaseService
 
     public function index()
     {
-        $eventsByYear = Event::selectRaw('YEAR(events.date) as year, events.*, event_translations.name, event_translations.location, event_translations.description')
+        // كل الفعاليات مجمّعة بالسنة — من غير حد لعدد الفعاليات في السنة،
+        // ومرتبة بالتاريخ (الأحدث أولاً) مش بترتيب الإضافة
+        return Event::selectRaw('YEAR(events.date) as year, events.*, event_translations.name, event_translations.location, event_translations.description')
         ->join('event_translations', 'events.id', '=', 'event_translations.event_id')
         ->where('event_translations.locale', app()->getLocale())
+        ->orderByDesc('events.date')
         ->get()
         ->groupBy('year');
-
-        $limitedEventsByYear = $eventsByYear->map(function ($events) {
-        return $events->take(3); // Select only the first 3 events for each year
-    });
-
-    return $limitedEventsByYear;
     }
 
     public function getEventsPerYear($year)

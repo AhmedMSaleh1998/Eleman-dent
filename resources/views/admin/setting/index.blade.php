@@ -107,6 +107,24 @@
                                     <span class="ff-error">{{ $errors->first('address_two_en') }}</span>
                                 @endif
                             </div>
+                            <div class="ff-field">
+                                <label>مواعيد العمل (عربي) <span class="opt">(اختياري)</span></label>
+                                <input type="text" class="ff-input" name="working_hours_ar"
+                                    value="{{ old('working_hours_ar', isset($setting) ? $setting->translate('ar')?->working_hours : null) }}"
+                                    placeholder="السبت – الخميس: 9 ص – 6 م">
+                                @if ($errors->has('working_hours_ar'))
+                                    <span class="ff-error">{{ $errors->first('working_hours_ar') }}</span>
+                                @endif
+                            </div>
+                            <div class="ff-field">
+                                <label>مواعيد العمل (إنجليزي) <span class="opt">(اختياري)</span></label>
+                                <input type="text" class="ff-input" name="working_hours_en" dir="ltr"
+                                    value="{{ old('working_hours_en', isset($setting) ? $setting->translate('en')?->working_hours : null) }}"
+                                    placeholder="Sat – Thu: 9 AM – 6 PM">
+                                @if ($errors->has('working_hours_en'))
+                                    <span class="ff-error">{{ $errors->first('working_hours_en') }}</span>
+                                @endif
+                            </div>
                         </div>
                     </div>
 
@@ -204,6 +222,15 @@
                                     <span class="ff-error">{{ $errors->first('youtube') }}</span>
                                 @endif
                             </div>
+                            <div class="ff-field">
+                                <label>تيك توك <span class="opt">(اختياري)</span></label>
+                                <input type="text" class="ff-input" name="tiktok" dir="ltr"
+                                    value="{{ old('tiktok', isset($setting) ? $setting->tiktok : null) }}"
+                                    placeholder="https://tiktok.com/@...">
+                                @if ($errors->has('tiktok'))
+                                    <span class="ff-error">{{ $errors->first('tiktok') }}</span>
+                                @endif
+                            </div>
                         </div>
                     </div>
 
@@ -290,23 +317,10 @@
                     </div>
 
                     @if ($setting)
-                        {{-- اللوجو والبانر --}}
+                        {{-- اللوجو --}}
                         <div class="ff-card">
-                            <div class="ff-card__head"><i class="fa fa-image"></i> اللوجو والبانر</div>
+                            <div class="ff-card__head"><i class="fa fa-image"></i> اللوجو</div>
                             <div class="ff-grid">
-                                <div class="ff-field">
-                                    <label>البانر الرئيسي <span class="opt">(اختياري)</span></label>
-                                    <input type="file" class="filestyle" data-placeholder="لم يتم اختيار ملف"
-                                        data-iconname="fa fa-cloud-upload" name="main_banner">
-                                    @if ($setting->main_banner)
-                                        <img class="ff-current-img"
-                                            src="{{ asset('admin_assets/images/settings/' . $setting->main_banner) }}"
-                                            onerror="this.style.display='none'">
-                                    @endif
-                                    @if ($errors->has('main_banner'))
-                                        <span class="ff-error">{{ $errors->first('main_banner') }}</span>
-                                    @endif
-                                </div>
                                 <div class="ff-field">
                                     <label>اللوجو <span class="opt">(اختياري)</span></label>
                                     <input type="file" class="filestyle" data-placeholder="لم يتم اختيار ملف"

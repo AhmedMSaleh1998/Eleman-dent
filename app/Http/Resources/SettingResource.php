@@ -26,14 +26,15 @@ class SettingResource extends JsonResource
             'linkedin' => $this->twitter,
             'instagram' => $this->instagram,
             'youtube' => $this->youtube,
+            'tiktok' => $this->tiktok,
             'whatsapp' => $this->whatsapp,
             'address_one' => $this->address_one,
             'address_two' => $this->address_two,
+            'working_hours' => $this->working_hours,
             'keywords' => $this->keywords,
             'aboutus' => $this->about_us,
             'privacy' => $this->privacy,
             'terms' => $this->terms,
-            'banner' => $this->main_banner ? asset('admin_assets/images/settings/' . $this->main_banner) : null,
             'logo' => $this->logo ? asset('admin_assets/images/settings/' . $this->logo) : null,
         ];
     }

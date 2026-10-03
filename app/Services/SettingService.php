@@ -31,10 +31,12 @@ class SettingService extends BaseService
                 'instagram' => $request['instagram'],
                 'twitter' => $request['twitter'],
                 'youtube' => $request['youtube'],
+                'tiktok' => $request['tiktok'],
 
                 'en' => [
                     'address_one' => $request['address_one_en'],
                     'address_two' => $request['address_two_en'],
+                    'working_hours' => $request['working_hours_en'],
                     'keywords' => $request['keywords_en'],
                     'privacy' => $request['privacy_en'],
                     'terms' => $request['terms_en'],
@@ -44,6 +46,7 @@ class SettingService extends BaseService
                 'ar' => [
                     'address_one' => $request['address_one_ar'],
                     'address_two' => $request['address_two_ar'],
+                    'working_hours' => $request['working_hours_ar'],
                     'keywords' => $request['keywords_ar'],
                     'privacy' => $request['privacy_ar'],
                     'terms' => $request['terms_ar'],
@@ -57,10 +60,6 @@ class SettingService extends BaseService
     public function updateSetting($request,$id)
     {
         $setting = $this->show($id);
-
-        if ($request->hasFile('main_banner')) {
-            $banner = uploadImage($request['main_banner'], 'settings');
-        }
 
         if ($request->hasFile('logo')) {
             $logo = uploadImage($request['logo'], 'settings');
@@ -80,11 +79,12 @@ class SettingService extends BaseService
                 'instagram' => $request['instagram'],
                 'twitter' => $request['twitter'],
                 'youtube' => $request['youtube'],
-                'main_banner' => $banner ?? null,
+                'tiktok' => $request['tiktok'],
                 'logo' => $logo ?? $setting->logo,
                 'en' => [
                     'address_one' => $request['address_one_en'],
                     'address_two' => $request['address_two_en'],
+                    'working_hours' => $request['working_hours_en'],
                     'keywords' => $request['keywords_en'],
                     'privacy' => $request['privacy_en'],
                     'terms' => $request['terms_en'],
@@ -94,6 +94,7 @@ class SettingService extends BaseService
                 'ar' => [
                     'address_one' => $request['address_one_ar'],
                     'address_two' => $request['address_two_ar'],
+                    'working_hours' => $request['working_hours_ar'],
                     'keywords' => $request['keywords_ar'],
                     'privacy' => $request['privacy_ar'],
                     'terms' => $request['terms_ar'],

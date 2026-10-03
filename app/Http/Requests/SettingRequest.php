@@ -35,11 +35,14 @@ class SettingRequest extends FormRequest
             'address_one_en' => 'nullable|string',
             'address_two_ar' => 'nullable|string',
             'address_two_en' => 'nullable|string',
+            'working_hours_ar' => 'nullable|string|max:255',
+            'working_hours_en' => 'nullable|string|max:255',
             'facebook' => 'nullable|url',
             'twitter' => 'nullable|url',
             'instagram' => 'nullable|url',
             'whatsapp' => 'nullable',
             'youtube' => 'nullable|url',
+            'tiktok' => 'nullable|url',
             'keywords_ar' => 'nullable|string',
             'keywords_en' => 'nullable|string',
             'privacy_ar' => 'nullable|string',
@@ -48,7 +51,6 @@ class SettingRequest extends FormRequest
             'terms_en' => 'required|string',
             'about_us_ar' => 'nullable|string',
             'about_us_en' => 'nullable|string',
-            'main_banner' => 'nullable|file',
             'logo' => 'nullable|image|mimes:jpeg,jpg,png,gif,webp,svg|max:2048',
         ];
     }
